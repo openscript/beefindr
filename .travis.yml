@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "node"
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+before_install:
+  - yarn global add firebase-tools
+  - yarn global add @angular/cli
+    
+install:
+  - (cd functions && yarn install)
+  - yarn install
+
+script:
+  - ng build --prod
+
+after_success:
+- firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT
