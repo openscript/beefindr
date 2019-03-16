@@ -17,3 +17,6 @@
    * Install [NodeJS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install)
    * Install Angular CLI globaly <br> `yarn global add @angular/cli`
 1. Change to the workspace and run application <br> `ng serve`
+
+## Ressources
+* [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)
