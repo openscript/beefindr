@@ -1,10 +1,14 @@
 # Beefinder
 [![Build Status](https://travis-ci.org/openscript/beefindr.svg?branch=master)](https://travis-ci.org/openscript/beefindr)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6b2fe433052b3e8fa019/maintainability)](https://codeclimate.com/github/openscript/beefindr/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6b2fe433052b3e8fa019/test_coverage)](https://codeclimate.com/github/openscript/beefindr/test_coverage)
 
 ## Overview
 * Continuous integration and delivery with TravisCI <br> https://travis-ci.org/openscript/beefindr
 * Backend with Firebase <br> https://console.firebase.google.com/project/beefindr
 * Hosting with Firebase <br> https://beefindr.firebaseapp.com/
+* Code quality with CodeClimate <br> https://codeclimate.com/github/openscript/beefindr
+* Test Coverage with CodeClimate <br> https://codeclimate.com/github/openscript/beefindr
 
 ## Contribute
 * Write commit messages in English and follow https://chris.beams.io/posts/git-commit/
