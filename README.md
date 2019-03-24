@@ -24,3 +24,4 @@
 
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)
+* [[Tutorial] Angular 7: Firebase Authentication](https://www.positronx.io/full-angular-7-firebase-authentication-system/)
