@@ -1,10 +1,14 @@
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
+import {HelloWorldModule} from "./hello-world/hello-world.module";
+import {AngularFirestoreModule} from "@angular/fire/firestore";
+
 
 @NgModule({
   declarations: [
@@ -15,6 +19,9 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
+
+    HelloWorldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
