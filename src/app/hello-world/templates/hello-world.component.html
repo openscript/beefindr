@@ -1,0 +1,11 @@
+<h1>Hello World</h1>
+
+<p>Say hello to the world with your very own message:</p>
+<form [formGroup]="messageForm" (submit)="submit()">
+  <input [formControlName]="'messageField'" placeholder="your message" />
+  <input type="submit" />
+</form>
+
+<ul>
+  <li *ngFor="let message of messages">{{message.msg}} (id: {{message.id}}, created: {{message.created.toDate()}})&nbsp;<button (click)="deleteMessage(message)">x delete</button></li>
+</ul>
