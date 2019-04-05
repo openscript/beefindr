@@ -1,4 +1,6 @@
 # Beefinder
+![Beefinder logo](./doc/res/logo.small.png)
+
 [![Build Status](https://travis-ci.org/openscript/beefindr.svg?branch=master)](https://travis-ci.org/openscript/beefindr)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6b2fe433052b3e8fa019/maintainability)](https://codeclimate.com/github/openscript/beefindr/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6b2fe433052b3e8fa019/test_coverage)](https://codeclimate.com/github/openscript/beefindr/test_coverage)
