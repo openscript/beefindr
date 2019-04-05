@@ -27,3 +27,5 @@
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)
 * [[Tutorial] Angular 7: Firebase Authentication](https://www.positronx.io/full-angular-7-firebase-authentication-system/)
+* [[Media] Bee for the logo](https://openclipart.org/detail/221154/cartoon-bee)
+* [[Media] Map for the logo](https://openclipart.org/detail/177208/map-location)
