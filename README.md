@@ -24,7 +24,7 @@
    * Install Angular CLI globaly <br> `yarn global add @angular/cli`
 1. Change to the workspace <br> for example with `cd`
 1. Install dependencies <br> `yarn install`
-1. Run application <br> `ng serve`
+1. Run application and open browser <br> `ng serve --open`
 
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)
