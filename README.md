@@ -11,6 +11,7 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 * Continuous integration and delivery with TravisCI <br> https://travis-ci.org/openscript/beefindr
 * Backend with Firebase <br> https://console.firebase.google.com/project/beefindr
 * Hosting with Firebase <br> https://beefindr.firebaseapp.com/
+  * Hello World proof of concept: https://beefindr.firebaseapp.com/hello-world
 * Code quality with CodeClimate <br> https://codeclimate.com/github/openscript/beefindr
 * Test Coverage with CodeClimate <br> https://codeclimate.com/github/openscript/beefindr
 
@@ -19,7 +20,7 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 
 ### Getting started
 1. Install [git](https://git-scm.com/) and configure your user and email
-1. Clone project
+1. Clone project <br> `git clone git@github.com:openscript/beefindr.git`
 1. Set up development environment
    * Install [Visual Studio Code](https://code.visualstudio.com/)
    * Install [NodeJS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install)
@@ -27,6 +28,12 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 1. Change to the workspace <br> for example with `cd`
 1. Install dependencies <br> `yarn install`
 1. Run application and open browser <br> `ng serve --open`
+
+### Add your feature
+1. Clone project <br> `git clone git@github.com:openscript/beefindr.git`
+1. Create a new branch <br> `git checkout -b features/`**[yourFeature]**
+1. Run tests <br> `ng test --code-coverage`
+1. [Create a pull request](https://github.com/openscript/beefindr/pulls)
 
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)

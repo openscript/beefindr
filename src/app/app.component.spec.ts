@@ -1,12 +1,13 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { HelloWorldModule } from './hello-world/hello-world.module';
+import { HelloWorldModule } from './views/hello-world/hello-world.module';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { ComponentsModule } from './components/components.module';
+import { StartPageComponent } from './views/start-page/start-page.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -20,7 +21,8 @@ describe('AppComponent', () => {
         HelloWorldModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        StartPageComponent,
       ],
     }).compileComponents();
   }));

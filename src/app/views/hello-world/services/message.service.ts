@@ -2,7 +2,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
-import {AbstractFirestoreOrmService} from '../../common/services/abstract-firestore-orm.service';
+import {AbstractFirestoreOrmService} from '../../../common/services/abstract-firestore-orm.service';
 import {Message} from '../models/message.model';
 
 
