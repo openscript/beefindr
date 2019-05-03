@@ -5,6 +5,8 @@
   <app-hello-world></app-hello-world>
   <router-outlet></router-outlet>
 </main>
-<mat-toolbar>
-  Version: {{ version }}
+<mat-toolbar >
+  <mat-chip-list>
+    <mat-chip disableRipple='true'>Version {{ version }}</mat-chip>
+  </mat-chip-list>
 </mat-toolbar>
