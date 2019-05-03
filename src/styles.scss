@@ -27,6 +27,16 @@ $beefinder-theme: mat-light-theme($beefinder-primary, $beefinder-accent, $beefin
 @include angular-material-theme($beefinder-theme);
 
 /* You can add global styles to this file, and also import other style files */
+html, body { 
+  height: 100%; 
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+body > * {
+  flex-grow: 1;
+}

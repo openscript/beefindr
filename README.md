@@ -1,5 +1,6 @@
 # Beefinder
 ![Beefinder logo](./doc/res/logo.small.png)
+BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) connects beekeepers with wild or escaped hives. 
 
 [![Build Status](https://travis-ci.org/openscript/beefindr.svg?branch=master)](https://travis-ci.org/openscript/beefindr)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6b2fe433052b3e8fa019/maintainability)](https://codeclimate.com/github/openscript/beefindr/maintainability)
@@ -31,3 +32,4 @@
 * [[Tutorial] Angular 7: Firebase Authentication](https://www.positronx.io/full-angular-7-firebase-authentication-system/)
 * [[Media] Bee for the logo](https://openclipart.org/detail/221154/cartoon-bee)
 * [[Media] Map for the logo](https://openclipart.org/detail/177208/map-location)
+* [[Tutorial] Material UI: Getting started](https://material.angular.io/guide/getting-started)

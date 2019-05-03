@@ -1,2 +1,10 @@
-<app-hello-world></app-hello-world>
-<router-outlet></router-outlet>
+<mat-toolbar color='primary'>
+  <span>BeeFinder</span>
+</mat-toolbar>
+<main>
+  <app-hello-world></app-hello-world>
+  <router-outlet></router-outlet>
+</main>
+<mat-toolbar>
+  Version: {{ version }}
+</mat-toolbar>

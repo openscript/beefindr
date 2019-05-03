@@ -7,5 +7,6 @@ export const environment = {
     projectId: 'beefindr',
     storageBucket: 'beefindr.appspot.com',
     messagingSenderId: '764165825652'
-  }
+  },
+  version: require('../../package.json').version + ' (prod)'
 };
