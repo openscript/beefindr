@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - "node"
 
+addons:
+  chrome: stable
+
 cache:
   yarn: true
   directories:
@@ -15,6 +18,7 @@ install:
   - yarn install
 
 script:
+  - ng test --watch=false --browser ChromeHeadless --code-coverage
   - ng build --prod
 
 after_success:

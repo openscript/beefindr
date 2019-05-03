@@ -6,8 +6,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
-import {HelloWorldModule} from "./hello-world/hello-world.module";
-import {AngularFirestoreModule} from "@angular/fire/firestore";
+// import {HelloWorldModule} from "./hello-world/hello-world.module";
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import {AngularFirestoreModule} from "@angular/fire/firestore";
     AngularFireAuthModule,
     AngularFirestoreModule,
 
-    HelloWorldModule
+    // HelloWorldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
