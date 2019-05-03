@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 import { HelloWorldModule } from './hello-world/hello-world.module';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
+    ComponentsModule,
     HelloWorldModule
   ],
   providers: [],
