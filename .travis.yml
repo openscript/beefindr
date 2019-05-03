@@ -23,11 +23,11 @@ before_script:
 
 script:
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
-  - ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info; fi'
   - ng build --prod
 
 after_script:
-  - ./cc-test-reporter upload-coverage
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter upload-coverage; fi'
 
 after_success:
-- firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT; fi'
