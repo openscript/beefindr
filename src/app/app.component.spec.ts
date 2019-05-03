@@ -7,6 +7,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { ComponentsModule } from './components/components.module';
+import { StartPageComponent } from './views/start-page/start-page.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -20,7 +21,8 @@ describe('AppComponent', () => {
         HelloWorldModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        StartPageComponent,
       ],
     }).compileComponents();
   }));

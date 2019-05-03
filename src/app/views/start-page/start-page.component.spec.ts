@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentsModule } from '../../components/components.module';
 
 import { StartPageComponent } from './start-page.component';
 
@@ -8,7 +9,12 @@ describe('StartPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StartPageComponent ]
+      imports: [
+        ComponentsModule
+      ],
+      declarations: [
+        StartPageComponent
+      ]
     })
     .compileComponents();
   }));
