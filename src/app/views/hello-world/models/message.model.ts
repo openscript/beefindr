@@ -1,7 +1,7 @@
 import '@firebase/firestore';
 import firebase from '@firebase/app';
 
-import {AbstractModel} from '../../common/models/abstract.model';
+import {AbstractModel} from '../../../common/models/abstract.model';
 
 
 /**
