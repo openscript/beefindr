@@ -23,7 +23,7 @@ before_script:
 
 script:
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
-  - ./cc-test-reporter format-coverage -t lcov -p coverage/befinder lcov.info
+  - ./cc-test-reporter format-coverage -t lcov coverage/befinder/lcov.info
   - ng build --prod
 
 after_script:
