@@ -23,10 +23,11 @@ before_script:
 
 script:
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
+  - ./cc-test-reporter format-coverage -t lcov -p coverage/befinder lcov.info
   - ng build --prod
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter upload-coverage
 
 after_success:
 - firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT
