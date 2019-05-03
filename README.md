@@ -1,5 +1,6 @@
 # Beefinder
 ![Beefinder logo](./doc/res/logo.small.png)
+
 BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) connects beekeepers with wild or escaped hives. 
 
 [![Build Status](https://travis-ci.org/openscript/beefindr.svg?branch=master)](https://travis-ci.org/openscript/beefindr)
