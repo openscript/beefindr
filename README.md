@@ -31,7 +31,7 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 1. Clone project <br> `git clone git@github.com:openscript/beefindr.git`
 1. Create a new branch <br> `git checkout -b features/`**[yourFeature]**
 1. Run tests <br> `ng test --code-coverage`
-1. Create a pull request
+1. [Create a pull request](https://github.com/openscript/beefindr/pulls)
 
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)
