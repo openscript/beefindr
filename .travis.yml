@@ -22,7 +22,7 @@ before_script:
   - chmod +x ./cc-test-reporter
 
 script:
-  - ng test --watch=false --browser ChromeHeadless --code-coverage
+  - ng test --watch=false --browsers ChromeHeadless --code-coverage
   - ng build --prod
 
 after_script:
