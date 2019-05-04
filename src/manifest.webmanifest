@@ -1,0 +1,16 @@
+{
+  "name": "Beefinder",
+  "short_name": "Beefinder",
+  "theme_color": "#3f51b5",
+  "background_color": "#3f51b5",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/icons/pwa-icon-100x100.png",
+      "sizes": "100x100",
+      "type": "image/png"
+    }
+  ]
+}

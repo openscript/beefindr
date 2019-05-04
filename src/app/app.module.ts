@@ -12,6 +12,7 @@ import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from 'src/routes';
 import { StartPageComponent } from './views/start-page/start-page.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StartPageComponent } from './views/start-page/start-page.component';
     AngularFirestoreModule,
     BrowserAnimationsModule,
     ComponentsModule,
-    HelloWorldModule
+    HelloWorldModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
