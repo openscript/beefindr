@@ -17,13 +17,13 @@ mat-card {
   mat-card-content {
     padding: 1rem 0 0 0;
 
-    button {
+    a, button {
       display: block;
       width: 100%;
+    }
 
-      &:not(:last-child) {
-        margin: 0 0 0.5rem 0;
-      }
+    a:not(:last-child) {
+      margin: 0 0 0.5rem 0;
     }
   }
 }

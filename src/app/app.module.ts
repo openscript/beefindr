@@ -13,11 +13,15 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from 'src/routes';
 import { StartPageComponent } from './views/start-page/start-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AddReportComponent } from './views/add-report/add-report.component';
+import { RegisterUserComponent } from './views/register-user/register-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StartPageComponent
+    StartPageComponent,
+    AddReportComponent,
+    RegisterUserComponent
   ],
   imports: [
     BrowserModule,
