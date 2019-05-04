@@ -13,6 +13,8 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from 'src/routes';
 import { StartPageComponent } from './views/start-page/start-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PwaService} from './common/services/pwa.service';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     HelloWorldModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [PwaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
