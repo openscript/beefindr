@@ -9,6 +9,7 @@ interface SerializedModel {
  */
 export abstract class AbstractModel {
 
+  [key: string]: any;
   readonly id: string = '';
 
   /**
@@ -16,7 +17,7 @@ export abstract class AbstractModel {
    *
    * @param data Serialized data to be used to inflate the model instance
    */
-  public constructor(data: object) {
+  public constructor(data: any) {
     this.inflate(data);
   }
 
@@ -38,7 +39,7 @@ export abstract class AbstractModel {
    *
    * @param data Data to be used to inflate the model instance
    */
-  public inflate(data: object) {
+  public inflate(data: any) {
     for (const key in data) {
       if (data.hasOwnProperty(key) && this.hasOwnProperty(key)) {
         this[key] = data[key];

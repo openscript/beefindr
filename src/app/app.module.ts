@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { HelloWorldModule } from './views/hello-world/hello-world.module';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreModule} from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
@@ -15,6 +15,7 @@ import { StartPageComponent } from './views/start-page/start-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AddReportComponent } from './views/add-report/add-report.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { RegisterUserComponent } from './views/register-user/register-user.compo
     HelloWorldModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
