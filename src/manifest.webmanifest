@@ -1,9 +1,9 @@
 {
-  "name": "Beefinder",
-  "short_name": "Beefinder",
+  "name": "BeeFinder",
+  "short_name": "BeeFinder",
   "theme_color": "#3f51b5",
   "background_color": "#3f51b5",
-  "lang": "de-DE",
+  "lang": "de-CH",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

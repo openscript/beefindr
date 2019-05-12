@@ -8,9 +8,10 @@ type ServiceWorkerEvent = any;
 })
 export class PwaService {
   promptEvent: ServiceWorkerEvent;
-  constructor(private swUpdate: SwUpdate) {
-      swUpdate.available.subscribe(event =>  {
-        if (window.confirm('Want to update?')) {
+
+  constructor(swUpdate: SwUpdate) {
+      swUpdate.available.subscribe(() =>  {
+        if (window.confirm('Applikation aktualisieren?')) {
           window.location.reload();
         }
       });
@@ -18,6 +19,7 @@ export class PwaService {
         this.promptEvent = event;
       });
   }
+
   install(): void {
     if (this.promptEvent) {
       this.promptEvent.prompt();
