@@ -19,12 +19,12 @@ export class AddReportComponent implements OnInit {
   public ngOnInit() {
   }
 
-  private takePhoto() {
+  protected takePhoto() {
     // TODO: Implement the ability to take photos
     alert('Not implemented yet');
   }
 
-  private getGeoLocation() {
+  protected getGeoLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.currentPosition = position;
