@@ -15,7 +15,7 @@ describe('AddReportComponent', () => {
       declarations: [
         AddReportComponent
       ]
-    })
+    });
   }));
 
   beforeEach(() => {
