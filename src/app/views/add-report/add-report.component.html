@@ -11,6 +11,17 @@
             </mat-expansion-panel-header>
             <input type="file" name="photo" hidden>
             <button type="button" mat-button color='primary' class="form-field" (click)="takePhoto()">Photo aufnehmen</button>
+            <div *ngIf="currentPosition != null" class="form-field" id="position-display">
+              <div>
+                <span>Breitengrad:</span> {{currentPosition.coords.latitude}}°
+              </div>
+              <div>
+                <span>Längengrad:</span> {{currentPosition.coords.longitude}}°
+              </div>
+              <div>
+                <span>Genauigkeit:</span> {{currentPosition.coords.accuracy}}m
+              </div>
+            </div>
             <button type="button" mat-button color='primary' (click)="getGeoLocation()">Standort erfassen</button>
           </mat-expansion-panel>
           <mat-expansion-panel expanded>

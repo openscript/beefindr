@@ -12,6 +12,8 @@ export class AddReportComponent implements OnInit {
     Validators.email,
   ]);
 
+  currentPosition: Position = null;
+
   constructor() { }
 
   public ngOnInit() {
@@ -23,7 +25,13 @@ export class AddReportComponent implements OnInit {
   }
 
   private getGeoLocation() {
-    alert('Not implemented yet');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.currentPosition = position;
+      });
+    } else {
+      console.error('Browser doesn\'t support geolcation tracking.');
+    }
   }
 
 }
