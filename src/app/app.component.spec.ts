@@ -8,6 +8,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { ComponentsModule } from './components/components.module';
 import { StartPageComponent } from './views/start-page/start-page.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -18,7 +19,8 @@ describe('AppComponent', () => {
         AngularFireAuthModule,
         AngularFirestoreModule,
         ComponentsModule,
-        HelloWorldModule
+        HelloWorldModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
       ],
       declarations: [
         AppComponent,

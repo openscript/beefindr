@@ -29,12 +29,21 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 1. Install dependencies <br> `yarn install`
 1. Run application and open browser <br> `ng serve --open`
 
-### Add your feature
+### Add a feature
 1. Clone or pull project <br> `git clone git@github.com:openscript/beefindr.git` or `git pull`
 1. Create a new branch <br> `git checkout -b features/`**[yourFeature]**
 1. Run tests <br> `ng test --code-coverage`
 1. Push new branch to remote <br> `git push --set-upstream origin features/`**[yourFeature]**
-1. [Create a pull request](https://github.com/openscript/beefindr/pulls) with a reviewer
+1. Follow the `Add a pull request` instructions
+
+### Add a pull request
+1. Finish development of your feature
+   * Make sure the tests are passing with `ng test --code-coverage`
+1. Merge any commit from the master into the feature branch <br> `git merge master`
+1. [Create a pull request](https://github.com/openscript/beefindr/pulls)
+   * Select a reviewer
+   * Make sure the checks are passing
+   * Make sure the branch is mergable
 
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)

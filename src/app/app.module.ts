@@ -6,15 +6,18 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { HelloWorldModule } from './views/hello-world/hello-world.module';
-import {AngularFirestore, AngularFirestoreModule} from '@angular/fire/firestore';
+import { AngularFirestoreModule} from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from 'src/routes';
 import { StartPageComponent } from './views/start-page/start-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PwaService} from './common/services/pwa.service';
 import { AddReportComponent } from './views/add-report/add-report.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -27,6 +30,8 @@ import { RegisterUserComponent } from './views/register-user/register-user.compo
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(
       appRoutes
     ),
@@ -38,7 +43,7 @@ import { RegisterUserComponent } from './views/register-user/register-user.compo
     HelloWorldModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [AngularFirestore],
+  providers: [PwaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

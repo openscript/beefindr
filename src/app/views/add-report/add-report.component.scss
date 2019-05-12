@@ -1,0 +1,48 @@
+#zip-and-place {
+  display: flex;
+
+  .zip-form-field {
+    width: 4em;
+    margin-right: 1em;
+  }
+}
+
+mat-card-content {
+  mat-form-field {
+    width: 100%;
+  }
+
+  .form-field {
+    margin-bottom: 1.25em;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  #position-display span {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
