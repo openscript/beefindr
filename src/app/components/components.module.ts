@@ -6,7 +6,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CardContainerComponent } from './card-container/card-container.component';
 
 @NgModule({
-  declarations: [CardContainerComponent],
+  declarations: [
+    CardContainerComponent
+  ],
   imports: [
     MatButtonModule,
     MatCardModule,
