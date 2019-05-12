@@ -30,6 +30,7 @@ after_script:
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter upload-coverage; fi'
 
 deploy:
+  skip_cleanup: true
   provider: firebase
   token: $FIREBASE_TOKEN
   project: $FIREBASE_PROJECT
