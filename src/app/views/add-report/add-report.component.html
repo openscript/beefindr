@@ -10,8 +10,8 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <input type="file" name="photo" hidden>
-            <button type="button" mat-button color='primary' class="form-field">Photo aufnehmen</button>
-            <button type="button" mat-button color='primary'>Standort erfassen</button>
+            <button type="button" mat-button color='primary' class="form-field" (click)="takePhoto()">Photo aufnehmen</button>
+            <button type="button" mat-button color='primary' (click)="getGeoLocation()">Standort erfassen</button>
           </mat-expansion-panel>
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
