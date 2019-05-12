@@ -29,5 +29,8 @@ script:
 after_script:
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter upload-coverage; fi'
 
-after_success:
-- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then firebase deploy -m "Travis deploy" --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT; fi'
+deploy:
+  provider: firebase
+  token: $FIREBASE_TOKEN
+  project: $FIREBASE_PROJECT
+  message: "Deployment from Travis CI"
