@@ -14,7 +14,16 @@ export class AddReportComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  public ngOnInit() {
+  }
+
+  private takePhoto() {
+    // TODO: Implement the ability to take photos
+    alert('Not implemented yet');
+  }
+
+  private getGeoLocation() {
+    alert('Not implemented yet');
   }
 
 }
