@@ -3,6 +3,8 @@ import {LocationBasedModel} from './location-based.model';
 
 export class BeeKeeper extends LocationBasedModel {
 
+  private email = '';
+
   /**
    * Constructor. Due to the order in which super/subclasses are initialized
    * we have to call ``inflate`` explicitly for this subclass in order
@@ -14,5 +16,9 @@ export class BeeKeeper extends LocationBasedModel {
   public constructor(data: any) {
     super(data);
     this.inflate(data);
+  }
+
+  public getEmail(): string {
+    return this.email;
   }
 }

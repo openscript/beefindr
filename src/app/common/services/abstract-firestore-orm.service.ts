@@ -26,8 +26,6 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
   private mapToModel(serializedData: any) {
     const modelClass = this.getModelClass();
 
-    console.log(serializedData);
-
     return new modelClass({
       id: serializedData.id,
       ...serializedData.data

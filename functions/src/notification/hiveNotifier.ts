@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import {BeeHive} from "../../../src/app/common/models/beehive.model";
 import {BeekeeperService} from "../../../src/app/common/services/beekeeper.service";
 import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
-import {Dispatcher} from "./dispatcher.interface";
+import {Dispatcher} from "./dispatchers/dispatcher.interface";
 
 
 /**
@@ -35,12 +35,12 @@ export class HiveNotifier {
    * Uses a BeekeeperService to find the closest BeeKeeper to a given BeeHive and
    * notifies them about the hive.
    *
-   * @param aboutHive BeeHive Beekeepers should be notified about
+   * @param hive BeeHive Beekeepers should be notified about
    */
-  public notifyClosestBeekeeper(aboutHive: BeeHive) {
+  public notifyClosestBeekeeper(hive: BeeHive) {
 
     const beekeeperService: BeekeeperService = new BeekeeperService(admin.firestore());
-    beekeeperService.getClosestToHive(aboutHive).then(closestBeekeeper => {
+    beekeeperService.getClosestToHive(hive).then(closestBeekeeper => {
 
       // Beekeeper available, notify via message
       // TODO: i18n
@@ -51,7 +51,7 @@ export class HiveNotifier {
       return true;
 
     }).catch(err => {
-      console.warn('No Beekeepers available for Hive ' + aboutHive.id);
+      console.warn('No Beekeepers available for Hive ' + hive.id);
       return false;
     });
   }

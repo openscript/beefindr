@@ -1,5 +1,5 @@
 import {Dispatcher} from "../dispatcher.interface";
-import {BeeKeeper} from "../../../../src/app/common/models/beekeeper.model";
+import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
 
 export class LogDispatcher implements Dispatcher {
 
