@@ -19,6 +19,11 @@ mat-card-content {
   button {
     width: 100%;
   }
+
+  #position-display span {
+    display: inline-block;
+    width: 50%;
+  }
 }
 
 mat-card-actions {
