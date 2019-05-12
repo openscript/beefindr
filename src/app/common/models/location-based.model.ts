@@ -12,11 +12,18 @@ export abstract class LocationBasedModel extends AbstractModel {
 
     // TODO: Maybe solve nested serialization/deserialization on AbstractModel-level ...
     if (data.hasOwnProperty('location')) {
+      data.location = new Point(data.location.latitude, data.location.longitude);
       this.location = new Point(data.location.latitude, data.location.longitude);
     }
   }
 
   public getLocation(): Point {
     return this.location;
+  }
+
+  public deflate(): object {
+    const data: any = super.deflate();
+    data.location = {...this.location};
+    return data;
   }
 }

@@ -1,3 +1,1 @@
-export class MailConfigurationException extends Error {
-
-}
+export class MailConfigurationException extends Error {}

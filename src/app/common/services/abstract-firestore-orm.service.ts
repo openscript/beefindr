@@ -66,7 +66,10 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
       });
     }
 
-    return map(doc => this.mapToModel(doc));
+    return map((doc: any) => {
+      return this.mapToModel({id: doc.payload.id, data: doc.payload.data()});
+
+    });
   }
 
   /**
@@ -145,7 +148,7 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
   public updateItem(instance: M): Promise<void> {
     return this.fireStore
       .doc<M>(`${this.getCollectionName()}/${instance.id}`)
-      .update(instance);
+      .update(instance.deflate());
   }
 
   /**

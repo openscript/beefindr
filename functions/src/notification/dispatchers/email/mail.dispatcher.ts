@@ -8,10 +8,17 @@ import {MailConfigurationException} from "./exceptions/mail-configuration.except
 /**
  * Mail Dispatcher sending mails using nodemailer package.
  * In order to use it, set up an email address and configure
- * the app with attributes email.service, email.user and email.password.
+ * the app with attributes email.service, email.address and email.password.
+ *
+ * IMPORTANT NOTE: In order to send emails from a firebase hosting,
+ * make sure you use a Gmail account, as only Google-owned services are allowed to be contacted
+ * within the free 'spark' plan. See https://stackoverflow.com/questions/53562234/sending-e-mail-through-firebase-functions/53565992#53565992
  */
 export class MailDispatcher implements Dispatcher {
 
+  /**
+   * Retrieves email service details from config
+   */
   private static getTransportInfo(): { service: string, auth: { user: string, pass: string } } {
     const emailService: string = functions.config().email.service;
     const emailAddress: string = functions.config().email.address;
@@ -21,7 +28,7 @@ export class MailDispatcher implements Dispatcher {
       throw new MailConfigurationException(
         'No sender email address configured. Please make sure that you provide ' +
         'the app with a service name (e.g. hotmail), a login and a password using the CLI: ' +
-        'firebase functions:config:set email.service="servicename" email.user="mylogin" email.password="mypassword".'
+        'firebase functions:config:set email.service="servicename" email.address="myemail" email.password="mypassword".'
       );
     }
 
@@ -34,7 +41,7 @@ export class MailDispatcher implements Dispatcher {
     }
   }
 
-  private sendMail(from: string, to: string, subject: string, text: string) {
+  private sendMail(to: string, subject: string, text: string) {
 
     let transportInfo;
 
@@ -48,7 +55,7 @@ export class MailDispatcher implements Dispatcher {
     const transport = nodemailer.createTransport(transportInfo);
 
     transport.sendMail({
-      from: from,
+      from: transportInfo.auth.user,
       to: to,
       subject: subject,
       text: text
@@ -59,15 +66,10 @@ export class MailDispatcher implements Dispatcher {
     });
   }
 
-  public dispatchMessage(subject: string, body: string, recipient: BeeKeeper) {
+  public dispatchMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload?: any) {
 
     if (recipient.getEmail()) {
-      this.sendMail(
-        'beefinder@gmx.net',
-        recipient.getEmail(),
-        subject,
-        body
-      )
+      this.sendMail(recipient.getEmail(), subject, body)
     } else {
       console.warn(
         'Unable to send email notification to BeeKeeper ' + recipient.id + '. No email address stored.'

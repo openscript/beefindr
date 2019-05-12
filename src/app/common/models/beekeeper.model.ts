@@ -4,6 +4,9 @@ import {LocationBasedModel} from './location-based.model';
 export class BeeKeeper extends LocationBasedModel {
 
   private email = '';
+  private messagingID = '';
+
+  public firstname = '';
 
   /**
    * Constructor. Due to the order in which super/subclasses are initialized
@@ -21,4 +24,13 @@ export class BeeKeeper extends LocationBasedModel {
   public getEmail(): string {
     return this.email;
   }
+
+  public getMessagingID(): string {
+    return this.messagingID;
+  }
+
+  public setMessagingID(id: string) {
+    this.messagingID = id || this.messagingID;
+  }
 }
+

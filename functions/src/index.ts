@@ -1,9 +1,10 @@
+import * as admin from "firebase-admin";
 import * as functions from 'firebase-functions';
 import {BeeHive} from "../../src/app/common/models/beehive.model";
 import {HiveNotifier} from "./notification/hiveNotifier";
 import {LogDispatcher} from "./notification/dispatchers/log/log.dispatcher";
-import * as admin from "firebase-admin";
 import {MailDispatcher} from "./notification/dispatchers/email/mail.dispatcher";
+import {MessagingDispatcher} from "./notification/dispatchers/firebase-cloud-messaging/messaging.dispatcher";
 
 
 // // Start writing Firebase Functions
@@ -16,8 +17,6 @@ admin.initializeApp();
  * Creates a new HiveNotifier and notifies the BeeKeeper closest to the hive.
  */
 export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
-
-  const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher()]);
-  notifier.notifyClosestBeekeeper(new BeeHive(snap.data()));
-
+  const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
+  return notifier.notifyClosestBeekeeper(new BeeHive({id: snap.id, ...snap.data()}));
 });

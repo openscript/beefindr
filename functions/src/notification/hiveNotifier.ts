@@ -27,7 +27,7 @@ export class HiveNotifier {
    */
   private sendMessage(subject: string, body: string, recipient: BeeKeeper) {
     for (const dispatcher of this.dispatchers) {
-      dispatcher.dispatchMessage(subject, body, recipient);
+      dispatcher.dispatchMessage(recipient, subject, body);
     }
   }
 
@@ -37,22 +37,25 @@ export class HiveNotifier {
    *
    * @param hive BeeHive Beekeepers should be notified about
    */
-  public notifyClosestBeekeeper(hive: BeeHive) {
+  public notifyClosestBeekeeper(hive: BeeHive): boolean {
+
+    console.info('Notifying closest beekeeper about Hive ' + hive.id);
 
     const beekeeperService: BeekeeperService = new BeekeeperService(admin.firestore());
     beekeeperService.getClosestToHive(hive).then(closestBeekeeper => {
 
-      // Beekeeper available, notify via message
       // TODO: i18n
       this.sendMessage(
-        'Neuer Bienenschwarm gefunden!',
+        'Neuen Bienenschwarm gefunden!',
         'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Klicke hier, um ihn anzuschauen und zu beanspruchen.',
-        closestBeekeeper);
-      return true;
+        closestBeekeeper
+      );
 
     }).catch(err => {
       console.warn('No Beekeepers available for Hive ' + hive.id);
       return false;
     });
+
+    return true;
   }
 }
