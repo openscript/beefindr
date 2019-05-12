@@ -16,6 +16,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { PwaService} from './common/services/pwa.service';
 import { AddReportComponent } from './views/add-report/add-report.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,6 +29,8 @@ import { RegisterUserComponent } from './views/register-user/register-user.compo
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(
       appRoutes
     ),
