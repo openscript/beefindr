@@ -161,6 +161,5 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
   }
 
   public abstract getCollectionName(): string;
-
   public abstract getModelClass(): any;
 }

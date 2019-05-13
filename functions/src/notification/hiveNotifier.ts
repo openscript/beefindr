@@ -25,6 +25,7 @@ export class HiveNotifier {
    * @param subject Subject of the message
    * @param body Text content of the message
    * @param recipient Recipient (currently only BeeKeepers), could be replaced with a more general interface (e.g. «User», ...)
+   * @param extraPayload Extra payload as dict for message
    */
   private sendMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload: any) {
     for (const dispatcher of this.dispatchers) {

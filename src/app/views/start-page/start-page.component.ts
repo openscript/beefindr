@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-
 @Component({
   selector: 'app-start-page',
   templateUrl: './start-page.component.html',
@@ -8,9 +7,9 @@ import {Component, OnInit} from '@angular/core';
 })
 export class StartPageComponent implements OnInit {
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
   }
+
 }
