@@ -41,6 +41,18 @@ export class MailDispatcher implements Dispatcher {
     }
   }
 
+  private static renderExtraPayload(message: string, extraPayload: any): string {
+
+    let rendered = message;
+    if (extraPayload.hasOwnProperty('link')) {
+      rendered += '\n\n';
+      rendered += extraPayload.link
+
+    }
+
+    return rendered;
+  }
+
   private sendMail(to: string, subject: string, text: string) {
 
     let transportInfo;
@@ -69,7 +81,7 @@ export class MailDispatcher implements Dispatcher {
   public dispatchMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload?: any) {
 
     if (recipient.getEmail()) {
-      this.sendMail(recipient.getEmail(), subject, body)
+      this.sendMail(recipient.getEmail(), subject, MailDispatcher.renderExtraPayload(body, extraPayload))
     } else {
       console.warn(
         'Unable to send email notification to BeeKeeper ' + recipient.id + '. No email address stored.'

@@ -19,8 +19,9 @@ export class MessagingDispatcher implements Dispatcher {
         {
           notification: {
             title: subject,
-            body: body
-          }
+            body: body,
+          },
+          data: extraPayload
         }).then(() => {
         console.log('Cloud message sent');
       }).catch(err => {

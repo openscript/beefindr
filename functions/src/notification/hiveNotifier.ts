@@ -3,6 +3,7 @@ import {BeeHive} from "../../../src/app/common/models/beehive.model";
 import {BeekeeperService} from "../../../src/app/common/services/beekeeper.service";
 import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
+import {environment} from "../../../src/environments/environment";
 
 
 /**
@@ -25,9 +26,9 @@ export class HiveNotifier {
    * @param body Text content of the message
    * @param recipient Recipient (currently only BeeKeepers), could be replaced with a more general interface (e.g. «User», ...)
    */
-  private sendMessage(subject: string, body: string, recipient: BeeKeeper) {
+  private sendMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload: any) {
     for (const dispatcher of this.dispatchers) {
-      dispatcher.dispatchMessage(recipient, subject, body);
+      dispatcher.dispatchMessage(recipient, subject, body, extraPayload);
     }
   }
 
@@ -46,9 +47,12 @@ export class HiveNotifier {
 
       // TODO: i18n
       this.sendMessage(
+        closestBeekeeper,
         'Neuen Bienenschwarm gefunden!',
-        'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Klicke hier, um ihn anzuschauen und zu beanspruchen.',
-        closestBeekeeper
+        'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
+        {
+          link: environment.baseUrl + '/hive/' + hive.id
+        }
       );
 
     }).catch(err => {

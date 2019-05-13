@@ -19,7 +19,6 @@ import { RegisterUserComponent } from './views/register-user/register-user.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     ComponentsModule,
     HelloWorldModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('workers.js', { enabled: environment.production }),
   ],
   providers: [PwaService],
   bootstrap: [AppComponent]

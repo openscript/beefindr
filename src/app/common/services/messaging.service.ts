@@ -49,7 +49,7 @@ export class MessagingService {
   listenForMessages() {
     this.angularFireMessaging.messages.subscribe(
       (payload) => {
-        alert('Neuen Bienenschwarm gefunden!');
+        console.log(payload);
         this.currentMessage.next(payload);
       });
   }
