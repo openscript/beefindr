@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from 'firebase-functions';
-import {BeeHive} from "../../src/app/common/models/beehive.model";
+import {BeeHive, SerializedBeeHive} from "../../src/app/common/models/beehive.model";
 import {HiveNotifier} from "./notification/hiveNotifier";
 import {LogDispatcher} from "./notification/dispatchers/log/log.dispatcher";
 import {MailDispatcher} from "./notification/dispatchers/email/mail.dispatcher";
@@ -18,5 +18,5 @@ admin.initializeApp();
  */
 export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
   const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-  return notifier.notifyClosestBeekeeper(new BeeHive({id: snap.id, ...snap.data()}));
+  return notifier.notifyClosestBeekeeper(new BeeHive((<SerializedBeeHive>{id: snap.id, ...snap.data()})));
 });

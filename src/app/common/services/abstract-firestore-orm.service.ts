@@ -2,14 +2,14 @@ import {DocumentChangeAction, QueryFn} from '@angular/fire/firestore';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
-import {AbstractModel} from '../models/abstract.model';
+import {AbstractModel, SerializedAbstractModel} from '../models/abstract.model';
 
 
 /**
  * Basic ORM Service using Firestore. Subclasses provide a Model using
  * the generic M.
  */
-export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
+export abstract class AbstractFirestoreOrmService<M extends AbstractModel, I extends SerializedAbstractModel> {
 
   /**
    * Constructor
@@ -23,30 +23,21 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
     }) {
   }
 
-  private mapToModel(serializedData: any) {
+  private mapToModel(serializedData: I) {
     const modelClass = this.getModelClass();
-
-    return new modelClass({
-      id: serializedData.id,
-      ...serializedData.data
-    });
+    return new modelClass(serializedData);
   }
 
-  private mapManyToModel(serializedData: { id: string, data: any }[]): M[] {
+  private mapManyToModel(serializedData: I[]): M[] {
 
     const modelClass = this.getModelClass();
-
     const instances: M[] = [];
 
     for (const itemData of serializedData) {
-      instances.push(new modelClass({
-        id: itemData.id,
-        ...itemData.data
-      }));
+      instances.push(new modelClass(itemData));
     }
 
     return instances;
-
   }
 
   /**
@@ -61,13 +52,13 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
     if (many) {
       return map((changeActions: DocumentChangeAction<any>[]) => {
         return this.mapManyToModel(changeActions.map((ca) => {
-          return {id: ca.payload.doc.id, data: ca.payload.doc.data()};
+          return {id: ca.payload.doc.id, ...ca.payload.doc.data()};
         }));
       });
     }
 
     return map((doc: any) => {
-      return this.mapToModel({id: doc.payload.id, data: doc.payload.data()});
+      return this.mapToModel({id: doc.payload.id, ...doc.payload.data()});
 
     });
   }
@@ -116,7 +107,7 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel> {
           querySnapshot.forEach((doc: any) => {
             items.push(
               this.mapToModel(
-                {id: doc.id, data: doc.data()}
+                {id: doc.id, ...doc.data()}
               )
             );
           });

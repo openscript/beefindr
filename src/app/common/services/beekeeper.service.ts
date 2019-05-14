@@ -1,9 +1,9 @@
 import {AbstractFirestoreOrmService} from './abstract-firestore-orm.service';
 import {BeeHive} from '../models/beehive.model';
-import {BeeKeeper} from '../models/beekeeper.model';
+import {BeeKeeper, SerializedBeeKeeper} from '../models/beekeeper.model';
 
 
-export class BeekeeperService extends AbstractFirestoreOrmService<BeeKeeper> {
+export class BeekeeperService extends AbstractFirestoreOrmService<BeeKeeper, SerializedBeeKeeper> {
 
 
   public getCollectionName(): string {

@@ -1,6 +1,10 @@
 import {BeeKeeper} from './beekeeper.model';
-import {LocationBasedModel} from './location-based.model';
+import {LocationBasedModel, SerializedLocationBaseModel} from './location-based.model';
 
+
+export interface SerializedBeeHive extends SerializedLocationBaseModel {
+  declinedBeekeeperUIDs: string[];
+}
 
 export class BeeHive extends LocationBasedModel {
 
@@ -15,7 +19,7 @@ export class BeeHive extends LocationBasedModel {
    *
    * @param data Serialized data to be used for instance inflation
    */
-  public constructor(data: any) {
+  public constructor(data: SerializedBeeHive) {
     super(data);
     this.inflate(data);
   }
