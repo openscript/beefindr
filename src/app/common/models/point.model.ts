@@ -31,4 +31,8 @@ export class Point {
 
     return R * c;
   }
+
+  public toString(): string {
+    return 'Point: ' + this.latitude + ', ' + this.longitude;
+  }
 }
