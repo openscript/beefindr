@@ -1,9 +1,9 @@
 import {LocationBasedModel, SerializedLocationBaseModel} from './location-based.model';
 
 export interface SerializedBeeKeeper extends SerializedLocationBaseModel {
-  email: string;
-  messagingID: string;
-  firstname: string;
+  email?: string;
+  messagingID?: string;
+  firstname?: string;
 }
 
 export class BeeKeeper extends LocationBasedModel {

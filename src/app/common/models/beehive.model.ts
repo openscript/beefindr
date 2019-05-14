@@ -3,7 +3,7 @@ import {LocationBasedModel, SerializedLocationBaseModel} from './location-based.
 
 
 export interface SerializedBeeHive extends SerializedLocationBaseModel {
-  declinedBeekeeperUIDs: string[];
+  declinedBeekeeperUIDs?: string[];
 }
 
 export class BeeHive extends LocationBasedModel {

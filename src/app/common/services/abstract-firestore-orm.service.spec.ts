@@ -21,36 +21,51 @@ class DummyModel extends AbstractModel {
   }
 }
 
-class DummyFireStore {
+export class DummyFireStore {
 
   private objects = [];
 
   public constructor() {
   }
 
+  createPayload(objs, useWrapper: boolean = true) {
+    const items = [];
+    for (const obj of objs) {
+      items.push(
+        useWrapper ? {
+          payload: {
+            doc: {
+              id: 'id',
+              data: () => {
+                return {...obj};
+              }
+            }
+          }
+        } : {
+          id: 'id',
+          data: () => {
+            return {...obj};
+          }
+        });
+    }
+    return items;
+  }
+
   collection() {
     return {
       snapshotChanges: () => new Observable<any>(observer => {
-        const items = [];
-        for (const obj of this.objects) {
-          items.push({
-            payload: {
-              doc: {
-                id: 'id',
-                data: () => {
-
-                }
-              }
-            }
-          });
-        }
-        observer.next(items);
+        observer.next(this.createPayload(this.objects));
         observer.complete();
       }),
       add: (data: SerializedAbstractModel) => new Promise((succ, err) => {
         this.objects.push(data);
         succ(data);
-      })
+      }),
+      get: () => {
+        return new Promise((succ, err) => {
+          succ(this.createPayload(this.objects, false));
+        });
+      }
     };
   }
 
