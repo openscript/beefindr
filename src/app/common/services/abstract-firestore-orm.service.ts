@@ -74,7 +74,7 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel, I ext
       this.fireStore
         .collection(this.getCollectionName())
         .add(instance.deflate())
-        .then((doc: any) => {
+        .then((doc: SerializedAbstractModel) => {
             resolve(new (this.getModelClass())({
               id: doc.id,
               ...instance
