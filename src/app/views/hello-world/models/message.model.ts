@@ -1,8 +1,13 @@
 import '@firebase/firestore';
 import firebase from '@firebase/app';
 
-import {AbstractModel} from '../../../common/models/abstract.model';
+import {AbstractModel, SerializedAbstractModel} from '../../../common/models/abstract.model';
 
+
+export interface SerializedMessage extends SerializedAbstractModel {
+  msg: string;
+  created?: string;
+}
 
 /**
  * Simple example of a concrete Model-implementation.
@@ -20,7 +25,7 @@ export class Message extends AbstractModel {
    *
    * @param data Serialized data to be used for instance inflation
    */
-  public constructor(data: object) {
+  public constructor(data: SerializedMessage) {
     super(data);
     this.inflate(data);
   }

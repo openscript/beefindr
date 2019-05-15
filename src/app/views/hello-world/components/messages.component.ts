@@ -27,7 +27,7 @@ export class HelloWorldComponent implements OnInit {
    */
   public submit() {
     this.messageService
-      .createItem(new Message({msg: this.messageForm.get('messageField').value}));
+      .createItem(new Message({msg: this.messageForm.get('messageField').value.toString()}));
   }
 
   /**
