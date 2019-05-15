@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { PwaService } from 'src/app/common/services/pwa.service';
+import {VersionUtil} from './utils/version.util';
+
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,5 @@ export class AppComponent {
   constructor(public Pwa: PwaService) {
     this.Pwa.install();
   }
-  version = environment.version;
+  version = VersionUtil.getVersionString();
 }

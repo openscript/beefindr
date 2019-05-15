@@ -12,8 +12,7 @@ export const environment = {
     storageBucket: 'beefindr.appspot.com',
     messagingSenderId: '764165825652'
   },
-  baseUrl: 'http://localhost:4200',
-  version: require('../../package.json').version
+  baseUrl: 'http://localhost:4200'
 };
 
 /*
