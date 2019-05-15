@@ -8,6 +8,5 @@ export const environment = {
     storageBucket: 'beefindr.appspot.com',
     messagingSenderId: '764165825652'
   },
-  baseUrl: 'https://beefindr.firebaseapp.com',
-  version: require('../../package.json').version + ' (prod)'
+  baseUrl: 'https://beefindr.firebaseapp.com'
 };
