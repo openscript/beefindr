@@ -1,4 +1,5 @@
 export interface SerializedAbstractModel {
+  [key: string]: number | string | object | undefined;
   id?: string;
 }
 
@@ -8,7 +9,7 @@ export interface SerializedAbstractModel {
  * not implemented...
  */
 export abstract class AbstractModel {
-
+  [key: string]: number | string | object | undefined;
   readonly id: string = '';
 
   /**
@@ -38,7 +39,7 @@ export abstract class AbstractModel {
    *
    * @param data Data to be used to inflate the model instance
    */
-  public inflate(data: any) {
+  public inflate(data: SerializedAbstractModel) {
     for (const key in data) {
       if (data.hasOwnProperty(key) && this.hasOwnProperty(key)) {
         this[key] = data[key];
