@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { HelloWorldModule } from './views/hello-world/hello-world.module';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule} from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
@@ -40,7 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     ComponentsModule,
     HelloWorldModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('workers.js', { enabled: environment.production }),
   ],
   providers: [PwaService],
   bootstrap: [AppComponent]

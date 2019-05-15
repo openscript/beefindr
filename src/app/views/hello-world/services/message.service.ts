@@ -3,14 +3,14 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {AbstractFirestoreOrmService} from '../../../common/services/abstract-firestore-orm.service';
-import {Message} from '../models/message.model';
+import {Message, SerializedMessage} from '../models/message.model';
 
 
 /**
  * Sample implementation of a concrete Model-Service implementation.
  */
 @Injectable()
-export class MessageService extends AbstractFirestoreOrmService<Message> {
+export class MessageService extends AbstractFirestoreOrmService<Message, SerializedMessage> {
 
   public constructor(protected fireStore: AngularFirestore) {
     super(fireStore);

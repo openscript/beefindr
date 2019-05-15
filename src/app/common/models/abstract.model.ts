@@ -1,5 +1,5 @@
-interface SerializedModel {
-  id: string;
+export interface SerializedAbstractModel {
+  id?: string;
 }
 
 /**
@@ -16,7 +16,7 @@ export abstract class AbstractModel {
    *
    * @param data Serialized data to be used to inflate the model instance
    */
-  public constructor(data: object) {
+  public constructor(data: SerializedAbstractModel) {
     this.inflate(data);
   }
 
@@ -26,7 +26,7 @@ export abstract class AbstractModel {
    * instance id governed by the database.
    */
   public deflate(): object {
-    const deflated: SerializedModel = {...this};
+    const deflated: SerializedAbstractModel = {...this};
     delete deflated.id;
     return deflated;
   }
@@ -38,7 +38,7 @@ export abstract class AbstractModel {
    *
    * @param data Data to be used to inflate the model instance
    */
-  public inflate(data: object) {
+  public inflate(data: any) {
     for (const key in data) {
       if (data.hasOwnProperty(key) && this.hasOwnProperty(key)) {
         this[key] = data[key];
