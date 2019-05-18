@@ -1,11 +1,6 @@
-import { Base } from './base';
 import { Finder } from './finder';
+import { BaseEntity } from './base-entity';
 
-export class Hive extends Base {
-
-  constructor(
-    public finder: Finder,
-  ) {
-    super();
-  }
+export interface Hive extends BaseEntity {
+  finder: Finder;
 }

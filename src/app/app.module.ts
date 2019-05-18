@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { HelloWorldModule } from './views/hello-world/hello-world.module';
-import { AngularFirestoreModule} from '@angular/fire/firestore';
+import { AngularFirestoreModule, AngularFirestore} from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
@@ -17,6 +17,7 @@ import { PwaService} from './common/services/pwa.service';
 import { AddHiveComponent } from './views/add-hive/add-hive.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HivePersistenceService } from './common/services/hive-persistence.service';
 
 
 @NgModule({
@@ -42,7 +43,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HelloWorldModule,
     ServiceWorkerModule.register('workers.js', { enabled: environment.production }),
   ],
-  providers: [PwaService],
+  providers: [
+    AngularFirestore,
+    HivePersistenceService,
+    PwaService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

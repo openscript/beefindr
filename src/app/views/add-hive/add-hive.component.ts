@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Hive } from 'src/app/common/models/hive';
-import { defaultFinder } from 'src/app/common/models/finder';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HivePersistenceService } from 'src/app/common/services/hive-persistence.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-hive',
@@ -10,13 +10,28 @@ import { NgForm } from '@angular/forms';
 })
 export class AddHiveComponent implements OnInit {
 
+  // Form definition
+  public hiveForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    address: new FormGroup({
+      street: new FormControl(''),
+      zip: new FormControl(''),
+      place: new FormControl('')
+    }),
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
+
   // Form models
-  public hive: Hive = {finder: defaultFinder};
   public submitted = false;
   public currentPosition: Position = null;
 
-  public constructor() {
-  }
+  /**
+   * @param hivePersistence is used to save the data from the form.
+   */
+  public constructor(
+    private hivePersistence: HivePersistenceService,
+    private router: Router
+  ) { }
 
   public ngOnInit() {
   }
@@ -36,14 +51,12 @@ export class AddHiveComponent implements OnInit {
     }
   }
 
-  public onSubmit(form: NgForm) {
-    if (form.valid) {
+  public onSubmit() {
+    if (this.hiveForm.valid) {
       this.submitted = true;
+      this.hivePersistence.add(this.hiveForm.value).then(() => {
+        this.router.navigate(['']);
+      });
     }
   }
-
-  public get formDataAsJSON() {
-    return JSON.stringify(this.hive);
-  }
-
 }

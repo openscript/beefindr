@@ -7,6 +7,10 @@
   }
 }
 
+#zip-and-place + mat-error {
+  margin-top: -1.2em;
+}
+
 mat-card-content {
   mat-form-field {
     width: 100%;

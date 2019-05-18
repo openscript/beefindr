@@ -20,13 +20,13 @@ import { CardContainerComponent } from './card-container/card-container.componen
     MatToolbarModule,
   ],
   exports: [
+    CardContainerComponent,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
     MatExpansionModule,
     MatInputModule,
     MatToolbarModule,
-    CardContainerComponent,
   ]
 })
 export class ComponentsModule { }
