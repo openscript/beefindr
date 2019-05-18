@@ -1,6 +1,5 @@
 import {BeeKeeper} from './beekeeper.model';
 import {LocationBasedModel, SerializedLocationBaseModel} from './location-based.model';
-import { Finder } from './finder';
 
 
 export interface SerializedBeeHive extends SerializedLocationBaseModel {

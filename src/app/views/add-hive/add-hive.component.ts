@@ -38,6 +38,7 @@ export class AddHiveComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
+    this.onGetGeoLocation();
   }
 
   public onTakePhoto() {
@@ -56,11 +57,16 @@ export class AddHiveComponent implements OnInit {
   }
 
   public onSubmit() {
-    if (this.hiveForm.valid) {
+    if (this.hiveForm.valid && this.currentPosition) {
       this.submitted = true;
       this.loading = true;
 
-      const newHive: Hive = { finder: {...this.hiveForm.value} };
+      const location = {
+        accuracy: this.currentPosition.coords.accuracy,
+        latitude: this.currentPosition.coords.latitude,
+        longitude: this.currentPosition.coords.longitude
+      };
+      const newHive: Hive = { finder: {...this.hiveForm.value}, location };
       this.hivePersistence.add(newHive).then((hive) => {
         this.loading = false;
         this.snackBar.open(`Vielen Dank ${hive.finder.name}! Der Schwarm wurde erfolgreich erfasst.`, '', {duration: 4000});
