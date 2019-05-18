@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddReportComponent } from './add-report.component';
+import { AddHiveComponent } from './add-hive.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('AddReportComponent', () => {
-  let component: AddReportComponent;
-  let fixture: ComponentFixture<AddReportComponent>;
+describe('AddHiveComponent', () => {
+  let component: AddHiveComponent;
+  let fixture: ComponentFixture<AddHiveComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,13 +18,13 @@ describe('AddReportComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [
-        AddReportComponent
+        AddHiveComponent
       ]
     });
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddReportComponent);
+    fixture = TestBed.createComponent(AddHiveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-add-report',
-  templateUrl: './add-report.component.html',
-  styleUrls: ['./add-report.component.scss']
+  selector: 'app-add-hive',
+  templateUrl: './add-hive.component.html',
+  styleUrls: ['./add-hive.component.scss']
 })
-export class AddReportComponent implements OnInit {
+export class AddHiveComponent implements OnInit {
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,

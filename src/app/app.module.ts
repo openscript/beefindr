@@ -14,7 +14,7 @@ import { appRoutes } from 'src/routes';
 import { StartPageComponent } from './views/start-page/start-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PwaService} from './common/services/pwa.service';
-import { AddReportComponent } from './views/add-report/add-report.component';
+import { AddHiveComponent } from './views/add-hive/add-hive.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     StartPageComponent,
-    AddReportComponent,
+    AddHiveComponent,
     RegisterUserComponent
   ],
   imports: [
