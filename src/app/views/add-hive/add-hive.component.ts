@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HivePersistenceService } from 'src/app/common/services/hive-persistence.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Hive } from 'src/app/common/models/hive';
 
 @Component({
   selector: 'app-add-hive',
@@ -21,8 +23,9 @@ export class AddHiveComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
-  // Form models
+  // Component state
   public submitted = false;
+  public loading = false;
   public currentPosition: Position = null;
 
   /**
@@ -30,7 +33,8 @@ export class AddHiveComponent implements OnInit {
    */
   public constructor(
     private hivePersistence: HivePersistenceService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) { }
 
   public ngOnInit() {
@@ -54,7 +58,12 @@ export class AddHiveComponent implements OnInit {
   public onSubmit() {
     if (this.hiveForm.valid) {
       this.submitted = true;
-      this.hivePersistence.add(this.hiveForm.value).then(() => {
+      this.loading = true;
+
+      const newHive: Hive = { finder: {...this.hiveForm.value} };
+      this.hivePersistence.add(newHive).then((hive) => {
+        this.loading = false;
+        this.snackBar.open(`Vielen Dank ${hive.finder.name}! Der Schwarm wurde erfolgreich erfasst.`, '', {duration: 4000});
         this.router.navigate(['']);
       });
     }
