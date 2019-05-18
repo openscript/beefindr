@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Hive } from 'src/app/common/models/hive';
+import { defaultFinder } from 'src/app/common/models/finder';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-add-hive',
@@ -7,24 +9,24 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./add-hive.component.scss']
 })
 export class AddHiveComponent implements OnInit {
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
 
-  currentPosition: Position = null;
+  // Form models
+  public hive: Hive = {finder: defaultFinder};
+  public submitted = false;
+  public currentPosition: Position = null;
 
-  constructor() { }
+  public constructor() {
+  }
 
   public ngOnInit() {
   }
 
-  public takePhoto() {
+  public onTakePhoto() {
     // TODO: Implement the ability to take photos
     alert('Not implemented yet');
   }
 
-  public getGeoLocation() {
+  public onGetGeoLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.currentPosition = position;
@@ -32,6 +34,16 @@ export class AddHiveComponent implements OnInit {
     } else {
       console.error('Browser doesn\'t support geolcation tracking.');
     }
+  }
+
+  public onSubmit(form: NgForm) {
+    if (form.valid) {
+      this.submitted = true;
+    }
+  }
+
+  public get formDataAsJSON() {
+    return JSON.stringify(this.hive);
   }
 
 }

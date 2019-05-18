@@ -1,4 +1,5 @@
-<form>
+{{formDataAsJSON}}
+<form #hiveForm="ngForm" (ngSubmit)="onSubmit(hiveForm)">
   <app-card-container>
       <h2 class="mat-h2">Bienenschwarm melden</h2>
       <mat-card-content>
@@ -10,7 +11,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <input type="file" name="photo" hidden>
-            <button type="button" mat-button color='primary' class="form-field" (click)="takePhoto()">Photo aufnehmen</button>
+            <button type="button" mat-button color='primary' class="form-field" (click)="onTakePhoto()">Photo aufnehmen</button>
             <div *ngIf="currentPosition != null" class="form-field" id="position-display">
               <div>
                 <span>Breitengrad:</span> {{currentPosition.coords.latitude}}°
@@ -22,7 +23,7 @@
                 <span>Genauigkeit:</span> {{currentPosition.coords.accuracy}}m
               </div>
             </div>
-            <button type="button" mat-button color='primary' (click)="getGeoLocation()">Standort erfassen</button>
+            <button type="button" mat-button color='primary' (click)="onGetGeoLocation()">Standort erfassen</button>
           </mat-expansion-panel>
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
@@ -32,16 +33,16 @@
             </mat-expansion-panel-header>
 
             <mat-form-field>
-              <input matInput placeholder="Name" />
+              <input matInput placeholder="Name" [(ngModel)]="hive.finder.name" name="name" required />
             </mat-form-field>
 
             <mat-form-field>
-              <input matInput placeholder="Adresse" />
+              <input matInput placeholder="Adresse" [(ngModel)]="hive.finder.address.street" name="street" />
             </mat-form-field>
 
             <div id="zip-and-place">
               <mat-form-field class="zip-form-field">
-                <input matInput placeholder="PLZ" name="zip" type="number" min="1000" max="9999" minlength="4" maxlength="4" />
+                <input matInput placeholder="PLZ" [(ngModel)]="hive.finder.address.zip" name="zip" type="number" min="1000" max="9999" minlength="4" maxlength="4" />
               </mat-form-field>
 
               <mat-form-field>
@@ -50,20 +51,14 @@
             </div>
 
             <mat-form-field>
-              <input matInput placeholder="E-Mail" type="email" [formControl]="emailFormControl" />
-              <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                  Bitte gültige E-Mail-Adresse angeben
-                </mat-error>
-                <mat-error *ngIf="emailFormControl.hasError('required')">
-                  Bitte E-Mail-Adresse angeben
-                </mat-error>
+              <input matInput placeholder="E-Mail" type="email" [(ngModel)]="hive.finder.email" name="email" email="true" required />
             </mat-form-field>
           </mat-expansion-panel>
         </mat-accordion>
       </mat-card-content>
     <mat-card-actions>
         <a routerLink=''><button type="button" mat-button color='secondary'>Abbrechen</button></a>
-        <button mat-button color='primary'>Absenden</button>
+        <button mat-button color='primary' [disabled]="!hiveForm.valid && !submitted">Absenden</button>
     </mat-card-actions>
   </app-card-container>
 </form>
