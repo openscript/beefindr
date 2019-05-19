@@ -4,8 +4,8 @@ import { HivePersistenceService } from 'src/app/common/services/hive-persistence
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Hive } from 'src/app/common/models/hive';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-hive',
@@ -29,6 +29,7 @@ export class AddHiveComponent implements OnInit {
   public submitted = false;
   public loading = false;
   public selectedPhoto: File;
+  public uploadProgress: Observable<number>;
   public currentPosition: Position = null;
 
   /**
@@ -37,7 +38,6 @@ export class AddHiveComponent implements OnInit {
   public constructor(
     private domSanitizer: DomSanitizer,
     private hivePersistence: HivePersistenceService,
-    private storage: AngularFireStorage,
     private router: Router,
     private snackBar: MatSnackBar
   ) { }
@@ -77,6 +77,7 @@ export class AddHiveComponent implements OnInit {
 
       if (this.selectedPhoto) {
         const uploadTask = this.hivePersistence.upload(this.selectedPhoto);
+        this.uploadProgress = uploadTask.percentageChanges();
         uploadTask.then((change) => {
           this.saveHive(change.ref.name);
         });
