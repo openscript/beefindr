@@ -9,13 +9,27 @@
               Angaben zum Bienenschwarm
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <input type="file" name="photo" hidden />
+          <img
+            id="preview"
+            *ngIf="selectedPhoto"
+            [src]="selectedPhoto"
+            alt="Vorschaubild"
+          />
+          <input 
+            #uploadField 
+            type="file" 
+            name="photo" 
+            hidden="true"
+            accept="image/*"
+            capture="camera"
+            (change)="onSelectPhoto(uploadField)"
+          />
           <button
             type="button"
             mat-button
             color="primary"
             class="form-field"
-            (click)="onTakePhoto()"
+            (click)="onTakePhoto(uploadField)"
           >
             Photo aufnehmen
           </button>

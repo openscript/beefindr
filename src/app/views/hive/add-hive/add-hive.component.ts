@@ -4,6 +4,7 @@ import { HivePersistenceService } from 'src/app/common/services/hive-persistence
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Hive } from 'src/app/common/models/hive';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-hive',
@@ -26,12 +27,14 @@ export class AddHiveComponent implements OnInit {
   // Component state
   public submitted = false;
   public loading = false;
+  public selectedPhoto: SafeUrl;
   public currentPosition: Position = null;
 
   /**
    * @param hivePersistence is used to save the data from the form.
    */
   public constructor(
+    private domSanitizer: DomSanitizer,
     private hivePersistence: HivePersistenceService,
     private router: Router,
     private snackBar: MatSnackBar
@@ -41,9 +44,14 @@ export class AddHiveComponent implements OnInit {
     this.onGetGeoLocation();
   }
 
-  public onTakePhoto() {
-    // TODO: Implement the ability to take photos
-    alert('Not implemented yet');
+  public onSelectPhoto(uploadField: HTMLInputElement) {
+    if (uploadField.files.length > 0 && uploadField.files[0]) {
+      this.selectedPhoto = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(uploadField.files[0]));
+    }
+  }
+
+  public onTakePhoto(uploadField: HTMLInputElement) {
+    uploadField.click();
   }
 
   public onGetGeoLocation() {
