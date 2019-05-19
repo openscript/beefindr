@@ -11,6 +11,7 @@ import { HivePersistenceService } from 'src/app/common/services/hive-persistence
 export class ShowHiveComponent implements OnInit {
 
   public hive: Hive;
+  public hivePhoto: string;
 
   public constructor(
     private route: ActivatedRoute,
@@ -23,6 +24,11 @@ export class ShowHiveComponent implements OnInit {
 
         this.hivePersistence.get(params.get('uid')).subscribe((hive) => {
           this.hive = hive;
+          if (this.hive.photo) {
+            this.hivePersistence.download(this.hive.photo).subscribe((url) => {
+              this.hivePhoto = url;
+            });
+          }
         });
       }
     });

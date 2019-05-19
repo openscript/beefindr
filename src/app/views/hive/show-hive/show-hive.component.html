@@ -13,6 +13,13 @@
             Angaben zum Bienenschwarm
           </mat-panel-title>
         </mat-expansion-panel-header>
+        <a *ngIf="hive.photo" [href]="hivePhoto">
+          <img
+            id="photo"
+            [src]="hivePhoto"
+            alt="Bild vom Schwarm"
+          />
+        </a>
         <dl>
           <dt>Breitengrad:</dt>
           <dd>{{ hive.location.latitude }}°</dd>

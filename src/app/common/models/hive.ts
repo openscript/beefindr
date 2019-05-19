@@ -5,4 +5,5 @@ import { Location } from './location';
 export interface Hive extends BaseEntity {
   finder: Finder;
   location: Location;
+  photo?: string;
 }

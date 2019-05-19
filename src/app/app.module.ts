@@ -19,6 +19,7 @@ import { RegisterUserComponent } from './views/register-user/register-user.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HivePersistenceService } from './common/services/hive-persistence.service';
 import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
+import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
     ),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFireStorageModule,
     AngularFirestoreModule,
     BrowserAnimationsModule,
     ComponentsModule,
@@ -48,7 +50,7 @@ import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
   providers: [
     AngularFirestore,
     HivePersistenceService,
-    PwaService,
+    PwaService
   ],
   bootstrap: [AppComponent]
 })
