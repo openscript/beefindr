@@ -8,10 +8,16 @@ export interface SerializedBeeKeeper extends SerializedLocationBaseModel {
 
 export class BeeKeeper extends LocationBasedModel {
 
-  private email = '';
   private messagingID = '';
-
+  public email = '';
   public firstname = '';
+  public surname = '';
+  public streetname = '';
+  public streetnr = '';
+  public postcode = '';
+  public place = '';
+  public country = '';
+  public uid = '';
 
   /**
    * Constructor. Due to the order in which super/subclasses are initialized

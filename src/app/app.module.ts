@@ -17,14 +17,22 @@ import { PwaService} from './common/services/pwa.service';
 import { AddReportComponent } from './views/add-report/add-report.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginUserComponent } from './views/login-user/login-user.component';
+import { DashboardBeekeeperComponent } from './views/dashboard-beekeeper/dashboard-beekeeper.component';
+import { AuthService } from './common/services/auth.service';
+import { NotifyService } from './common/services/notify.service';
 
+import { NotificationMessageComponent } from './views/notification-message/notification-message.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartPageComponent,
     AddReportComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    LoginUserComponent,
+    DashboardBeekeeperComponent,
+    NotificationMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +50,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HelloWorldModule,
     ServiceWorkerModule.register('workers.js', { enabled: environment.production }),
   ],
-  providers: [PwaService],
+  providers: [PwaService, AuthService, NotifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
