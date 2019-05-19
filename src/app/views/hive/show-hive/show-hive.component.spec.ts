@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShowHiveComponent } from './show-hive.component';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('ShowHiveComponent', () => {
   let component: ShowHiveComponent;
@@ -8,7 +11,15 @@ describe('ShowHiveComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShowHiveComponent ]
+      imports: [
+        ComponentsModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+      ],
+      declarations: [
+        ShowHiveComponent
+      ]
     })
     .compileComponents();
   }));
@@ -17,9 +28,5 @@ describe('ShowHiveComponent', () => {
     fixture = TestBed.createComponent(ShowHiveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });
