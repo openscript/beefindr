@@ -1,78 +1,157 @@
 <form [formGroup]="hiveForm" (ngSubmit)="onSubmit()">
   <app-card-container>
-      <h2 class="mat-h2">Bienenschwarm melden</h2>
-      <mat-card-content>
-        <mat-accordion multi="true">
-          <mat-expansion-panel expanded>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Angaben zum Bienenschwarm
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <input type="file" name="photo" hidden>
-            <button type="button" mat-button color='primary' class="form-field" (click)="onTakePhoto()">Photo aufnehmen</button>
-            <div *ngIf="currentPosition != null" class="form-field" id="position-display">
-              <div>
-                <span>Breitengrad:</span> {{currentPosition.coords.latitude}}°
-              </div>
-              <div>
-                <span>Längengrad:</span> {{currentPosition.coords.longitude}}°
-              </div>
-              <div>
-                <span>Genauigkeit:</span> {{currentPosition.coords.accuracy}}m
-              </div>
+    <h2 class="mat-h2">Bienenschwarm melden</h2>
+    <mat-card-content>
+      <mat-accordion multi="true">
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Angaben zum Bienenschwarm
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <input type="file" name="photo" hidden />
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            class="form-field"
+            (click)="onTakePhoto()"
+          >
+            Photo aufnehmen
+          </button>
+          <div
+            *ngIf="currentPosition != null"
+            class="form-field"
+            id="position-display"
+          >
+            <div>
+              <span>Breitengrad:</span> {{ currentPosition.coords.latitude }}°
             </div>
-            <button type="button" mat-button color='primary' (click)="onGetGeoLocation()">Standort erfassen</button>
-          </mat-expansion-panel>
-          <mat-expansion-panel expanded>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Persönliche Angaben
-              </mat-panel-title>
-            </mat-expansion-panel-header>
+            <div>
+              <span>Längengrad:</span> {{ currentPosition.coords.longitude }}°
+            </div>
+            <div>
+              <span>Genauigkeit:</span> {{ currentPosition.coords.accuracy }}m
+            </div>
+          </div>
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            (click)="onGetGeoLocation()"
+          >
+            Standort erfassen
+          </button>
+        </mat-expansion-panel>
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Persönliche Angaben
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              placeholder="Name"
+              name="name"
+              formControlName="name"
+              required
+            />
+            <mat-error *ngIf="hiveForm.get('email').hasError('required')">
+              Bitte Name angeben
+            </mat-error>
+          </mat-form-field>
+
+          <div formGroupName="address">
             <mat-form-field>
-              <input matInput type="text" placeholder="Name" name="name" formControlName="name" required />
-              <mat-error *ngIf="hiveForm.get('email').hasError('required')">
-                Bitte Name angeben
-              </mat-error>
+              <input
+                matInput
+                type="text"
+                placeholder="Adresse"
+                name="street"
+                formControlName="street"
+              />
             </mat-form-field>
 
-            <div formGroupName="address">
-              <mat-form-field>
-                <input matInput type="text" placeholder="Adresse" name="street" formControlName="street" />
+            <div id="zip-and-place">
+              <mat-form-field class="zip-form-field">
+                <input
+                  matInput
+                  type="text"
+                  placeholder="PLZ"
+                  name="zip"
+                  formControlName="zip"
+                  pattern="\d{4}"
+                />
               </mat-form-field>
 
-              <div id="zip-and-place">
-                <mat-form-field class="zip-form-field">
-                  <input matInput type="text" placeholder="PLZ" name="zip" formControlName="zip" pattern="\d{4}" />
-                </mat-form-field>
-
-                <mat-form-field>
-                  <input matInput type="text" placeholder="Wohnort" name="place" formControlName="place" />
-                </mat-form-field>
-              </div>
-              <mat-error *ngIf="hiveForm.get('address').get('zip').hasError('pattern')">
-                Bitte gültige Postleitzahl angeben
-              </mat-error>
+              <mat-form-field>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Wohnort"
+                  name="place"
+                  formControlName="place"
+                />
+              </mat-form-field>
             </div>
+            <mat-error
+              *ngIf="
+                hiveForm
+                  .get('address')
+                  .get('zip')
+                  .hasError('pattern')
+              "
+            >
+              Bitte gültige Postleitzahl angeben
+            </mat-error>
+          </div>
 
-            <mat-form-field>
-              <input matInput type="email" placeholder="E-Mail" name="email" formControlName="email" required />
-              <mat-error *ngIf="hiveForm.get('email').hasError('email') && !hiveForm.get('email').hasError('required')">
-                Bitte gültige E-Mail-Adresse angeben
-              </mat-error>
-              <mat-error *ngIf="hiveForm.get('email').hasError('required')">
-                Bitte E-Mail-Adresse angeben
-              </mat-error>
-            </mat-form-field>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </mat-card-content>
+          <mat-form-field>
+            <input
+              matInput
+              type="email"
+              placeholder="E-Mail"
+              name="email"
+              formControlName="email"
+              required
+            />
+            <mat-error
+              *ngIf="
+                hiveForm.get('email').hasError('email') &&
+                !hiveForm.get('email').hasError('required')
+              "
+            >
+              Bitte gültige E-Mail-Adresse angeben
+            </mat-error>
+            <mat-error *ngIf="hiveForm.get('email').hasError('required')">
+              Bitte E-Mail-Adresse angeben
+            </mat-error>
+          </mat-form-field>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
     <mat-card-actions>
-        <a routerLink=''><button type="button" mat-button color='secondary' [attr.disabled]="!loading">Abbrechen</button></a>
-        <mat-progress-spinner *ngIf="loading" diameter="26" mode="indeterminate"></mat-progress-spinner>
-        <button mat-button color='primary' [attr.disabled]="!submitted">Absenden</button>
+      <a routerLink=""
+        ><button
+          type="button"
+          mat-button
+          color="secondary"
+          [attr.disabled]="!loading"
+        >
+          Abbrechen
+        </button></a
+      >
+      <mat-progress-spinner
+        *ngIf="loading"
+        diameter="26"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+      <button mat-button color="primary" [attr.disabled]="!submitted">
+        Absenden
+      </button>
     </mat-card-actions>
   </app-card-container>
 </form>

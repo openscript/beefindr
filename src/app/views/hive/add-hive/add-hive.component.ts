@@ -70,7 +70,7 @@ export class AddHiveComponent implements OnInit {
       this.hivePersistence.add(newHive).then((hive) => {
         this.loading = false;
         this.snackBar.open(`Vielen Dank ${hive.finder.name}! Der Schwarm wurde erfolgreich erfasst.`, '', {duration: 4000});
-        this.router.navigate(['']);
+        this.router.navigate(['hive', hive.uid]);
       });
     }
   }

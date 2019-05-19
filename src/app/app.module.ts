@@ -18,6 +18,7 @@ import { AddHiveComponent } from './views/hive/add-hive/add-hive.component';
 import { RegisterUserComponent } from './views/register-user/register-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HivePersistenceService } from './common/services/hive-persistence.service';
+import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { HivePersistenceService } from './common/services/hive-persistence.servi
     AppComponent,
     StartPageComponent,
     AddHiveComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    ShowHiveComponent
   ],
   imports: [
     BrowserModule,
