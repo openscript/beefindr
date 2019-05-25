@@ -52,5 +52,6 @@ describe('Beekeeper Service', () => {
         'hive at Strandbad Mythenquai, but Beekeeper \'' + keeper.firstname + '\ was selected instead!');
       done();
     });
-  });
+  }); */
 });
+
