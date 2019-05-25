@@ -23,7 +23,7 @@ interface User {
 @Injectable()
 export class AuthService {
   user: Observable<User | null>;
-
+  uid: string;
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
@@ -128,7 +128,6 @@ export class AuthService {
     });
   }
 
-
   // If error, console log and notify user
   private handleError(error: Error) {
     console.error(error);
@@ -140,7 +139,7 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`
     );
-
+    this.uid = user.uid;
     const data: User = {
       uid: user.uid,
       email: user.email || null,
