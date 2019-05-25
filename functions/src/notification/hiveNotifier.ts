@@ -1,9 +1,8 @@
-import * as admin from "firebase-admin";
 import {BeeHive} from "../../../src/app/common/models/beehive.model";
-import {BeekeeperService} from "../../../src/app/common/services/beekeeper.service";
-import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
+import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/beekeeper.model";
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
 import {environment} from "../../../src/environments/environment";
+import * as admin from "firebase-admin";
 
 
 /**
@@ -17,6 +16,54 @@ export class HiveNotifier {
 
   public constructor(dispatchers: Dispatcher[]) {
     this.dispatchers = dispatchers;
+  }
+
+  /**
+   * Evaluates the BeeKeeper closest to a given BeeHive.
+   * Only considers BeeKeepers that haven't previously declined the hive.
+   *
+   * Note: This is implemented quick & dirty as no knowledge about
+   * geospatial filtering on Firestore is available or known at this point.
+   * Feel free to improve.
+   *
+   * @param hive BeeHive for which to find the closests available BeeKeeper
+   */
+  private getClosestToHive(hive: BeeHive): Promise<BeeKeeper> {
+
+    let closestKeeper: BeeKeeper;
+    let smallestDistance = -1;
+
+    return new Promise<BeeKeeper>((succ, err) => {
+
+      admin.firestore().collection('beekeeper').get().then(
+        serializedKeepers => {
+
+          for (const serializedKeeper of serializedKeepers.docs) {
+
+            const beekeeper = new BeeKeeper(<SerializedBeeKeeper>{id: serializedKeeper.id, ...serializedKeeper.data()});
+
+            if (hive.wasDeclinedByKeeper(beekeeper)) {
+              continue;
+            }
+
+            const distance = beekeeper.getLocation().distanceTo(hive.getLocation());
+
+            if (smallestDistance < 0 || distance < smallestDistance) {
+              closestKeeper = beekeeper;
+              smallestDistance = distance;
+            }
+          }
+
+          if (closestKeeper) {
+            succ(closestKeeper);
+          } else {
+            err(false);
+          }
+        }
+      ).catch(() => {
+        console.error('Failed to get beekeeper list')
+      });
+    });
   }
 
   /**
@@ -43,8 +90,7 @@ export class HiveNotifier {
 
     console.info('Notifying closest beekeeper about Hive ' + hive.id);
 
-    const beekeeperService: BeekeeperService = new BeekeeperService(admin.firestore());
-    beekeeperService.getClosestToHive(hive).then(closestBeekeeper => {
+    this.getClosestToHive(hive).then(closestBeekeeper => {
 
       // TODO: i18n
       this.sendMessage(
