@@ -1,3 +1,4 @@
+version: "2"
 plugins:
   editorconfig:
     enabled: true
@@ -10,3 +11,7 @@ plugins:
   tslint:
     enabled: true
     config: tslint.json
+exclude_patterns:
+- "**/node_modules/"
+- "**/vendor/"
+- "**/*.d.ts"
