@@ -3,6 +3,7 @@ import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/bee
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
 import {environment} from "../../../src/environments/environment";
 import * as admin from "firebase-admin";
+import {BeekeeperUtils} from "../utils/beekeeper.utils";
 
 
 /**
@@ -18,44 +19,24 @@ export class HiveNotifier {
     this.dispatchers = dispatchers;
   }
 
-  /**
-   * Evaluates the BeeKeeper closest to a given BeeHive.
-   * Only considers BeeKeepers that haven't previously declined the hive.
-   *
-   * Note: This is implemented quick & dirty as no knowledge about
-   * geospatial filtering on Firestore is available or known at this point.
-   * Feel free to improve.
-   *
-   * @param hive BeeHive for which to find the closests available BeeKeeper
-   */
-  private getClosestToHive(hive: BeeHive): Promise<BeeKeeper> {
 
-    let closestKeeper: BeeKeeper;
-    let smallestDistance = -1;
+  private getClosestToHive(hive: BeeHive): Promise<BeeKeeper> {
 
     return new Promise<BeeKeeper>((succ, err) => {
 
       admin.firestore().collection('beekeeper').get().then(
         serializedKeepers => {
 
+          const keepers: BeeKeeper[] = [];
+
           for (const serializedKeeper of serializedKeepers.docs) {
-
-            const beekeeper = new BeeKeeper(<SerializedBeeKeeper>{id: serializedKeeper.id, ...serializedKeeper.data()});
-
-            if (hive.wasDeclinedByKeeper(beekeeper)) {
-              continue;
-            }
-
-            const distance = beekeeper.getLocation().distanceTo(hive.getLocation());
-
-            if (smallestDistance < 0 || distance < smallestDistance) {
-              closestKeeper = beekeeper;
-              smallestDistance = distance;
-            }
+            keepers.push(new BeeKeeper(<SerializedBeeKeeper>{id: serializedKeeper.id, ...serializedKeeper.data()}));
           }
 
-          if (closestKeeper) {
-            succ(closestKeeper);
+          const closest = BeekeeperUtils.selectClosestToHive(keepers, hive);
+
+          if (closest) {
+            succ(closest);
           } else {
             err(false);
           }

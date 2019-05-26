@@ -24,6 +24,7 @@ before_script:
 
 script:
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
+  - cd functions && npm run test
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info; fi'
   - ng build --prod
 

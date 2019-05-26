@@ -38,7 +38,7 @@ describe('Beekeeper Service', () => {
   // TODO: Migrate this to functions
 /*  it('check if closest available Beekeeper is selected', (done) => {
 
-    beekeeperService.getClosestToHive(
+    beekeeperService.selectClosestToHive(
       // Hive in Standbad Mythenquai 47.354244, 8.535547
       new BeeHive({
         location: {
