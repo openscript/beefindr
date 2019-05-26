@@ -45,6 +45,14 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
    * Make sure the checks are passing
    * Make sure the branch is mergable
 
+## Glossary
+The following terms should be used throughout.
+
+Term | Definition
+---- | ----------
+beehive |  Man made enclosure to keep bees. In this project it's also used for wild bee colonies.
+beekeeper | A person who works with bees.
+
 ## Ressources
 * [[Tutorial] AngularFire2: Installation and Setup](https://github.com/angular/angularfire2/blob/master/docs/install-and-setup.md)
 * [[Tutorial] Angular 7: Firebase Authentication](https://www.positronx.io/full-angular-7-firebase-authentication-system/)
