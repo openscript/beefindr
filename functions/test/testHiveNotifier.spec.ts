@@ -6,10 +6,12 @@ import {BeeKeeper} from "../../src/app/common/models/beekeeper.model";
 
 describe('Closest Beekeeper Function', () => {
 
-  it('check if closest available Beekeeper is selected', () => {
+  let keepers: BeeKeeper[] = [];
 
-    const keepers: BeeKeeper[] = [
+  beforeEach(() => {
+    keepers = [
       new BeeKeeper({
+        id: '1',
         firstname: 'Bellevue',
         location: {
           latitude: 47.367145,
@@ -17,6 +19,7 @@ describe('Closest Beekeeper Function', () => {
         }
       }),
       new BeeKeeper({
+        id: '2',
         firstname: 'Dolder',
         location: {
           latitude: 47.372643,
@@ -24,6 +27,9 @@ describe('Closest Beekeeper Function', () => {
         }
       })
     ];
+  });
+
+  it('check if closest available Beekeeper is selected', () => {
 
     const closest = BeekeeperUtils.selectClosestToHive(
       keepers,
@@ -40,6 +46,32 @@ describe('Closest Beekeeper Function', () => {
     if (closest) {
       assert.strictEqual(
         closest.firstname, 'Bellevue',
+        'Expected Beekeeper at Bellevue to be selected as closest available Beekeeper for a ' +
+        'hive at Strandbad Mythenquai, but Beekeeper \'' + closest.firstname + '\ was selected instead!'
+      );
+    }
+  });
+
+  it('check if closest Beekeeper who declined hive is NOT selected', () => {
+
+    const closest = BeekeeperUtils.selectClosestToHive(
+      keepers,
+      // Hive in Standbad Mythenquai 47.354244, 8.535547
+      new BeeHive({
+        location: {
+          latitude: 47.354244,
+          longitude: 8.535547
+        },
+        declinedBeekeeperUIDs: [
+          '1'
+        ]
+      }));
+
+    assert.notStrictEqual(closest, null);
+
+    if (closest) {
+      assert.strictEqual(
+        closest.firstname, 'Dolder',
         'Expected Beekeeper at Bellevue to be selected as closest available Beekeeper for a ' +
         'hive at Strandbad Mythenquai, but Beekeeper \'' + closest.firstname + '\ was selected instead!'
       );
