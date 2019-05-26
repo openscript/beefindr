@@ -1,0 +1,12 @@
+plugins:
+  editorconfig:
+    enabled: true
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
+  scss-lint:
+    enabled: true
+  tslint:
+    enabled: true
+    config: tslint.json
