@@ -42,7 +42,9 @@ export class DashboardBeekeeperComponent implements OnInit {
     // Create an observer for new messages an delegate them to a handler
     this.messagingService.currentMessage
       .pipe(filter(m => m != null))
-      .subscribe(this.handleNewNotification);
+      .subscribe((notification) => {
+        this.handleNewNotification(notification);
+      });
 
     // Get the current user and its paired BeeKeeper and request permissions
     // for notifications, then start listening for messages.
