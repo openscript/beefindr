@@ -1,8 +1,8 @@
-import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
 import {BeeHive} from "../../../src/app/common/models/beehive.model";
+import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
+
 
 export class BeekeeperUtils {
-
 
   /**
    * Evaluates the BeeKeeper closest to a given BeeHive.
@@ -20,11 +20,7 @@ export class BeekeeperUtils {
     let closestKeeper: BeeKeeper | null = null;
     let smallestDistance = -1;
 
-    for (const beekeeper of keepers) {
-
-      if (hive.wasDeclinedByKeeper(beekeeper)) {
-        continue;
-      }
+    for (const beekeeper of keepers.filter(k => !hive.wasDeclinedByKeeper(k))) {
 
       const distance = beekeeper.getLocation().distanceTo(hive.getLocation());
 
