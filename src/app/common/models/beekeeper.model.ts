@@ -17,7 +17,7 @@ export class BeeKeeper extends LocationBasedModel {
   public postcode = '';
   public place = '';
   public country = '';
-  public uid = '';
+  public userUid = '';
 
   /**
    * Constructor. Due to the order in which super/subclasses are initialized

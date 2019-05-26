@@ -66,7 +66,7 @@ export class RegisterUserComponent implements OnInit {
           place: this.f.place.value,
           country: this.f.country.value,
           email: this.f.email.value,
-          uid: this.authService.uid,
+          userUid: this.authService.uid,
           location: {
             latitude: 11,
             longitude: 11
