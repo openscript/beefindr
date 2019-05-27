@@ -1,9 +1,10 @@
+import * as admin from "firebase-admin";
 import {BeeHive} from "../../../src/app/common/models/beehive.model";
 import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/beekeeper.model";
+import {BeekeeperUtils} from "../utils/beekeeper.utils";
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
 import {environment} from "../../../src/environments/environment";
-import * as admin from "firebase-admin";
-import {BeekeeperUtils} from "../utils/beekeeper.utils";
+import {HiveManager} from "../common/hive/utils/HiveManager.utils";
 
 
 /**
@@ -18,7 +19,6 @@ export class HiveNotifier {
   public constructor(dispatchers: Dispatcher[]) {
     this.dispatchers = dispatchers;
   }
-
 
   private getClosestToHive(hive: BeeHive): Promise<BeeKeeper> {
 
@@ -73,15 +73,22 @@ export class HiveNotifier {
 
     this.getClosestToHive(hive).then(closestBeekeeper => {
 
-      // TODO: i18n
-      this.sendMessage(
-        closestBeekeeper,
-        'Neuen Bienenschwarm gefunden!',
-        'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
-        {
-          link: environment.baseUrl + '/hive/' + hive.id
-        }
-      );
+      HiveManager.createOrUpdateClaim(hive, closestBeekeeper)
+        .then(hiveClaim => {
+
+          // TODO: i18n
+          this.sendMessage(
+            closestBeekeeper,
+            'Neuen Bienenschwarm gefunden!',
+            'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
+            {
+              link: environment.baseUrl + '/hive/' + hive.id + '?token=' + hiveClaim.token
+            }
+          );
+        })
+        .catch(error => {
+          console.error('Unable to create Claim due to the following error: ' + error)
+        })
 
     }).catch(err => {
       console.warn('No Beekeepers available for Hive ' + hive.id);
