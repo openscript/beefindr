@@ -97,6 +97,40 @@ export class HiveManager {
   }
 
   /**
+   * Checks if a HiveClaim for a given BeeHive already exists and returns it if this is the case.
+   * Returns null if not Claim exists.
+   *
+   * @param forHive BeeHive for which to find an existing Claim
+   */
+  private static getClaimForHiveIfExists(forHive: BeeHive): Promise<HiveClaim | null> {
+
+    return new Promise((succ, err) => {
+      admin.firestore().collection('beehiveClaim')
+        .where('hiveUid', '==', forHive.id)
+        .get()
+        .then(snapshots => {
+          if (snapshots.docs.length > 1) {
+            err('Encountered more than one claim for hive ' + forHive.id + ', cannot continue.');
+          }
+
+          if (snapshots.docs.length === 1) {
+            snapshots.forEach(snapshot => {
+              succ(<HiveClaim>{
+                id: snapshot.id,
+                ...snapshot.data()
+              });
+            });
+          } else {
+            succ(null)
+          }
+        })
+        .catch(error => {
+          err(error)
+        });
+    })
+  }
+
+  /**
    * Creates or updates a HiveClaim for a given BeeHive and a given BeeKeeper.
    *
    * @param forHive Hive for which to create or update claim
@@ -108,7 +142,6 @@ export class HiveManager {
 
       let token: string = '';
 
-      // We try to acquire a token first. If that fails we have to abort the process altogether.
       try {
         token = HiveManager.generateClaimToken(forHive, forKeeper);
       } catch (e) {
@@ -116,46 +149,17 @@ export class HiveManager {
         return;
       }
 
-      // Check for existing Claims
-      admin.firestore().collection('beehiveClaim')
-        .where('hiveUid', '==', forHive.id)
-        .get()
-        .then(snapshots => {
-
-          let claim;
-
-          if (snapshots.docs.length > 1) {
-            err('Encountered more than one claim for hive ' + forHive.id + ', cannot continue.');
-          }
-
-          if (snapshots.docs.length === 1) {
-            snapshots.forEach(snapshot => {
-              claim = <HiveClaim>{
-                id: snapshot.id,
-                ...snapshot.data()
-              };
-              HiveManager.updateClaim(claim, token, forHive, forKeeper)
-                .then(updatedClaim => {
-                  succ(updatedClaim);
-                })
-                .catch(updateError => {
-                  err(updateError);
-                })
-            });
-
-          } else {
-            this.createClaim(token, forHive, forKeeper)
-              .then(createdClaim => {
-                succ(createdClaim)
-              })
-              .catch(createError => {
-                err(createError);
-              })
-          }
-        })
-        .catch(error => {
-          err(error)
-        })
+      HiveManager.getClaimForHiveIfExists(forHive).then(hiveClaim => {
+        if (hiveClaim) {
+          HiveManager.updateClaim(hiveClaim, token, forHive, forKeeper)
+            .then(updatedClaim => {succ(updatedClaim);})
+            .catch(updateError => {err(updateError);})
+        } else {
+          this.createClaim(token, forHive, forKeeper)
+            .then(createdClaim => {succ(createdClaim)})
+            .catch(createError => {err(createError);})
+        }
+      }).catch(error => {err(error)})
     });
   }
 }
