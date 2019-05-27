@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Hive } from 'src/app/common/models/hive';
-import { HivePersistenceService } from 'src/app/common/services/hive-persistence.service';
+import {ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {HiveClaimPersistenceService} from '../../../common/services/hiveClaim-persistence.service';
+import {HivePersistenceService} from 'src/app/common/services/hive-persistence.service';
+import {Hive} from 'src/app/common/models/hive';
+import {HiveClaim} from '../../../common/models/hiveClaim';
+
 
 @Component({
   selector: 'app-show-hive',
@@ -12,11 +15,35 @@ export class ShowHiveComponent implements OnInit {
 
   public hive: Hive;
   public hivePhoto: string;
+  public claim: HiveClaim;
+
 
   public constructor(
     private route: ActivatedRoute,
-    private hivePersistence: HivePersistenceService
-  ) { }
+    private hivePersistence: HivePersistenceService,
+    private hiveClaimPersistence: HiveClaimPersistenceService
+  ) {
+  }
+
+  private loadClaim() {
+    // TODO: Use auth service to determine if we have a user/beekeeper
+    this.route.queryParams.subscribe(queryPamars => {
+      if (queryPamars.get('token')) {
+        this.hiveClaimPersistence.getClaimForToken(queryPamars.get('token'))
+          .then(hiveClaim => {
+            this.claim = hiveClaim;
+          });
+      }
+    });
+  }
+
+  public claimHive() {
+
+  }
+
+  public declineHive() {
+
+  }
 
   public ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -29,6 +56,8 @@ export class ShowHiveComponent implements OnInit {
               this.hivePhoto = url;
             });
           }
+
+          this.loadClaim();
         });
       }
     });
@@ -37,5 +66,4 @@ export class ShowHiveComponent implements OnInit {
   public get googleMapsLink() {
     return `http://www.google.com/maps/place/${this.hive.location.latitude},${this.hive.location.longitude}`;
   }
-
 }
