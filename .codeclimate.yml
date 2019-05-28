@@ -10,13 +10,12 @@ plugins:
     enabled: true
   tslint:
     enabled: true
-    config: src/tslint.codeclimate.json
+    config: tslint.codeclimate.json
 
 exclude_patterns:
 - "config/"
 - "db/"
 - "dist/"
-- "functions/"
 - "features/"
 - "**/node_modules/"
 - "script/"
