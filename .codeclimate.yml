@@ -9,7 +9,7 @@ plugins:
   scss-lint:
     enabled: true
   tslint:
-    enabled: true
+    enabled: false
     config: src/tslint.codeclimate.json
 
 exclude_patterns:
