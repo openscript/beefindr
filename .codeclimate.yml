@@ -5,9 +5,9 @@ plugins:
   fixme:
     enabled: true
   markdownlint:
-    enabled: false
+    enabled: true
   scss-lint:
-    enabled: false
+    enabled: true
   tslint:
     enabled: true
     config: src/tslint.codeclimate.json
