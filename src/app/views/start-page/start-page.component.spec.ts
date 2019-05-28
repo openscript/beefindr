@@ -2,6 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentsModule } from '../../components/components.module';
 
 import { StartPageComponent } from './start-page.component';
+import { RouterModule } from '@angular/router';
+import { appRoutes } from 'src/routes';
+import { AddHiveComponent } from '../hive/add-hive/add-hive.component';
 
 describe('StartPageComponent', () => {
   let component: StartPageComponent;
@@ -10,10 +13,14 @@ describe('StartPageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        ComponentsModule
+        ComponentsModule,
+        RouterModule.forRoot(
+          appRoutes
+        ),
       ],
       declarations: [
-        StartPageComponent
+        StartPageComponent,
+        AddHiveComponent
       ]
     })
     .compileComponents();
@@ -23,9 +30,5 @@ describe('StartPageComponent', () => {
     fixture = TestBed.createComponent(StartPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

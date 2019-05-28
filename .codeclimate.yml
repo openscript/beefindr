@@ -1,0 +1,26 @@
+version: "2"
+plugins:
+  editorconfig:
+    enabled: false
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: false
+  scss-lint:
+    enabled: true
+  tslint:
+    enabled: true
+    config: src/tslint.codeclimate.json
+
+exclude_patterns:
+- "config/"
+- "db/"
+- "dist/"
+- "features/"
+- "**/node_modules/"
+- "script/"
+- "**/spec/"
+- "**/test/"
+- "**/tests/"
+- "**/vendor/"
+- "**/*.d.ts"
