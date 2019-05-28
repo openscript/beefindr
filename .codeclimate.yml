@@ -10,7 +10,7 @@ plugins:
     enabled: true
   tslint:
     enabled: true
-    config: tslint.codeclimate.json
+    config: src/tslint.codeclimate.json
 
 exclude_patterns:
 - "config/"
