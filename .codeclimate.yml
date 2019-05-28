@@ -1,7 +1,7 @@
 version: "2"
 plugins:
   editorconfig:
-    enabled: true
+    enabled: false
   fixme:
     enabled: true
   markdownlint:
@@ -9,7 +9,7 @@ plugins:
   scss-lint:
     enabled: false
   tslint:
-    enabled: false
+    enabled: true
     config: src/tslint.codeclimate.json
 
 exclude_patterns:
