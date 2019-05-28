@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: 'beefindr.appspot.com',
     messagingSenderId: '764165825652'
   },
-  baseUrl: 'https://beefindr.firebaseapp.com'
+  baseUrl: 'https://beefindr.firebaseapp.com',
 };

@@ -1,0 +1,62 @@
+<app-card-container>
+  <h2 class="mat-h2">Gefundener Bienenschwarm anzeigen</h2>
+  <mat-card-content>
+    <mat-progress-spinner
+      *ngIf="!hive"
+      diameter="26"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+    <mat-accordion multi="true" *ngIf="hive">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Angaben zum Bienenschwarm
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <a *ngIf="hive.photo" [href]="hivePhoto">
+          <img
+            id="photo"
+            [src]="hivePhoto"
+            alt="Bild vom Schwarm"
+          />
+        </a>
+        <dl>
+          <dt>Breitengrad:</dt>
+          <dd>{{ hive.location.latitude }}°</dd>
+          <dt>Längengrad:</dt>
+          <dd>{{ hive.location.longitude }}°</dd>
+          <dt>Genauigkeit:</dt>
+          <dd>{{ hive.location.accuracy }}m</dd>
+        </dl>
+        <a [href]="googleMapsLink">
+          <button
+            type="button"
+            mat-button
+            color="primary"
+          >
+            Auf Google Maps ansehen
+          </button>
+        </a>
+      </mat-expansion-panel>
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Angaben zum Finder
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <dl>
+          <dt>Name</dt>
+          <dd>{{ hive.finder.name }}</dd>
+          <dt *ngIf="hive.finder.address.street">Strasse</dt>
+          <dd *ngIf="hive.finder.address.street">{{ hive.finder.address.street }}</dd>
+          <dt *ngIf="hive.finder.address.zip">Postleitzahl</dt>
+          <dd *ngIf="hive.finder.address.zip">{{ hive.finder.address.zip }}</dd>
+          <dt *ngIf="hive.finder.address.place">Ort</dt>
+          <dd *ngIf="hive.finder.address.place">{{ hive.finder.address.place }}</dd>
+          <dt>E-Mail</dt>
+          <dd>{{ hive.finder.email }}</dd>
+        </dl>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+</app-card-container>

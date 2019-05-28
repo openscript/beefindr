@@ -1,7 +1,6 @@
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireMessaging} from '@angular/fire/messaging';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {BeehiveService} from './beehive.service';
 import {BeekeeperService} from './beekeeper.service';
 import {Injectable} from '@angular/core';
 import {MessagingService} from './messaging.service';
@@ -13,13 +12,6 @@ import {MessagingService} from './messaging.service';
  * Use their injectable counterparts collected here to inject them
  * into Angular components.
  */
-
-@Injectable()
-export class InjectableBeehiveService extends BeehiveService {
-  public constructor(protected fireStore: AngularFirestore) {
-    super(fireStore);
-  }
-}
 
 @Injectable()
 export class InjectableBeekeeperService extends BeekeeperService {
