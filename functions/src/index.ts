@@ -1,6 +1,9 @@
 import * as admin from "firebase-admin";
 import * as functions from 'firebase-functions';
 import {BeeHive, SerializedBeeHive} from "../../src/app/common/models/beehive.model";
+import {ClaimException} from "./common/claim/exceptions/claim.exception";
+import {ClaimResponseUtil} from "./common/claim/utils/claim-response.utils";
+import {CORSSwitchDecorator} from "./common/cors/cors.decorator";
 import {HiveManager} from "./common/beehive/utils/HiveManager.utils";
 import {HiveNotifier} from "./notification/hiveNotifier";
 import {LogDispatcher} from "./notification/dispatchers/log/log.dispatcher";
@@ -10,6 +13,7 @@ import {MessagingDispatcher} from "./notification/dispatchers/firebase-cloud-mes
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
+
 
 admin.initializeApp();
 
@@ -30,6 +34,7 @@ export const handleNewBeehive = functions.firestore.document('beehive/{uid}').on
  */
 export const claimBeehive = functions.https.onRequest(async (req, res) => {
 
+  CORSSwitchDecorator(req, res, async () => {
     const token = req.query.token;
 
     if (!token) {
@@ -40,11 +45,16 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
     try {
       await HiveManager.claimHive(token);
     } catch (e) {
-      res.status(400).send(e);
+      if (e instanceof ClaimException) {
+        ClaimResponseUtil.createResponseForClaimException(res, e).send();
+      } else {
+        res.status(500).send(e);
+      }
+      return;
     }
-    res.status(200).send();
-  }
-);
+    res.status(200).send({data:{}});
+  });
+});
 
 
 /**
@@ -54,6 +64,8 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
  */
 export const declineBeehive = functions.https.onRequest(async (req, res) => {
 
+  CORSSwitchDecorator(req, res, async () => {
+
     const token = req.query.token;
 
     if (!token) {
@@ -62,15 +74,17 @@ export const declineBeehive = functions.https.onRequest(async (req, res) => {
     }
 
     try {
-
       const hive: BeeHive = await HiveManager.declineHive(token);
-
       const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
       notifier.notifyClosestBeekeeper(hive);
-
     } catch (e) {
-      res.status(400).send(e);
+      if (e instanceof ClaimException) {
+        ClaimResponseUtil.createResponseForClaimException(res, e).send();
+      } else {
+        res.status(500).send(e);
+      }
+      return;
     }
-    res.status(200).send();
-  }
-);
+    res.status(200).send({data:{}});
+  });
+});

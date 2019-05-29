@@ -30,13 +30,17 @@ export class HiveClaimPersistenceService extends BasePersistenceService<Hive> {
         .get()
         .then(snapshots => {
           if (snapshots.docs.length === 1) {
+            const doc = snapshots.docs[0];
             succ({
-              id: snapshots[0].id,
-              ...snapshots[0].data()
+              uid: doc.id,
+              ...doc.data()
             } as HiveClaim);
           } else {
             err();
           }
+        })
+        .catch(error => {
+          console.error(error);
         });
     });
   }

@@ -4,7 +4,7 @@ import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/bee
 import {BeekeeperUtils} from "../common/beekeeper/utils/beekeeper.utils";
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
 import {environment} from "../../../src/environments/environment";
-import {HiveManager} from "../common/hive/utils/HiveManager.utils";
+import {HiveManager} from '../common/beehive/utils/HiveManager.utils';
 
 
 /**
@@ -82,7 +82,7 @@ export class HiveNotifier {
             'Neuen Bienenschwarm gefunden!',
             'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
             {
-              link: environment.baseUrl + '/hive/' + hive.id + '?token=' + hiveClaim.token
+              link: environment.baseUrl + '/hive/' + hive.id + '/?token=' + hiveClaim.token
             }
           );
         })

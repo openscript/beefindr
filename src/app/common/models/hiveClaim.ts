@@ -7,4 +7,5 @@ export interface HiveClaim extends BaseEntity {
   claimed: boolean;
   hiveUid: string;
   keeperUid: string;
+  token: string;
 }

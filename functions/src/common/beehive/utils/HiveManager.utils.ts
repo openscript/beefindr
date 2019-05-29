@@ -5,6 +5,8 @@ import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
 import {ConfigurationException} from "../exceptions/configuration.exception";
 import {HiveClaim} from "../models/hiveClaim.model";
 import {sha256} from "js-sha256";
+import {ClaimException} from "../../claim/exceptions/claim.exception";
+import {ClaimExceptionType} from "../../claim/exceptions/claim-status.enum";
 
 
 /**
@@ -224,7 +226,7 @@ export class HiveManager {
           if (claim) {
 
             if (claim.claimed) {
-              err('Hive has already been claimed!');
+              err(new ClaimException(ClaimExceptionType.ALREADY_CLAIMED));
               return;
             }
 
@@ -242,7 +244,7 @@ export class HiveManager {
             succ()
 
           } else {
-            err('Claim token ' + token + ' is invalid!')
+            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN))
           }
         })
         .catch(error => {
@@ -272,13 +274,16 @@ export class HiveManager {
                 } as SerializedBeeHive);
 
                 hive.declineBeekeeperUID(claim.keeperUid);
+                void admin.firestore().collection('beehive').doc(claim.hiveUid).set(
+                  hive.deflate()
+                );
 
                 succ(hive);
 
               });
 
           } else {
-            err('Claim token ' + token + ' is invalid!')
+            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN))
           }
         })
         .catch(error => {

@@ -57,6 +57,10 @@
           <dd>{{ hive.finder.email }}</dd>
         </dl>
       </mat-expansion-panel>
+      <ng-container *ngIf="claim">
+        <button (click)="declineHive()" mat-raised-button>Verzichten</button>
+        <button color="accent" (click)="claimHive()" mat-raised-button>Beanspruchen</button>
+      </ng-container>
     </mat-accordion>
   </mat-card-content>
 </app-card-container>
