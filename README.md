@@ -23,8 +23,10 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 1. Clone project <br> `git clone git@github.com:openscript/beefindr.git`
 1. Set up development environment
    * Install [Visual Studio Code](https://code.visualstudio.com/)
-   * Install [NodeJS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install)
-   * Install Angular CLI globaly <br> `yarn global add @angular/cli`
+   * Install [NodeJS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) ([preferably with asdf](#asdf))
+     * NodeJS version `11.15.0` for the Angular app
+     * NodeJS version `8.15.0` for the Firebase functions
+   * Install Angular CLI globally <br> `yarn global add @angular/cli`
 1. Change to the workspace <br> for example with `cd`
 1. Install dependencies <br> `yarn install`
 1. Run application and open browser <br> `ng serve --open`
@@ -45,6 +47,14 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
    * Make sure the checks are passing
    * Make sure the branch is mergable
 
+## Tooling
+The following sections contain additional information about the tools, which are used to develop this application.
+
+### <span id="asdf">[asdf](https://asdf-vm.com)</span>
+This helps to manage differnt versions of NodeJS.
+1. Install [asdf](https://asdf-vm.com/#/core-manage-asdf-vm)
+1. Install the [nodejs](https://github.com/asdf-vm/asdf-nodejs) plugin <br> with `asdf plugin-add nodejs`
+1. Install the appropriate runtime (with .tool-versions) <br> by running `asdf install` in the project root or functions folder
 ## Glossary
 The following terms should be used throughout.
 
