@@ -24,7 +24,6 @@ import { LoginUserComponent } from './views/user/login-user/login-user.component
 import { DashboardBeekeeperComponent } from './views/dashboard-beekeeper/dashboard-beekeeper.component';
 import { AuthService } from './common/services/auth.service';
 import { NotifyService } from './common/services/notify.service';
-import { NotificationMessageComponent } from './views/notification-message/notification-message.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +34,7 @@ import { NotificationMessageComponent } from './views/notification-message/notif
     ShowHiveComponent,
     RegisterUserComponent,
     LoginUserComponent,
-    DashboardBeekeeperComponent,
-    NotificationMessageComponent
+    DashboardBeekeeperComponent
   ],
   imports: [
     BrowserModule,
