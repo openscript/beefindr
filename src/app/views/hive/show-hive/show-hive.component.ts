@@ -51,39 +51,18 @@ export class ShowHiveComponent implements OnInit {
   /**
    * Calls the function to fulfill an offered claim
    */
-  public claimHive() {
+  public claimHive(claim: boolean) {
     if (this.claim) {
-      firebase.functions().httpsCallable('claimBeehive?token=' + this.claim.token)({
+
+      // TODO: Add some busy indicator
+      firebase.functions().httpsCallable((claim ? 'claimBeehive' : 'declineBeehive') + '?token=' + this.claim.token)({
         token: this.claim.token
       })
         .then(result => {
 
           // TODO: Handle this more nicely
-          alert('Hive claimed');
+          alert('Hive ' + (claim ? 'claimed' : 'declined'));
           this.claim = null;
-        })
-        .catch((error: HttpsError) => {
-
-          // TODO: Enhance error handling using ClaimException
-          console.error(error.details);
-        });
-    }
-  }
-
-  /**
-   * Calls the function to waive claim on a given beehive
-   */
-  public declineHive() {
-    if (this.claim) {
-      firebase.functions().httpsCallable('declineBeehive?token=' + this.claim.token)({
-        token: this.claim.token
-      })
-        .then(result => {
-
-          // TODO: Handle this more nicely
-          alert('Hive declined');
-          this.claim = null;
-
         })
         .catch((error: HttpsError) => {
 

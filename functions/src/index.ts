@@ -1,14 +1,14 @@
-import * as admin from "firebase-admin";
+import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import {BeeHive, SerializedBeeHive} from "../../src/app/common/models/beehive.model";
-import {ClaimException} from "./common/claim/exceptions/claim.exception";
-import {ClaimResponseUtil} from "./common/claim/utils/claim-response.utils";
-import {CORSSwitchDecorator} from "./common/cors/cors.decorator";
-import {HiveManager} from "./common/beehive/utils/HiveManager.utils";
-import {HiveNotifier} from "./notification/hiveNotifier";
-import {LogDispatcher} from "./notification/dispatchers/log/log.dispatcher";
-import {MailDispatcher} from "./notification/dispatchers/email/mail.dispatcher";
-import {MessagingDispatcher} from "./notification/dispatchers/firebase-cloud-messaging/messaging.dispatcher";
+import {BeeHive, SerializedBeeHive} from '../../src/app/common/models/beehive.model';
+import {ClaimException} from './common/claim/exceptions/claim.exception';
+import {ClaimResponseUtil} from './common/claim/utils/claim-response.utils';
+import {CORSSwitchDecorator} from './common/cors/cors.decorator';
+import {HiveManager} from './common/beehive/utils/HiveManager.utils';
+import {HiveNotifier} from './notification/hiveNotifier';
+import {LogDispatcher} from './notification/dispatchers/log/log.dispatcher';
+import {MailDispatcher} from './notification/dispatchers/email/mail.dispatcher';
+import {MessagingDispatcher} from './notification/dispatchers/firebase-cloud-messaging/messaging.dispatcher';
 
 
 // // Start writing Firebase Functions
@@ -24,7 +24,7 @@ admin.initializeApp();
  */
 export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
   const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-  return notifier.notifyClosestBeekeeper(new BeeHive((<SerializedBeeHive>{id: snap.id, ...snap.data()})));
+  return notifier.notifyClosestBeekeeper(new BeeHive(({id: snap.id, ...snap.data()} as SerializedBeeHive)));
 });
 
 
@@ -52,7 +52,7 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
       }
       return;
     }
-    res.status(200).send({data:{}});
+    res.status(200).send({data: {}});
   });
 });
 
@@ -85,6 +85,6 @@ export const declineBeehive = functions.https.onRequest(async (req, res) => {
       }
       return;
     }
-    res.status(200).send({data:{}});
+    res.status(200).send({data: {}});
   });
 });
