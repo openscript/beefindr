@@ -25,12 +25,13 @@ before_script:
 
 script:
   - (cd functions && npm run test)
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov functions/coverage/lcov.info -o coverage/codeclimate-functions.json; fi'
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info -o coverage/codeclimate-app.json; fi'
   - ng build --prod
 
 after_script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter upload-coverage; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter sum-coverage coverage/codeclimate-app.json coverage/codeclimate-functions.json && ./cc-test-reporter upload-coverage; fi'
 
 deploy:
   skip_cleanup: true
