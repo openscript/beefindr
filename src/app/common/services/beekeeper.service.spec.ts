@@ -35,9 +35,10 @@ describe('Beekeeper Service', () => {
     });
   });
 
-  it('check if closest available Beekeeper is selected', (done) => {
+  // TODO: Migrate this to functions
+/*  it('check if closest available Beekeeper is selected', (done) => {
 
-    beekeeperService.getClosestToHive(
+    beekeeperService.selectClosestToHive(
       // Hive in Standbad Mythenquai 47.354244, 8.535547
       new BeeHive({
         location: {
@@ -51,5 +52,6 @@ describe('Beekeeper Service', () => {
         'hive at Strandbad Mythenquai, but Beekeeper \'' + keeper.firstname + '\ was selected instead!');
       done();
     });
-  });
+  }); */
 });
+

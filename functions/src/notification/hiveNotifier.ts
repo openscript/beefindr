@@ -1,9 +1,10 @@
 import * as admin from "firebase-admin";
 import {BeeHive} from "../../../src/app/common/models/beehive.model";
-import {BeekeeperService} from "../../../src/app/common/services/beekeeper.service";
-import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
+import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/beekeeper.model";
+import {BeekeeperUtils} from "../utils/beekeeper.utils";
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
 import {environment} from "../../../src/environments/environment";
+import {HiveManager} from "../common/hive/utils/HiveManager.utils";
 
 
 /**
@@ -17,6 +18,33 @@ export class HiveNotifier {
 
   public constructor(dispatchers: Dispatcher[]) {
     this.dispatchers = dispatchers;
+  }
+
+  private getClosestToHive(hive: BeeHive): Promise<BeeKeeper> {
+
+    return new Promise<BeeKeeper>((succ, err) => {
+
+      admin.firestore().collection('beekeeper').get().then(
+        serializedKeepers => {
+
+          const keepers: BeeKeeper[] = [];
+
+          for (const serializedKeeper of serializedKeepers.docs) {
+            keepers.push(new BeeKeeper(<SerializedBeeKeeper>{id: serializedKeeper.id, ...serializedKeeper.data()}));
+          }
+
+          const closest = BeekeeperUtils.selectClosestToHive(keepers, hive);
+
+          if (closest) {
+            succ(closest);
+          } else {
+            err(false);
+          }
+        }
+      ).catch(() => {
+        console.error('Failed to get beekeeper list')
+      });
+    });
   }
 
   /**
@@ -43,18 +71,24 @@ export class HiveNotifier {
 
     console.info('Notifying closest beekeeper about Hive ' + hive.id);
 
-    const beekeeperService: BeekeeperService = new BeekeeperService(admin.firestore());
-    beekeeperService.getClosestToHive(hive).then(closestBeekeeper => {
+    this.getClosestToHive(hive).then(closestBeekeeper => {
 
-      // TODO: i18n
-      this.sendMessage(
-        closestBeekeeper,
-        'Neuen Bienenschwarm gefunden!',
-        'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
-        {
-          link: environment.baseUrl + '/hive/' + hive.id
-        }
-      );
+      HiveManager.createOrUpdateClaim(hive, closestBeekeeper)
+        .then(hiveClaim => {
+
+          // TODO: i18n
+          this.sendMessage(
+            closestBeekeeper,
+            'Neuen Bienenschwarm gefunden!',
+            'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
+            {
+              link: environment.baseUrl + '/hive/' + hive.id + '?token=' + hiveClaim.token
+            }
+          );
+        })
+        .catch(error => {
+          console.error('Unable to create Claim due to the following error: ' + error)
+        })
 
     }).catch(err => {
       console.warn('No Beekeepers available for Hive ' + hive.id);

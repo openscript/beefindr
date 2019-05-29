@@ -9,6 +9,7 @@ cache:
   yarn: true
   directories:
     - node_modules
+    - functions/node_modules
 
 before_install:
   - yarn global add firebase-tools
@@ -23,6 +24,7 @@ before_script:
   - chmod +x ./cc-test-reporter
 
 script:
+  - (cd functions && npm run test)
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info; fi'
   - ng build --prod
