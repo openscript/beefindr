@@ -1,6 +1,6 @@
-import {ClaimException} from "../exceptions/claim.exception";
 import * as express from 'express';
-import {ClaimExceptionType} from "../exceptions/claim-status.enum";
+import {ClaimExceptionType} from '../exceptions/claim-status.enum';
+import {ClaimException} from '../exceptions/claim.exception';
 
 
 export class ClaimResponseUtil {
@@ -8,8 +8,6 @@ export class ClaimResponseUtil {
   /**
    * Create a nicely structured response for claim operations.
    * TODO: i18n
-   * @param response
-   * @param exception
    */
   public static createResponseForClaimException(response: express.Response, exception: ClaimException): express.Response {
     switch (exception.exceptionType) {
@@ -34,7 +32,7 @@ export class ClaimResponseUtil {
               verbose: 'This hive has already been claimed!'
             }
           }
-        })
+        });
       }
     }
   }

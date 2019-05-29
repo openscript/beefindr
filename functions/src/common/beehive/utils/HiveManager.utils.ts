@@ -1,14 +1,13 @@
 import * as admin from 'firebase-admin';
+import * as firebase from 'firebase';
 import * as functions from 'firebase-functions';
 import {BeeHive, SerializedBeeHive} from '../../../../../src/app/common/models/beehive.model';
 import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {ClaimExceptionType} from '../../claim/exceptions/claim-status.enum';
+import {ClaimException} from '../../claim/exceptions/claim.exception';
 import {ConfigurationException} from '../exceptions/configuration.exception';
 import {HiveClaim} from '../models/hiveClaim.model';
 import {sha256} from 'js-sha256';
-import {ClaimException} from '../../claim/exceptions/claim.exception';
-import {ClaimExceptionType} from '../../claim/exceptions/claim-status.enum';
-import * as firebase from "firebase";
-import WhereFilterOp = firebase.firestore.WhereFilterOp;
 
 
 /**
@@ -71,7 +70,7 @@ export class HiveManager {
     });
   }
 
-  private static async getSingleHiveClaimForFilter(attr: string, op: WhereFilterOp, value: string | number) {
+  private static async getSingleHiveClaimForFilter(attr: string, op: firebase.firestore.WhereFilterOp, value: string | number) {
 
     return new Promise<HiveClaim>((succ, err) => {
       admin.firestore().collection('beehiveClaim')

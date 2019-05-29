@@ -1,5 +1,5 @@
-import {BeeHive} from "../../../../../src/app/common/models/beehive.model";
-import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
+import {BeeHive} from '../../../../../src/app/common/models/beehive.model';
+import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
 
 
 export class BeekeeperUtils {
@@ -12,7 +12,7 @@ export class BeekeeperUtils {
    * geospatial filtering on Firestore is available or known at this point.
    * Feel free to improve.
    *
-   * @param keepers
+   * @param keepers A list of BeeKeepers from which to select closest to hive
    * @param hive BeeHive for which to find the closests available BeeKeeper
    */
   public static selectClosestToHive(keepers: BeeKeeper[], hive: BeeHive): BeeKeeper | null {

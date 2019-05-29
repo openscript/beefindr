@@ -1,4 +1,5 @@
-import {ClaimExceptionType} from "./claim-status.enum";
+import {ClaimExceptionType} from './claim-status.enum';
+
 
 export class ClaimException extends Error {
 
