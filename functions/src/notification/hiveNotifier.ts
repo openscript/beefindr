@@ -1,9 +1,9 @@
-import * as admin from "firebase-admin";
-import {BeeHive} from "../../../src/app/common/models/beehive.model";
-import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/beekeeper.model";
-import {BeekeeperUtils} from "../common/beekeeper/utils/beekeeper.utils";
-import {Dispatcher} from "./dispatchers/dispatcher.interface";
-import {environment} from "../../../src/environments/environment";
+import * as admin from 'firebase-admin';
+import {BeeHive} from '../../../src/app/common/models/beehive.model';
+import {BeeKeeper, SerializedBeeKeeper} from '../../../src/app/common/models/beekeeper.model';
+import {BeekeeperUtils} from '../common/beekeeper/utils/beekeeper.utils';
+import {Dispatcher} from './dispatchers/dispatcher.interface';
+import {environment} from '../../../src/environments/environment';
 import {HiveManager} from '../common/beehive/utils/HiveManager.utils';
 
 
@@ -30,7 +30,7 @@ export class HiveNotifier {
           const keepers: BeeKeeper[] = [];
 
           for (const serializedKeeper of serializedKeepers.docs) {
-            keepers.push(new BeeKeeper(<SerializedBeeKeeper>{id: serializedKeeper.id, ...serializedKeeper.data()}));
+            keepers.push(new BeeKeeper({id: serializedKeeper.id, ...serializedKeeper.data()} as SerializedBeeKeeper));
           }
 
           const closest = BeekeeperUtils.selectClosestToHive(keepers, hive);
@@ -42,7 +42,7 @@ export class HiveNotifier {
           }
         }
       ).catch(() => {
-        console.error('Failed to get beekeeper list')
+        console.error('Failed to get beekeeper list');
       });
     });
   }
@@ -69,7 +69,7 @@ export class HiveNotifier {
    */
   public notifyClosestBeekeeper(hive: BeeHive): boolean {
 
-    console.info('Notifying closest beekeeper about Hive ' + hive.id);
+    console.log('Notifying closest beekeeper about Hive ' + hive.id);
 
     this.getClosestToHive(hive).then(closestBeekeeper => {
 
@@ -87,10 +87,10 @@ export class HiveNotifier {
           );
         })
         .catch(error => {
-          console.error('Unable to create Claim due to the following error: ' + error)
-        })
+          console.error('Unable to create Claim due to the following error: ' + error);
+        });
 
-    }).catch(err => {
+    }).catch(() => {
       console.warn('No Beekeepers available for Hive ' + hive.id);
       return false;
     });

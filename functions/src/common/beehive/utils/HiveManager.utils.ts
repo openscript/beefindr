@@ -1,12 +1,12 @@
-import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
-import {BeeHive, SerializedBeeHive} from "../../../../../src/app/common/models/beehive.model";
-import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
-import {ConfigurationException} from "../exceptions/configuration.exception";
-import {HiveClaim} from "../models/hiveClaim.model";
-import {sha256} from "js-sha256";
-import {ClaimException} from "../../claim/exceptions/claim.exception";
-import {ClaimExceptionType} from "../../claim/exceptions/claim-status.enum";
+import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import {BeeHive, SerializedBeeHive} from '../../../../../src/app/common/models/beehive.model';
+import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {ConfigurationException} from '../exceptions/configuration.exception';
+import {HiveClaim} from '../models/hiveClaim.model';
+import {sha256} from 'js-sha256';
+import {ClaimException} from '../../claim/exceptions/claim.exception';
+import {ClaimExceptionType} from '../../claim/exceptions/claim-status.enum';
 
 
 /**
@@ -27,7 +27,7 @@ export class HiveManager {
     if (!functions.config().hash || !functions.config().hash.secret_sauce) {
       throw new ConfigurationException('No Secret Sauce configured, cannot generate secure hash. ' +
         'Please make sure you configure the app with ' +
-        '$ firebase functions:config:set hash.secretSauce="my secret sauce"!')
+        '$ firebase functions:config:set hash.secretSauce="my secret sauce"!');
     }
 
     const secretSauce = functions.config().hash.secret_sauce;
@@ -54,7 +54,7 @@ export class HiveManager {
       claim.token = token;
 
       const serialized = {...claim};
-      delete serialized['id'];
+      delete serialized.id;
 
       admin.firestore().collection('beehiveClaim')
         .doc(id)
@@ -62,12 +62,12 @@ export class HiveManager {
           ...serialized
         })
         .then(() => {
-          succ(claim)
+          succ(claim);
         })
         .catch(error => {
           err(error);
-        })
-    })
+        });
+    });
   }
 
   /**
@@ -82,24 +82,24 @@ export class HiveManager {
     return new Promise((succ, err) => {
       const now = new Date();
 
-      const claim = <HiveClaim>{
+      const claim = {
         created: now,
         updated: now,
         claimed: false,
         hiveUid: forHive.id,
         keeperUid: forKeeper.id,
-        token: token
-      };
+        token
+      } as HiveClaim;
 
       admin.firestore().collection('beehiveClaim').add({
         ...claim
       })
         .then(() => {
-          succ(claim)
+          succ(claim);
         })
         .catch(error => {
-          err(error)
-        })
+          err(error);
+        });
     });
   }
 
@@ -122,19 +122,19 @@ export class HiveManager {
 
           if (snapshots.docs.length === 1) {
             snapshots.forEach(snapshot => {
-              succ(<HiveClaim>{
+              succ({
                 id: snapshot.id,
                 ...snapshot.data()
-              });
+              } as HiveClaim);
             });
           } else {
-            succ(null)
+            succ(null);
           }
         })
         .catch(error => {
-          err(error)
+          err(error);
         });
-    })
+    });
   }
 
   /**
@@ -156,19 +156,19 @@ export class HiveManager {
 
           if (snapshots.docs.length === 1) {
             snapshots.forEach(snapshot => {
-              succ(<HiveClaim>{
+              succ({
                 id: snapshot.id,
                 ...snapshot.data()
-              });
+              } as HiveClaim);
             });
           } else {
-            succ(null)
+            succ(null);
           }
         })
         .catch(error => {
-          err(error)
+          err(error);
         });
-    })
+    });
   }
 
   /**
@@ -181,7 +181,7 @@ export class HiveManager {
 
     return new Promise((succ, err) => {
 
-      let token: string = '';
+      let token = '';
 
       try {
         token = HiveManager.generateClaimToken(forHive, forKeeper);
@@ -198,25 +198,25 @@ export class HiveManager {
             })
             .catch(updateError => {
               err(updateError);
-            })
+            });
         } else {
           this.createClaim(token, forHive, forKeeper)
             .then(createdClaim => {
-              succ(createdClaim)
+              succ(createdClaim);
             })
             .catch(createError => {
               err(createError);
-            })
+            });
         }
       }).catch(error => {
-        err(error)
-      })
+        err(error);
+      });
     });
   }
 
   /**
    * Assigns a given beehive to the BeeKeeper
-   * @param token
+   * @param token Token of claim to the hive
    */
   public static claimHive(token: string): Promise<void> {
 
@@ -241,21 +241,21 @@ export class HiveManager {
               ...claim
             });
 
-            succ()
+            succ();
 
           } else {
-            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN))
+            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN));
           }
         })
         .catch(error => {
           throw error;
         });
-    })
+    });
   }
 
   /**
    * Notifies the next BeeKeeper in line.
-   * @param token
+   * @param token Token of claim to the hive
    */
   public static async declineHive(token: string): Promise<BeeHive> {
 
@@ -283,7 +283,7 @@ export class HiveManager {
               });
 
           } else {
-            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN))
+            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN));
           }
         })
         .catch(error => {
