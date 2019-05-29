@@ -22,7 +22,7 @@ export class LoginUserComponent implements OnInit {
   submitted = false;
   hide = true;
 
-  @ViewChild('namefocus') nameInput: MatInput;
+  @ViewChild('namefocus', { static: true }) nameInput: MatInput;
 
   constructor(private formBuilder: FormBuilder,
               private beeKeeperService: InjectableBeekeeperService, public snackBar: MatSnackBar,

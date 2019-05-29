@@ -21,7 +21,7 @@ export class RegisterUserComponent implements OnInit {
   submitted = false;
   hide = true;
 
-  @ViewChild('namefocus') nameInput: MatInput;
+  @ViewChild('namefocus', { static: true }) nameInput: MatInput;
 
   constructor(private formBuilder: FormBuilder,
               private beeKeeperService: InjectableBeekeeperService, private authService: AuthService,
