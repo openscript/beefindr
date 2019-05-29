@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotifyService } from '../../common/services/notify.service';
 import { Subscription } from 'rxjs';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-notification-message',
