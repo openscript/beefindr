@@ -5,34 +5,33 @@ import {ClaimException} from '../exceptions/claim.exception';
 
 export class ClaimResponseUtil {
 
+  private static getResponseDetailsForExceptionType(exceptionType: ClaimExceptionType): { code: number, verbose: string } {
+    switch (exceptionType) {
+      case ClaimExceptionType.ALREADY_CLAIMED: {
+        return {code: 410, verbose: 'This hive has already been claimed!'};
+      }
+      case ClaimExceptionType.INVALID_CLAIM_TOKEN: {
+        return {code: 400, verbose: 'Invalid token!'};
+      }
+      default: {
+        return {code: 500, verbose: 'Unknown Server Error'};
+      }
+    }
+  }
+
   /**
    * Create a nicely structured response for claim operations.
    */
   public static createResponseForClaimException(response: express.Response, exception: ClaimException): express.Response {
-    switch (exception.exceptionType) {
-      case ClaimExceptionType.CLAIM_FULFILLED: {
-        return response.status(200);
+
+    const details = ClaimResponseUtil.getResponseDetailsForExceptionType(exception.exceptionType);
+    return response.status(details.code).json({
+      data: {
+        details: {
+          code: exception.exceptionType,
+          verbose: details.verbose
+        }
       }
-      case ClaimExceptionType.INVALID_CLAIM_TOKEN: {
-        return response.status(400).json({
-          data: {
-            details: {
-              code: exception.exceptionType,
-              verbose: 'Invalid token!'
-            }
-          }
-        });
-      }
-      case ClaimExceptionType.ALREADY_CLAIMED: {
-        return response.status(410).json({
-          data: {
-            details: {
-              code: exception.exceptionType,
-              verbose: 'This hive has already been claimed!'
-            }
-          }
-        });
-      }
-    }
+    });
   }
 }
