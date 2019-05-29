@@ -3,12 +3,13 @@ import {LocationBasedModel, SerializedLocationBaseModel} from './location-based.
 
 
 export interface SerializedBeeHive extends SerializedLocationBaseModel {
+  assignedBeekeeperUID?: string;
   declinedBeekeeperUIDs?: string[];
 }
 
 export class BeeHive extends LocationBasedModel {
 
-  // private assignedBeekeeperUID = '';
+  private assignedBeekeeperUID = '';
   private declinedBeekeeperUIDs: string[] = [];
 
   /**
@@ -24,7 +25,23 @@ export class BeeHive extends LocationBasedModel {
     this.inflate(data);
   }
 
+  public isAssignedToKeeper(keeper: BeeKeeper) {
+    return this.assignedBeekeeperUID === keeper.id;
+  }
+
   public wasDeclinedByKeeper(keeper: BeeKeeper) {
     return this.declinedBeekeeperUIDs.indexOf(keeper.id) >= 0;
   }
+
+  public declineBeekeeperUID(keeperUID: string) {
+    if (this.declinedBeekeeperUIDs.indexOf(keeperUID) < 0) {
+      this.declinedBeekeeperUIDs.push(keeperUID);
+    }
+  }
+
+  public assignBeekeeperUID(keeperUID: string) {
+    this.assignedBeekeeperUID = keeperUID;
+  }
+
+
 }

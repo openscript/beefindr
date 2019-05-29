@@ -1,0 +1,5 @@
+export enum ClaimExceptionType {
+  ALREADY_CLAIMED = 'ALREADY_CLAIMED',
+  INVALID_CLAIM_TOKEN = 'INVALID_CLAIM_TOKEN'
+
+}
