@@ -5,7 +5,7 @@ import * as functions from 'firebase-functions';
 /**
  * Wraps the inner function into a cors
  */
-export const CORSSwitchDecorator = (req: functions.https.Request, res: express.Response, inner: CallableFunction) => {
+export const corsSwitchDecorator = (req: functions.https.Request, res: express.Response, inner: CallableFunction) => {
 
   if (functions.config().cors && functions.config().cors.enabled) {
 

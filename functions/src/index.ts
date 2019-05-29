@@ -1,9 +1,10 @@
 import * as admin from 'firebase-admin';
+import * as express from 'express';
 import * as functions from 'firebase-functions';
 import {BeeHive, SerializedBeeHive} from '../../src/app/common/models/beehive.model';
 import {ClaimException} from './common/claim/exceptions/claim.exception';
 import {ClaimResponseUtil} from './common/claim/utils/claim-response.utils';
-import {CORSSwitchDecorator} from './common/cors/cors.decorator';
+import {corsSwitchDecorator} from './common/cors/cors.decorator';
 import {HiveManager} from './common/beehive/utils/HiveManager.utils';
 import {HiveNotifier} from './notification/hiveNotifier';
 import {LogDispatcher} from './notification/dispatchers/log/log.dispatcher';
@@ -28,31 +29,38 @@ export const handleNewBeehive = functions.firestore.document('beehive/{uid}').on
 });
 
 
+const getToken = (req: functions.https.Request, res: express.Response) => {
+
+  const token = req.query.token;
+
+  if (!token) {
+    res.status(400).send('No hive token provided or unable to parse token!');
+    return null;
+  }
+  return token;
+};
+
 /**
  * Fulfills the claim on a beehive by a BeeKeeper.
  * A beehive-token is required to have access to the beehive.
  */
 export const claimBeehive = functions.https.onRequest(async (req, res) => {
 
-  CORSSwitchDecorator(req, res, async () => {
-    const token = req.query.token;
+  corsSwitchDecorator(req, res, async () => {
+    const token = getToken(req, res);
 
-    if (!token) {
-      res.status(400).send('No hive token provided or unable to parse token!');
-      return;
-    }
-
-    try {
-      await HiveManager.claimHive(token);
-    } catch (e) {
-      if (e instanceof ClaimException) {
-        ClaimResponseUtil.createResponseForClaimException(res, e).send();
-      } else {
-        res.status(500).send(e);
+    if (token) {
+      try {
+        await HiveManager.claimHive(token);
+        res.status(200).send({data: {}});
+      } catch (e) {
+        if (e instanceof ClaimException) {
+          ClaimResponseUtil.createResponseForClaimException(res, e).send();
+        } else {
+          res.status(500).send(e);
+        }
       }
-      return;
     }
-    res.status(200).send({data: {}});
   });
 });
 
@@ -64,27 +72,23 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
  */
 export const declineBeehive = functions.https.onRequest(async (req, res) => {
 
-  CORSSwitchDecorator(req, res, async () => {
+  corsSwitchDecorator(req, res, async () => {
 
-    const token = req.query.token;
+    const token = getToken(req, res);
 
-    if (!token) {
-      res.status(400).send('No hive token provided or unable to parse token!');
-      return;
-    }
-
-    try {
-      const hive: BeeHive = await HiveManager.declineHive(token);
-      const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-      notifier.notifyClosestBeekeeper(hive);
-    } catch (e) {
-      if (e instanceof ClaimException) {
-        ClaimResponseUtil.createResponseForClaimException(res, e).send();
-      } else {
-        res.status(500).send(e);
+    if (token) {
+      try {
+        const hive: BeeHive = await HiveManager.declineHive(token);
+        const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
+        notifier.notifyClosestBeekeeper(hive);
+        res.status(200).send({data: {}});
+      } catch (e) {
+        if (e instanceof ClaimException) {
+          ClaimResponseUtil.createResponseForClaimException(res, e).send();
+        } else {
+          res.status(500).send(e);
+        }
       }
-      return;
     }
-    res.status(200).send({data: {}});
   });
 });
