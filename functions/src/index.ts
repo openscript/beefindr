@@ -4,7 +4,6 @@ import * as functions from 'firebase-functions';
 import {BeeHive, SerializedBeeHive} from '../../src/app/common/models/beehive.model';
 import {ClaimException} from './common/claim/exceptions/claim.exception';
 import {ClaimResponseUtil} from './common/claim/utils/claim-response.utils';
-import {corsSwitchDecorator} from './common/cors/cors.decorator';
 import {HiveManager} from './common/beehive/utils/HiveManager.utils';
 import {HiveNotifier} from './notification/hiveNotifier';
 import {LogDispatcher} from './notification/dispatchers/log/log.dispatcher';
@@ -18,6 +17,7 @@ import {MessagingDispatcher} from './notification/dispatchers/firebase-cloud-mes
 
 admin.initializeApp();
 
+const cors = require('cors')({origin: ['https://beefindr.firebaseapp.com']});
 
 /**
  * Triggered by Firestore onCreate-event, when a new BeeHive instance is created.
@@ -46,7 +46,7 @@ const getToken = (req: functions.https.Request, res: express.Response) => {
  */
 export const claimBeehive = functions.https.onRequest(async (req, res) => {
 
-  corsSwitchDecorator(req, res, async () => {
+  cors(req, res, async () => {
     const token = getToken(req, res);
 
     if (token) {
@@ -72,8 +72,7 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
  */
 export const declineBeehive = functions.https.onRequest(async (req, res) => {
 
-  corsSwitchDecorator(req, res, async () => {
-
+  cors(req, res, async () => {
     const token = getToken(req, res);
 
     if (token) {

@@ -1,6 +1,6 @@
-import * as admin from "firebase-admin";
-import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
-import {Dispatcher} from "../dispatcher.interface";
+import * as admin from 'firebase-admin';
+import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {Dispatcher} from '../dispatcher.interface';
 
 
 /**
@@ -19,14 +19,14 @@ export class MessagingDispatcher implements Dispatcher {
         {
           notification: {
             title: subject,
-            body: body,
+            body,
           },
           data: extraPayload
         }).then(() => {
         console.log('Cloud message sent');
       }).catch(err => {
         console.error(err);
-      })
+      });
     }
   }
 }
