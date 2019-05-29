@@ -13,7 +13,7 @@ export const appRoutes: Routes = [
   { path: 'hive/add', component: AddHiveComponent},
   { path: 'hive/:uid', component: ShowHiveComponent},
   { path: 'user/add', component: RegisterUserComponent},
-  { path: 'login-user', component: LoginUserComponent },
+  { path: 'user/login', component: LoginUserComponent },
   { path: 'dashboard-beekeeper', component: DashboardBeekeeperComponent, canActivate: [AuthGuard]},
   { path: 'hello-world', component: HelloWorldComponent }
 ];

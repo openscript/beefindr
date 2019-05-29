@@ -5,6 +5,6 @@
   <mat-card-content>
     <a [routerLink]="['hive', 'add']"><button mat-stroked-button color='primary'>Bienenschwarm melden</button></a>
     <a [routerLink]="['user', 'add']"><button mat-stroked-button color='primary'>Als Imker registrieren</button></a>
-    <a routerLink='/login-user'><button mat-stroked-button color='primary'>Als Imker einloggen</button></a>
+    <a [routerLink]="['user', 'login']"><button mat-stroked-button color='primary'>Als Imker einloggen</button></a>
   </mat-card-content>
 </app-card-container>
