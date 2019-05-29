@@ -28,8 +28,6 @@ export class MessagingService {
 
   /**
    * request permission for notification from firebase cloud messaging
-   *
-   * @param forBeekeeper
    */
   requestPermission(forBeekeeper: BeeKeeper) {
     this.angularFireMessaging.requestToken.subscribe(

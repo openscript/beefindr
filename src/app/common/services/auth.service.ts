@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { firebase } from '@firebase/app';
 import { auth } from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {
@@ -9,9 +7,8 @@ import {
   AngularFirestoreDocument
 } from '@angular/fire/firestore';
 import { NotifyService } from './notify.service';
-
 import { Observable, of } from 'rxjs';
-import { switchMap, startWith, tap, filter } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 interface User {
   uid: string;
