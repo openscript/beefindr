@@ -1,4 +1,4 @@
-import {BeeKeeper} from "../../../../src/app/common/models/beekeeper.model";
+import {BeeKeeper} from '../../../../src/app/common/models/beekeeper.model';
 
 
 /**

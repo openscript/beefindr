@@ -3,7 +3,7 @@ import {BeeHive} from '../../../src/app/common/models/beehive.model';
 import {BeeKeeper, SerializedBeeKeeper} from '../../../src/app/common/models/beekeeper.model';
 import {BeekeeperUtils} from '../common/beekeeper/utils/beekeeper.utils';
 import {Dispatcher} from './dispatchers/dispatcher.interface';
-import {environment} from '../../../src/environments/environment';
+import {environment} from '../../../src/environments/environment.prod';
 import {HiveManager} from '../common/beehive/utils/HiveManager.utils';
 
 

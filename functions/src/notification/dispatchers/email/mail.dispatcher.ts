@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as nodemailer from 'nodemailer';
-import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
-import {Dispatcher} from "../dispatcher.interface";
-import {MailConfigurationException} from "./exceptions/mail-configuration.exception";
+import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {Dispatcher} from '../dispatcher.interface';
+import {MailConfigurationException} from './exceptions/mail-configuration.exception';
 
 
 /**
@@ -12,7 +12,8 @@ import {MailConfigurationException} from "./exceptions/mail-configuration.except
  *
  * IMPORTANT NOTE: In order to send emails from a firebase hosting,
  * make sure you use a Gmail account, as only Google-owned services are allowed to be contacted
- * within the free 'spark' plan. See https://stackoverflow.com/questions/53562234/sending-e-mail-through-firebase-functions/53565992#53565992
+ * within the free 'spark' plan.
+ * See https://stackoverflow.com/questions/53562234/sending-e-mail-through-firebase-functions/53565992#53565992
  */
 export class MailDispatcher implements Dispatcher {
 
@@ -38,7 +39,7 @@ export class MailDispatcher implements Dispatcher {
         user: emailAddress,
         pass: emailPassword
       }
-    }
+    };
   }
 
   private static renderExtraPayload(message: string, extraPayload: any): string {
@@ -46,8 +47,7 @@ export class MailDispatcher implements Dispatcher {
     let rendered = message;
     if (extraPayload.hasOwnProperty('link')) {
       rendered += '\n\n';
-      rendered += extraPayload.link
-
+      rendered += extraPayload.link;
     }
 
     return rendered;
@@ -68,11 +68,11 @@ export class MailDispatcher implements Dispatcher {
 
     transport.sendMail({
       from: transportInfo.auth.user,
-      to: to,
-      subject: subject,
-      text: text
+      to,
+      subject,
+      text,
     }).then(() => {
-      console.info('Email with subject ' + subject + ' successfully sent to ' + to);
+      console.log('Email with subject ' + subject + ' successfully sent to ' + to);
     }).catch((err) => {
       console.error(err);
     });
@@ -81,11 +81,11 @@ export class MailDispatcher implements Dispatcher {
   public dispatchMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload?: any) {
 
     if (recipient.getEmail()) {
-      this.sendMail(recipient.getEmail(), subject, MailDispatcher.renderExtraPayload(body, extraPayload))
+      this.sendMail(recipient.getEmail(), subject, MailDispatcher.renderExtraPayload(body, extraPayload));
     } else {
       console.warn(
         'Unable to send email notification to BeeKeeper ' + recipient.id + '. No email address stored.'
-      )
+      );
     }
   }
 }

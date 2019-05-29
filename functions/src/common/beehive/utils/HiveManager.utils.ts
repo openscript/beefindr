@@ -199,11 +199,11 @@ export class HiveManager {
             claim.claimed = true;
             claim.updated = new Date();
 
-            void admin.firestore().collection('beehive').doc(claim.hiveUid).set({
+            void admin.firestore().collection('beehive').doc(claim.hiveUid).update({
               assignedBeekeeperUID: claim.keeperUid
             });
 
-            void admin.firestore().collection('beehiveClaim').doc(claim.id).set({
+            void admin.firestore().collection('beehiveClaim').doc(claim.id).update({
               ...claim
             });
 
@@ -240,7 +240,7 @@ export class HiveManager {
                 } as SerializedBeeHive);
 
                 hive.declineBeekeeperUID(claim.keeperUid);
-                void admin.firestore().collection('beehive').doc(claim.hiveUid).set(
+                void admin.firestore().collection('beehive').doc(claim.hiveUid).update(
                   hive.deflate()
                 );
 
