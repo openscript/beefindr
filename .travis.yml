@@ -17,14 +17,14 @@ before_install:
     
 install:
   - yarn install
-  - (cd functions  && nvm exec 8 npm install)
+  - (cd functions  && nvm exec 8 yarn install)
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
 
 script:
-  - (cd functions && nvm exec 8 npm run test)
+  - (cd functions && nvm exec 8 yarn run test)
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov functions/coverage/lcov.info -o coverage/codeclimate-functions.json; fi'
   - ng test --watch=false --browsers ChromeHeadless --code-coverage
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./cc-test-reporter format-coverage -t lcov coverage/beefinder/lcov.info -o coverage/codeclimate-app.json; fi'
