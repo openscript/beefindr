@@ -6,7 +6,7 @@ import {
   InjectableBeekeeperService,
   InjectableMessagingService
 } from '../../common/services/injectable-services.service';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 
 

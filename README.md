@@ -24,7 +24,7 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 1. Set up development environment
    * Install [Visual Studio Code](https://code.visualstudio.com/)
    * Install [NodeJS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) ([preferably with asdf](#asdf))
-     * NodeJS version `11.15.0` for the Angular app
+     * NodeJS version `12.3.1` for the Angular app
      * NodeJS version `8.15.0` for the Firebase functions
    * Install Angular CLI globally <br> `yarn global add @angular/cli`
 1. Change to the workspace <br> for example with `cd`

@@ -5,7 +5,7 @@ import { BeeKeeper } from '../../common/models/beekeeper.model';
 import { InjectableBeekeeperService } from '../../common/services/injectable-services.service';
 import { MatInput } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../common/services/auth.service';
 import { NotifyService } from '../../common/services/notify.service';
 
@@ -22,7 +22,7 @@ export class LoginUserComponent implements OnInit {
   submitted = false;
   hide = true;
 
-  @ViewChild('namefocus') nameInput: MatInput;
+  @ViewChild('namefocus', { static: true }) nameInput: MatInput;
 
   constructor(private formBuilder: FormBuilder,
               private beeKeeperService: InjectableBeekeeperService, public snackBar: MatSnackBar,
