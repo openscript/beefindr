@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import {BeeHive} from "../../src/app/common/models/beehive.model";
-import {BeekeeperUtils} from "../src/utils/beekeeper.utils";
+import {BeekeeperUtils} from "../src/common/beekeeper/utils/beekeeper.utils";
 import {BeeKeeper} from "../../src/app/common/models/beekeeper.model";
 
 

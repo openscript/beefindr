@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 import {BeeHive} from "../../../src/app/common/models/beehive.model";
 import {BeeKeeper, SerializedBeeKeeper} from "../../../src/app/common/models/beekeeper.model";
-import {BeekeeperUtils} from "../utils/beekeeper.utils";
+import {BeekeeperUtils} from "../common/beekeeper/utils/beekeeper.utils";
 import {Dispatcher} from "./dispatchers/dispatcher.interface";
 import {environment} from "../../../src/environments/environment";
 import {HiveManager} from "../common/hive/utils/HiveManager.utils";

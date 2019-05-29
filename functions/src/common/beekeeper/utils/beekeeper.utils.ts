@@ -1,5 +1,5 @@
-import {BeeHive} from "../../../src/app/common/models/beehive.model";
-import {BeeKeeper} from "../../../src/app/common/models/beekeeper.model";
+import {BeeHive} from "../../../../../src/app/common/models/beehive.model";
+import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
 
 
 export class BeekeeperUtils {

@@ -1,16 +1,21 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import {BeeHive} from "../../../../../src/app/common/models/beehive.model";
+import {BeeHive, SerializedBeeHive} from "../../../../../src/app/common/models/beehive.model";
 import {BeeKeeper} from "../../../../../src/app/common/models/beekeeper.model";
 import {ConfigurationException} from "../exceptions/configuration.exception";
 import {HiveClaim} from "../models/hiveClaim.model";
 import {sha256} from "js-sha256";
 
 
+/**
+ * Manages incoming claim/decline requests.
+ * If a beehive is claimed, it will be updated with the BeeKeepers id.
+ * If a beehive is declined, the next BeeKeeper will be notified and offered the beehive.
+ */
 export class HiveManager {
 
   /**
-   * Generates a sha256 hash using a secret, a hive id and a beekeeper id.
+   * Generates a sha256 hash using a secret, a beehive id and a beekeeper id.
    *
    * @param forHive Hive of which to use id for hash
    * @param forKeeper Beekeeper of which to use id for hash
@@ -131,6 +136,40 @@ export class HiveManager {
   }
 
   /**
+   * Checks if a HiveClaim for a given BeeHive already exists and returns it if this is the case.
+   * Returns null if not Claim exists.
+   *
+   * @param token Token for which to find claim
+   */
+  private static getClaimForTokenIfExists(token: string): Promise<HiveClaim | null> {
+
+    return new Promise((succ, err) => {
+      admin.firestore().collection('beehiveClaim')
+        .where('token', '==', token)
+        .get()
+        .then(snapshots => {
+          if (snapshots.docs.length > 1) {
+            err('Encountered more than one claim for hive with token ' + token + ', cannot continue.');
+          }
+
+          if (snapshots.docs.length === 1) {
+            snapshots.forEach(snapshot => {
+              succ(<HiveClaim>{
+                id: snapshot.id,
+                ...snapshot.data()
+              });
+            });
+          } else {
+            succ(null)
+          }
+        })
+        .catch(error => {
+          err(error)
+        });
+    })
+  }
+
+  /**
    * Creates or updates a HiveClaim for a given BeeHive and a given BeeKeeper.
    *
    * @param forHive Hive for which to create or update claim
@@ -152,14 +191,99 @@ export class HiveManager {
       HiveManager.getClaimForHiveIfExists(forHive).then(hiveClaim => {
         if (hiveClaim) {
           HiveManager.updateClaim(hiveClaim, token, forHive, forKeeper)
-            .then(updatedClaim => {succ(updatedClaim);})
-            .catch(updateError => {err(updateError);})
+            .then(updatedClaim => {
+              succ(updatedClaim);
+            })
+            .catch(updateError => {
+              err(updateError);
+            })
         } else {
           this.createClaim(token, forHive, forKeeper)
-            .then(createdClaim => {succ(createdClaim)})
-            .catch(createError => {err(createError);})
+            .then(createdClaim => {
+              succ(createdClaim)
+            })
+            .catch(createError => {
+              err(createError);
+            })
         }
-      }).catch(error => {err(error)})
+      }).catch(error => {
+        err(error)
+      })
+    });
+  }
+
+  /**
+   * Assigns a given beehive to the BeeKeeper
+   * @param token
+   */
+  public static claimHive(token: string): Promise<void> {
+
+    return new Promise<void>((succ, err) => {
+      HiveManager.getClaimForTokenIfExists(token)
+        .then(claim => {
+          if (claim) {
+
+            if (claim.claimed) {
+              err('Hive has already been claimed!');
+              return;
+            }
+
+            claim.claimed = true;
+            claim.updated = new Date();
+
+            void admin.firestore().collection('beehive').doc(claim.hiveUid).set({
+              assignedBeekeeperUID: claim.keeperUid
+            });
+
+            void admin.firestore().collection('beehiveClaim').doc(claim.id).set({
+              ...claim
+            });
+
+            succ()
+
+          } else {
+            err('Claim token ' + token + ' is invalid!')
+          }
+        })
+        .catch(error => {
+          throw error;
+        });
+    })
+  }
+
+  /**
+   * Notifies the next BeeKeeper in line.
+   * @param token
+   */
+  public static async declineHive(token: string): Promise<BeeHive> {
+
+    return new Promise<BeeHive>((succ, err) => {
+
+      HiveManager.getClaimForTokenIfExists(token)
+        .then(claim => {
+          if (claim) {
+
+            void admin.firestore().collection('beehive').doc(claim.hiveUid).get()
+              .then(hiveData => {
+
+                const hive: BeeHive = new BeeHive({
+                  id: hiveData.id,
+                  ...hiveData.data()
+                } as SerializedBeeHive);
+
+                hive.declineBeekeeperUID(claim.keeperUid);
+
+                succ(hive);
+
+              });
+
+          } else {
+            err('Claim token ' + token + ' is invalid!')
+          }
+        })
+        .catch(error => {
+          throw error;
+        });
     });
   }
 }

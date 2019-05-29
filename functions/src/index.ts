@@ -1,11 +1,11 @@
 import * as admin from "firebase-admin";
 import * as functions from 'firebase-functions';
 import {BeeHive, SerializedBeeHive} from "../../src/app/common/models/beehive.model";
+import {HiveManager} from "./common/beehive/utils/HiveManager.utils";
 import {HiveNotifier} from "./notification/hiveNotifier";
 import {LogDispatcher} from "./notification/dispatchers/log/log.dispatcher";
 import {MailDispatcher} from "./notification/dispatchers/email/mail.dispatcher";
 import {MessagingDispatcher} from "./notification/dispatchers/firebase-cloud-messaging/messaging.dispatcher";
-import {HiveManager} from "./beehive/hiveManager";
 
 
 // // Start writing Firebase Functions
@@ -13,18 +13,20 @@ import {HiveManager} from "./beehive/hiveManager";
 
 admin.initializeApp();
 
+
 /**
  * Triggered by Firestore onCreate-event, when a new BeeHive instance is created.
- * Creates a new HiveNotifier and notifies the BeeKeeper closest to the hive.
+ * Creates a new HiveNotifier and notifies the BeeKeeper closest to the beehive.
  */
 export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
   const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
   return notifier.notifyClosestBeekeeper(new BeeHive((<SerializedBeeHive>{id: snap.id, ...snap.data()})));
 });
 
+
 /**
- * Fulfills the claim on a hive by a BeeKeeper.
- * A hive-token is required to have access to the hive.
+ * Fulfills the claim on a beehive by a BeeKeeper.
+ * A beehive-token is required to have access to the beehive.
  */
 export const claimBeehive = functions.https.onRequest(async (req, res) => {
 
@@ -36,7 +38,7 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
     }
 
     try {
-      (new HiveManager).claimHive(token);
+      await HiveManager.claimHive(token);
     } catch (e) {
       res.status(400).send(e);
     }
@@ -44,9 +46,11 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
   }
 );
 
+
 /**
- * Fulfills the claim on a hive by a BeeKeeper.
- * A hive-token is required to have access to the hive.
+ * Waives claim for a given hive and keeper.
+ * Updates the claim and notifies the next keeper in line (if available), otherwise dies silently.
+ * A beehive-token is required to have access to the beehive.
  */
 export const declineBeehive = functions.https.onRequest(async (req, res) => {
 
@@ -58,7 +62,12 @@ export const declineBeehive = functions.https.onRequest(async (req, res) => {
     }
 
     try {
-      (new HiveManager).declineHive(token);
+
+      const hive: BeeHive = await HiveManager.declineHive(token);
+
+      const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
+      notifier.notifyClosestBeekeeper(hive);
+
     } catch (e) {
       res.status(400).send(e);
     }
