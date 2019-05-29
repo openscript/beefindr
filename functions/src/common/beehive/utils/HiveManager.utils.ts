@@ -7,6 +7,8 @@ import {HiveClaim} from '../models/hiveClaim.model';
 import {sha256} from 'js-sha256';
 import {ClaimException} from '../../claim/exceptions/claim.exception';
 import {ClaimExceptionType} from '../../claim/exceptions/claim-status.enum';
+import * as firebase from "firebase";
+import WhereFilterOp = firebase.firestore.WhereFilterOp;
 
 
 /**
@@ -69,6 +71,29 @@ export class HiveManager {
     });
   }
 
+  private static async getSingleHiveClaimForFilter(attr: string, op: WhereFilterOp, value: string | number) {
+
+    return new Promise<HiveClaim>((succ, err) => {
+      admin.firestore().collection('beehiveClaim')
+        .where(attr, op, value)
+        .get()
+        .then(snapshots => {
+          if (snapshots.docs.length > 1) {
+            err('Encountered more than one hive claim for filter query, cannot continue.');
+          }
+
+          if (snapshots.docs.length === 1) {
+            succ({
+              id: snapshots.docs[0].id,
+              ...snapshots.docs[0].data()
+            } as HiveClaim);
+          } else {
+            succ(undefined);
+          }
+        });
+    });
+  }
+
   /**
    * Creates a new claim for a given BeeHive and a given BeeKeeper.
    *
@@ -108,32 +133,8 @@ export class HiveManager {
    *
    * @param forHive BeeHive for which to find an existing Claim
    */
-  private static getClaimForHiveIfExists(forHive: BeeHive): Promise<HiveClaim | null> {
-
-    return new Promise((succ, err) => {
-      admin.firestore().collection('beehiveClaim')
-        .where('hiveUid', '==', forHive.id)
-        .get()
-        .then(snapshots => {
-          if (snapshots.docs.length > 1) {
-            err('Encountered more than one claim for hive ' + forHive.id + ', cannot continue.');
-          }
-
-          if (snapshots.docs.length === 1) {
-            snapshots.forEach(snapshot => {
-              succ({
-                id: snapshot.id,
-                ...snapshot.data()
-              } as HiveClaim);
-            });
-          } else {
-            succ(null);
-          }
-        })
-        .catch(error => {
-          err(error);
-        });
-    });
+  private static getClaimForHiveIfExists(forHive: BeeHive): Promise<HiveClaim> {
+    return HiveManager.getSingleHiveClaimForFilter('hiveUid', '==', forHive.id);
   }
 
   /**
@@ -143,31 +144,7 @@ export class HiveManager {
    * @param token Token for which to find claim
    */
   private static getClaimForTokenIfExists(token: string): Promise<HiveClaim | null> {
-
-    return new Promise((succ, err) => {
-      admin.firestore().collection('beehiveClaim')
-        .where('token', '==', token)
-        .get()
-        .then(snapshots => {
-          if (snapshots.docs.length > 1) {
-            err('Encountered more than one claim for hive with token ' + token + ', cannot continue.');
-          }
-
-          if (snapshots.docs.length === 1) {
-            snapshots.forEach(snapshot => {
-              succ({
-                id: snapshot.id,
-                ...snapshot.data()
-              } as HiveClaim);
-            });
-          } else {
-            succ(null);
-          }
-        })
-        .catch(error => {
-          err(error);
-        });
-    });
+    return HiveManager.getSingleHiveClaimForFilter('token', '==', token);
   }
 
   /**
