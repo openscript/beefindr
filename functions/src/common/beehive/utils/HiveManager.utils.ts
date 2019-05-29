@@ -31,7 +31,6 @@ export class HiveManager {
     }
 
     const secretSauce = functions.config().hash.secret_sauce;
-
     return sha256.hex(secretSauce + forHive.id + forKeeper.id);
   }
 
@@ -178,7 +177,6 @@ export class HiveManager {
    * @param forKeeper Keeper for which to create or update claim
    */
   public static createOrUpdateClaim(forHive: BeeHive, forKeeper: BeeKeeper): Promise<HiveClaim> {
-
     return new Promise((succ, err) => {
 
       let token = '';
@@ -190,23 +188,15 @@ export class HiveManager {
         return;
       }
 
-      HiveManager.getClaimForHiveIfExists(forHive).then(hiveClaim => {
-        if (hiveClaim) {
-          HiveManager.updateClaim(hiveClaim, token, forHive, forKeeper)
-            .then(updatedClaim => {
-              succ(updatedClaim);
-            })
-            .catch(updateError => {
-              err(updateError);
-            });
-        } else {
-          this.createClaim(token, forHive, forKeeper)
-            .then(createdClaim => {
-              succ(createdClaim);
-            })
-            .catch(createError => {
-              err(createError);
-            });
+      HiveManager.getClaimForHiveIfExists(forHive).then(async hiveClaim => {
+        try {
+          if (hiveClaim) {
+            succ(await HiveManager.updateClaim(hiveClaim, token, forHive, forKeeper));
+          } else {
+            succ(await HiveManager.createClaim(token, forHive, forKeeper));
+          }
+        } catch (e) {
+          err(e);
         }
       }).catch(error => {
         err(error);
