@@ -7,7 +7,6 @@ export class ClaimResponseUtil {
 
   /**
    * Create a nicely structured response for claim operations.
-   * TODO: i18n
    */
   public static createResponseForClaimException(response: express.Response, exception: ClaimException): express.Response {
     switch (exception.exceptionType) {

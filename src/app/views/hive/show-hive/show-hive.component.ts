@@ -34,8 +34,6 @@ export class ShowHiveComponent implements OnInit {
    * the user if the claim has not been fulfilled yet.
    */
   private loadClaim() {
-
-    // TODO: Use auth service to determine if we have a user/beekeeper
     this.route.queryParams.subscribe(queryParams => {
       if (queryParams.hasOwnProperty('token')) {
         this.hiveClaimPersistence.getClaimForToken(queryParams.token)
@@ -53,20 +51,14 @@ export class ShowHiveComponent implements OnInit {
    */
   public claimHive(claim: boolean) {
     if (this.claim) {
-
-      // TODO: Add some busy indicator
       firebase.functions().httpsCallable((claim ? 'claimBeehive' : 'declineBeehive') + '?token=' + this.claim.token)({
         token: this.claim.token
       })
         .then(result => {
-
-          // TODO: Handle this more nicely
           alert('Hive ' + (claim ? 'claimed' : 'declined'));
           this.claim = null;
         })
         .catch((error: HttpsError) => {
-
-          // TODO: Enhance error handling using ClaimException
           console.error(error.details);
         });
     }
