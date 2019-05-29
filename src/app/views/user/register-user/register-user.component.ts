@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { BeeKeeper } from '../../common/models/beekeeper.model';
-import { InjectableBeekeeperService } from '../../common/services/injectable-services.service';
+import { BeeKeeper } from '../../../common/models/beekeeper.model';
+import { InjectableBeekeeperService } from '../../../common/services/injectable-services.service';
 import { MatInput } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from '../../common/services/auth.service';
-import { NotifyService } from '../../common/services/notify.service';
+import { AuthService } from '../../../common/services/auth.service';
+import { NotifyService } from '../../../common/services/notify.service';
 
 @Component({
   selector: 'app-register-user',
