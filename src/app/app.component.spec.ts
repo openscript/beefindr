@@ -1,7 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { HelloWorldModule } from './views/hello-world/hello-world.module';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
@@ -19,7 +18,6 @@ describe('AppComponent', () => {
         AngularFireAuthModule,
         AngularFirestoreModule,
         ComponentsModule,
-        HelloWorldModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
       ],
       declarations: [
