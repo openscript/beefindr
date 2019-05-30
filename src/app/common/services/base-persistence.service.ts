@@ -16,7 +16,7 @@ export abstract class BasePersistenceService<T extends BaseEntity> {
     this.firestore = afs;
   }
 
-  public get(uid: string): Observable<T> {
+  public get(uid: string) {
     return this.persistence.doc<T>(uid).snapshotChanges().pipe(map(change => {
       if (change.payload.exists) {
         return { uid: change.payload.id, ...change.payload.data() };
@@ -24,15 +24,11 @@ export abstract class BasePersistenceService<T extends BaseEntity> {
     }));
   }
 
-  public index(): Observable<T[]> {
-    return this.persistence.snapshotChanges().pipe(map(changes => {
-      return changes.map(data => {
-        return { uid: data.payload.doc.id, ...data.payload.doc.data() };
-      });
-    }));
+  public index() {
+    return this.allFromCollection(this.persistence);
   }
 
-  public add(record: T): Promise<T> {
+  public add(record: T) {
     return new Promise<T>((resolve) => {
       this.persistence.add(record).then(ref => {
         resolve({uid: ref.id, ...record});
@@ -40,7 +36,7 @@ export abstract class BasePersistenceService<T extends BaseEntity> {
     });
   }
 
-  public update(record: T): Promise<T> {
+  public update(record: T) {
     return new Promise<T>((resolve, reject) => {
       if (!record.uid) {
         reject('No unique identifier is given for record.');
@@ -52,12 +48,16 @@ export abstract class BasePersistenceService<T extends BaseEntity> {
     });
   }
 
-  public delete(uid: string): Promise<void> {
+  public delete(uid: string) {
     return this.persistence.doc<T>(uid).delete();
   }
 
-  public find(queryFn: QueryFn): Observable<T[]> {
-    return this.firestore.collection<T>(this.getCollectionName(), queryFn).snapshotChanges().pipe(map(changes => {
+  public find(queryFn: QueryFn) {
+    return this.allFromCollection(this.firestore.collection<T>(this.getCollectionName(), queryFn));
+  }
+
+  private allFromCollection(collection: AngularFirestoreCollection<T>) {
+    return collection.snapshotChanges().pipe(map(changes => {
       return changes.map(data => {
         return { uid: data.payload.doc.id, ...data.payload.doc.data() };
       });
