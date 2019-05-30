@@ -21,7 +21,7 @@ import { HivePersistenceService } from './common/services/hive-persistence.servi
 import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { LoginUserComponent } from './views/user/login-user/login-user.component';
-import { DashboardBeekeeperComponent } from './views/dashboard-beekeeper/dashboard-beekeeper.component';
+import { DashboardUserComponent } from './views/user/dashboard-user/dashboard-user.component';
 import { AuthService } from './common/services/auth.service';
 import { NotifyService } from './common/services/notify.service';
 
@@ -34,7 +34,7 @@ import { NotifyService } from './common/services/notify.service';
     ShowHiveComponent,
     RegisterUserComponent,
     LoginUserComponent,
-    DashboardBeekeeperComponent
+    DashboardUserComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@ import { AddHiveComponent } from './app/views/hive/add-hive/add-hive.component';
 import { RegisterUserComponent } from './app/views/user/register-user/register-user.component';
 import { ShowHiveComponent } from './app/views/hive/show-hive/show-hive.component';
 import { LoginUserComponent } from './app/views/user/login-user/login-user.component';
-import { DashboardBeekeeperComponent } from './app/views/dashboard-beekeeper/dashboard-beekeeper.component';
+import { DashboardUserComponent } from './app/views/user/dashboard-user/dashboard-user.component';
 import { AuthGuard } from './app/common/services/auth.guard';
 
 export const appRoutes: Routes = [
@@ -14,6 +14,6 @@ export const appRoutes: Routes = [
   { path: 'hive/:uid', component: ShowHiveComponent},
   { path: 'user/add', component: RegisterUserComponent},
   { path: 'user/login', component: LoginUserComponent },
-  { path: 'dashboard-beekeeper', component: DashboardBeekeeperComponent, canActivate: [AuthGuard]},
+  { path: 'user/dashboard', component: DashboardUserComponent, canActivate: [AuthGuard]},
   { path: 'hello-world', component: HelloWorldComponent }
 ];

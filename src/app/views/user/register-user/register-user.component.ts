@@ -116,7 +116,7 @@ export class RegisterUserComponent implements OnInit {
                 duration: 20000
               }
             );
-            this.router.navigate(['/dashboard-beekeeper']);
+            this.router.navigate(['user', 'dashboard']);
           })
           .catch(error => {
             // handle error

@@ -104,7 +104,7 @@ export class AuthService {
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
-        this.router.navigate(['/dashboard-beekeeper']);
+        this.router.navigate(['user', 'dashboard']);
         this.notify.update('Welcome back!', 'success');
         return this.updateUserData(credential.user);
       })
