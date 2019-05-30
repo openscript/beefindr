@@ -105,14 +105,14 @@ export class HiveManager {
     return new Promise((succ, err) => {
       const now = new Date();
 
-      const claim = {
+      const claim: HiveClaim = {
         created: now,
         updated: now,
         claimed: false,
         hiveUid: forHive.uid,
         keeperUid: forKeeper.uid,
         token
-      } as HiveClaim;
+      }
 
       admin.firestore().collection('beehiveClaim').add({
         ...claim

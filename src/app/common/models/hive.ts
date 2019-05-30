@@ -25,7 +25,7 @@ export class Hive {
   }
 
   public decline(beekeeper: string) {
-    if (this.declinedByBeekeepers) {
+    if (!this.declinedByBeekeepers) {
       this.declinedByBeekeepers = [];
     }
 
