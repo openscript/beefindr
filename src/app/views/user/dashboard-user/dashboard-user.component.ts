@@ -1,12 +1,9 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {AngularFireMessaging} from '@angular/fire/messaging';
 import {AuthService} from '../../../common/services/auth.service';
 import {Component, OnInit} from '@angular/core';
-import {filter, first, take} from 'rxjs/operators';
-import {
-  InjectableBeekeeperService,
-  InjectableMessagingService
-} from '../../../common/services/injectable-services.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {filter, take} from 'rxjs/operators';
+import {InjectableBeekeeperService, InjectableMessagingService} from '../../../common/services/injectable-services.service';
 import {Router} from '@angular/router';
 
 
