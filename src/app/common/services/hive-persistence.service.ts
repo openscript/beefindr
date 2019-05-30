@@ -26,6 +26,6 @@ export class HivePersistenceService extends BasePersistenceService<Hive> {
   }
 
   protected getCollectionName(): string {
-    return 'hive';
+    return 'beehive';
   }
 }
