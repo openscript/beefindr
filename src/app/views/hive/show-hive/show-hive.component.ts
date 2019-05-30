@@ -5,7 +5,7 @@ import {Component, OnInit} from '@angular/core';
 import {HiveClaimPersistenceService} from '../../../common/services/hiveClaim-persistence.service';
 import {HiveClaim} from '../../../common/models/hiveClaim';
 import {HivePersistenceService} from 'src/app/common/services/hive-persistence.service';
-import {Hive} from 'src/app/common/models/hive';
+import {HiveModel} from 'src/app/common/models/hive';
 
 
 @Component({
@@ -15,7 +15,7 @@ import {Hive} from 'src/app/common/models/hive';
 })
 export class ShowHiveComponent implements OnInit {
 
-  public hive: Hive;
+  public hive: HiveModel;
   public hivePhoto: string;
   public claim: HiveClaim;
 

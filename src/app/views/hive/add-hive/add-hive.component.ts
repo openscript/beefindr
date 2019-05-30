@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HivePersistenceService } from 'src/app/common/services/hive-persistence.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Hive } from 'src/app/common/models/hive';
+import { HiveModel } from 'src/app/common/models/hive';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
@@ -93,7 +93,7 @@ export class AddHiveComponent implements OnInit {
       latitude: this.currentPosition.coords.latitude,
       longitude: this.currentPosition.coords.longitude
     };
-    const newHive: Hive = { finder: {...this.hiveForm.value}, location };
+    const newHive: HiveModel = { finder: {...this.hiveForm.value}, location };
     if (photo) {
       newHive.photo = photo;
     }

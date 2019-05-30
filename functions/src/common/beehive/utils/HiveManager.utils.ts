@@ -1,12 +1,12 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import {BeeHive, SerializedBeeHive} from '../../../../../src/app/common/models/beehive.model';
-import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
-import {ClaimExceptionType} from '../../claim/exceptions/claim-status.enum';
-import {ClaimException} from '../../claim/exceptions/claim.exception';
-import {ConfigurationException} from '../exceptions/configuration.exception';
-import {HiveClaim} from '../models/hiveClaim.model';
-import {sha256} from 'js-sha256';
+import { Hive, HiveModel } from '../../../../../src/app/common/models/hive';
+import { BeeKeeper } from '../../../../../src/app/common/models/beekeeper.model';
+import { ClaimExceptionType } from '../../claim/exceptions/claim-status.enum';
+import { ClaimException } from '../../claim/exceptions/claim.exception';
+import { ConfigurationException } from '../exceptions/configuration.exception';
+import { HiveClaim } from '../models/hiveClaim.model';
+import { sha256 } from 'js-sha256';
 import * as firebase from 'firebase';
 
 
@@ -23,7 +23,7 @@ export class HiveManager {
    * @param forHive Hive of which to use id for hash
    * @param forKeeper Beekeeper of which to use id for hash
    */
-  private static generateClaimToken(forHive: BeeHive, forKeeper: BeeKeeper): string {
+  private static generateClaimToken(forHive: HiveModel, forKeeper: BeeKeeper): string {
 
     if (!functions.config().hash || !functions.config().hash.secret_sauce) {
       throw new ConfigurationException('No Secret Sauce configured, cannot generate secure hash. ' +
@@ -32,7 +32,7 @@ export class HiveManager {
     }
 
     const secretSauce = functions.config().hash.secret_sauce;
-    return sha256.hex(secretSauce + forHive.id + forKeeper.id);
+    return sha256.hex(secretSauce + forHive.uid + forKeeper.id);
   }
 
   /**
@@ -43,17 +43,17 @@ export class HiveManager {
    * @param forHive Hive for which to update claim
    * @param forKeeper Keeper for which to update claim
    */
-  private static updateClaim(claim: HiveClaim, token: string, forHive: BeeHive, forKeeper: BeeKeeper): Promise<HiveClaim> {
+  private static updateClaim(claim: HiveClaim, token: string, forHive: HiveModel, forKeeper: BeeKeeper): Promise<HiveClaim> {
 
     return new Promise((succ, err) => {
 
       const id = claim.id;
 
-      claim.hiveUid = forHive.id;
+      claim.hiveUid = forHive.uid;
       claim.keeperUid = forKeeper.id;
       claim.token = token;
 
-      const serialized = {...claim};
+      const serialized = { ...claim };
       delete serialized.id;
 
       admin.firestore().collection('beehiveClaim')
@@ -100,7 +100,7 @@ export class HiveManager {
    * @param forHive Hive for which to create claim
    * @param forKeeper Keeper for which to create claim
    */
-  private static createClaim(token: string, forHive: BeeHive, forKeeper: BeeKeeper): Promise<HiveClaim> {
+  private static createClaim(token: string, forHive: HiveModel, forKeeper: BeeKeeper): Promise<HiveClaim> {
 
     return new Promise((succ, err) => {
       const now = new Date();
@@ -109,7 +109,7 @@ export class HiveManager {
         created: now,
         updated: now,
         claimed: false,
-        hiveUid: forHive.id,
+        hiveUid: forHive.uid,
         keeperUid: forKeeper.id,
         token
       } as HiveClaim;
@@ -132,8 +132,8 @@ export class HiveManager {
    *
    * @param forHive BeeHive for which to find an existing Claim
    */
-  private static getClaimForHiveIfExists(forHive: BeeHive): Promise<HiveClaim> {
-    return HiveManager.getSingleHiveClaimForFilter('hiveUid', '==', forHive.id);
+  private static getClaimForHiveIfExists(forHive: HiveModel): Promise<HiveClaim> {
+    return HiveManager.getSingleHiveClaimForFilter('hiveUid', '==', forHive.uid);
   }
 
   /**
@@ -152,7 +152,7 @@ export class HiveManager {
    * @param forHive Hive for which to create or update claim
    * @param forKeeper Keeper for which to create or update claim
    */
-  public static createOrUpdateClaim(forHive: BeeHive, forKeeper: BeeKeeper): Promise<HiveClaim> {
+  public static createOrUpdateClaim(forHive: HiveModel, forKeeper: BeeKeeper): Promise<HiveClaim> {
     return new Promise((succ, err) => {
 
       let token = '';
@@ -223,35 +223,31 @@ export class HiveManager {
    * Notifies the next BeeKeeper in line.
    * @param token Token of claim to the hive
    */
-  public static async declineHive(token: string): Promise<BeeHive> {
+  public static async declineHive(token: string): Promise<HiveModel> {
 
-    return new Promise<BeeHive>((succ, err) => {
+    return new Promise<HiveModel>((succ, err) => {
 
-      HiveManager.getClaimForTokenIfExists(token)
-        .then(claim => {
-          if (claim) {
+      HiveManager.getClaimForTokenIfExists(token).then(claim => {
+        if (claim) {
+          void admin.firestore().collection('beehive').doc(claim.hiveUid).get().then(hiveData => {
 
-            void admin.firestore().collection('beehive').doc(claim.hiveUid).get()
-              .then(hiveData => {
+            const hive = new Hive({
+              uid: hiveData.id,
+              ...hiveData.data()
+            } as HiveModel);
+            hive.decline(claim.keeperUid);
+            void admin.firestore().collection('beehive').doc(claim.hiveUid).update(
+              hive
+            );
 
-                const hive: BeeHive = new BeeHive({
-                  id: hiveData.id,
-                  ...hiveData.data()
-                } as SerializedBeeHive);
+            succ(hive);
 
-                hive.declineBeekeeperUID(claim.keeperUid);
-                void admin.firestore().collection('beehive').doc(claim.hiveUid).update(
-                  hive.deflate()
-                );
+          });
 
-                succ(hive);
-
-              });
-
-          } else {
-            err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN));
-          }
-        })
+        } else {
+          err(new ClaimException(ClaimExceptionType.INVALID_CLAIM_TOKEN));
+        }
+      })
         .catch(error => {
           throw error;
         });
