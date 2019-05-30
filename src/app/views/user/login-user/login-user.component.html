@@ -1,0 +1,61 @@
+<form [formGroup]="loginForm">
+  <app-card-container>
+    <h2 class="mat-h2">Anmelden</h2>
+    <mat-card-content>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Email"
+          type="text"
+          formControlName="email"
+          autocomplete="off"
+          autofocus
+          #namefocus="matInput"
+          required
+        />
+        <mat-error
+          *ngIf="
+            loginForm.get('email').hasError('email') &&
+            !loginForm.get('email').hasError('required')
+          "
+        >
+          Bitte geben Sie eine korrekte Email an!
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email').hasError('required')">
+          Email wird
+          <strong>benötigt!</strong>
+        </mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Passwort"
+          type="password"
+          formControlName="password"
+          [type]="hide ? 'password' : 'text'"
+          autocomplete="off"
+          required
+        />
+        <mat-icon matSuffix (click)="hide = !hide">{{
+          hide ? "visibility" : "visibility_off"
+        }}</mat-icon>
+        <mat-error *ngIf="loginForm.get('password').hasError('required')">
+          Passwort wird
+          <strong>benötigt!</strong>
+        </mat-error>
+      </mat-form-field>
+      <br />
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          [disabled]="loginForm.invalid"
+          (click)="onSubmit()"
+          style="float: right;"
+        >
+          Login
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </app-card-container>
+</form>

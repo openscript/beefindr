@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
-
 import { Subject } from 'rxjs';
 
 /// Notify users about errors and other helpful stuff
-export interface Msg {
+export interface Message {
   content: string;
   style: string;
 }
 
 @Injectable()
 export class NotifyService {
+  private messageSource = new Subject<Message | null>();
+  public message = this.messageSource.asObservable();
 
-  // tslint:disable-next-line:variable-name
-  private _msgSource = new Subject<Msg | null>();
-
-  msg = this._msgSource.asObservable();
-
-  update(content: string, style: 'error' | 'info' | 'success') {
-    const msg: Msg = { content, style };
-    this._msgSource.next(msg);
+  public update(content: string, style: 'error' | 'info' | 'success') {
+    const message: Message = { content, style };
+    this.messageSource.next(message);
   }
 
-  clear() {
-    this._msgSource.next(null);
+  public clear() {
+    this.messageSource.next(null);
   }
 }

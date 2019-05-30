@@ -16,16 +16,14 @@ import { StartPageComponent } from './views/start-page/start-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PwaService} from './common/services/pwa.service';
 import { AddHiveComponent } from './views/hive/add-hive/add-hive.component';
-import { RegisterUserComponent } from './views/register-user/register-user.component';
+import { RegisterUserComponent } from './views/user/register-user/register-user.component';
 import { HivePersistenceService } from './common/services/hive-persistence.service';
 import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
-import { AngularFireStorageModule, StorageBucket } from '@angular/fire/storage';
-import { LoginUserComponent } from './views/login-user/login-user.component';
-import { DashboardBeekeeperComponent } from './views/dashboard-beekeeper/dashboard-beekeeper.component';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { LoginUserComponent } from './views/user/login-user/login-user.component';
+import { DashboardUserComponent } from './views/user/dashboard-user/dashboard-user.component';
 import { AuthService } from './common/services/auth.service';
 import { NotifyService } from './common/services/notify.service';
-
-import { NotificationMessageComponent } from './views/notification-message/notification-message.component';
 
 @NgModule({
   declarations: [
@@ -36,8 +34,7 @@ import { NotificationMessageComponent } from './views/notification-message/notif
     ShowHiveComponent,
     RegisterUserComponent,
     LoginUserComponent,
-    DashboardBeekeeperComponent,
-    NotificationMessageComponent
+    DashboardUserComponent
   ],
   imports: [
     BrowserModule,

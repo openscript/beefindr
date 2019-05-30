@@ -9,7 +9,6 @@ export class StartPageComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
-
 }

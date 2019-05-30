@@ -12,7 +12,7 @@ import {InjectableBeekeeperService} from './injectable-services.service';
  */
 export class MessagingService {
 
-  currentMessage = new BehaviorSubject(null);
+  public currentMessage = new BehaviorSubject(null);
 
   constructor(
     protected beekeeperService: InjectableBeekeeperService,
@@ -28,10 +28,8 @@ export class MessagingService {
 
   /**
    * request permission for notification from firebase cloud messaging
-   *
-   * @param forBeekeeper
    */
-  requestPermission(forBeekeeper: BeeKeeper) {
+  public requestPermission(forBeekeeper: BeeKeeper) {
     this.angularFireMessaging.requestToken.subscribe(
       (token) => {
         forBeekeeper.setMessagingID(token);
@@ -46,7 +44,7 @@ export class MessagingService {
   /**
    * hook method when new notification received in foreground
    */
-  listenForMessages() {
+  public listenForMessages() {
     this.angularFireMessaging.messages.subscribe(
       (payload) => {
         this.currentMessage.next(payload);

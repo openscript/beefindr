@@ -10,7 +10,7 @@ export interface SerializedAbstractModel {
  */
 export abstract class AbstractModel {
   [key: string]: number | string | object | undefined;
-  readonly id: string = '';
+  public readonly id: string = '';
 
   /**
    * Constructor

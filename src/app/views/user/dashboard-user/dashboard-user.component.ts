@@ -1,11 +1,11 @@
 import {AngularFireMessaging} from '@angular/fire/messaging';
-import {AuthService} from '../../common/services/auth.service';
+import {AuthService} from '../../../common/services/auth.service';
 import {Component, OnInit} from '@angular/core';
 import {filter} from 'rxjs/operators';
 import {
   InjectableBeekeeperService,
   InjectableMessagingService
-} from '../../common/services/injectable-services.service';
+} from '../../../common/services/injectable-services.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 
@@ -17,12 +17,12 @@ interface BeeHiveMessage {
 }
 
 @Component({
-  selector: 'app-dashboard-beekeeper',
-  templateUrl: './dashboard-beekeeper.component.html',
-  styleUrls: ['./dashboard-beekeeper.component.scss'],
+  selector: 'app-dashboard-user',
+  templateUrl: './dashboard-user.component.html',
+  styleUrls: ['./dashboard-user.component.scss'],
   providers: [AngularFireMessaging, InjectableMessagingService, InjectableBeekeeperService]
 })
-export class DashboardBeekeeperComponent implements OnInit {
+export class DashboardUserComponent implements OnInit {
 
   constructor(
     private beeKeeperService: InjectableBeekeeperService,

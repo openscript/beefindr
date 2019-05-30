@@ -12,8 +12,8 @@ interface SerializedDummyModel extends SerializedAbstractModel {
 }
 
 class DummyModel extends AbstractModel {
-  title = '';
-  body = '';
+  public title = '';
+  public body = '';
 
   public constructor(data: SerializedDummyModel) {
     super(data);
@@ -28,7 +28,7 @@ export class DummyFireStore {
   public constructor() {
   }
 
-  createPayload(objs, useWrapper: boolean = true) {
+  public createPayload(objs, useWrapper: boolean = true) {
     const items = [];
     for (const obj of objs) {
       items.push(
@@ -51,7 +51,7 @@ export class DummyFireStore {
     return items;
   }
 
-  collection() {
+  public collection() {
     return {
       snapshotChanges: () => new Observable<any>(observer => {
         observer.next(this.createPayload(this.objects));
