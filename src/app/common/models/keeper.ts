@@ -8,6 +8,7 @@ export interface KeeperModel extends FinderModel, BaseEntity {
   userUID?: string;
 }
 
+// tslint:disable-next-line: no-empty-interface
 export interface Keeper extends KeeperModel {
 }
 
