@@ -1,7 +1,7 @@
 import {AngularFireMessaging} from '@angular/fire/messaging';
 import {AuthService} from '../../../common/services/auth.service';
 import {Component, OnInit} from '@angular/core';
-import {filter} from 'rxjs/operators';
+import {filter, first, take} from 'rxjs/operators';
 import {
   InjectableBeekeeperService,
   InjectableMessagingService
@@ -48,8 +48,14 @@ export class DashboardUserComponent implements OnInit {
 
     // Get the current user and its paired BeeKeeper and request permissions
     // for notifications, then start listening for messages.
+    //
+    // IMPORTANT NOTE: In order to avoid infinite token refreshes when being logged in
+    // on multiple instances with the same user, we're using take(1) to only fetch
+    // keepers list once. This could be improved in the future by allowing multiple messaging tokens
+    // to account for the use case where the user logs in from different devices.
     this.auth.user.subscribe(user => {
       this.beeKeeperService.listItems(ref => ref.where('userUid', '==', user.uid))
+        .pipe(take(1))
         .subscribe(keepers => {
           this.messagingService.requestPermission(keepers[0]);
           this.messagingService.listenForMessages();
