@@ -9,8 +9,9 @@ import {VersionUtil} from './utils/version.util';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public Pwa: PwaService) {
-    this.Pwa.install();
+  public version = VersionUtil.getVersionString();
+
+  public constructor(public pwa: PwaService) {
+    this.pwa.install();
   }
-  version = VersionUtil.getVersionString();
 }

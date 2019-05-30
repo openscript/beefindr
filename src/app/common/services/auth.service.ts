@@ -19,9 +19,10 @@ interface User {
 
 @Injectable()
 export class AuthService {
-  user: Observable<User | null>;
-  uid: string;
-  constructor(
+  public user: Observable<User | null>;
+  public uid: string;
+
+  public constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
@@ -43,22 +44,22 @@ export class AuthService {
 
   ////// OAuth Methods /////
 
-  googleLogin() {
+  public googleLogin() {
     const provider = new auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  githubLogin() {
+  public githubLogin() {
     const provider = new auth.GithubAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  facebookLogin() {
+  public facebookLogin() {
     const provider = new auth.FacebookAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  twitterLogin() {
+  public twitterLogin() {
     const provider = new auth.TwitterAuthProvider();
     return this.oAuthLogin(provider);
   }
@@ -75,7 +76,7 @@ export class AuthService {
 
   //// Anonymous Auth ////
 
-  anonymousLogin() {
+  public anonymousLogin() {
     return this.afAuth.auth
       .signInAnonymously()
       .then(credential => {
@@ -89,7 +90,7 @@ export class AuthService {
 
   //// Email/Password Auth ////
 
-  emailSignUp(email: string, password: string) {
+  public emailSignUp(email: string, password: string) {
     return this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
       .then(credential => {
@@ -99,7 +100,7 @@ export class AuthService {
       .catch(error => this.handleError(error));
   }
 
-  emailLogin(email: string, password: string) {
+  public emailLogin(email: string, password: string) {
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
@@ -111,7 +112,7 @@ export class AuthService {
   }
 
   // Sends email allowing user to reset password
-  resetPassword(email: string) {
+  public resetPassword(email: string) {
     const fbAuth = auth();
 
     return fbAuth
@@ -120,7 +121,7 @@ export class AuthService {
       .catch(error => this.handleError(error));
   }
 
-  signOut() {
+  public signOut() {
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(['/']);
     });

@@ -1,8 +1,8 @@
-import {DocumentChangeAction, QueryFn} from '@angular/fire/firestore';
-import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import { DocumentChangeAction, QueryFn } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import {AbstractModel, SerializedAbstractModel} from '../models/abstract.model';
+import { AbstractModel, SerializedAbstractModel } from '../models/abstract.model';
 
 
 /**
@@ -29,7 +29,6 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel, I ext
   }
 
   private mapManyToModel(serializedData: I[]): M[] {
-
     const modelClass = this.getModelClass();
     const instances: M[] = [];
 
@@ -48,18 +47,16 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel, I ext
    * False if only a single instance should be mapped.
    */
   protected mapToModelPipe(many: boolean = false) {
-
     if (many) {
       return map((changeActions: DocumentChangeAction<any>[]) => {
         return this.mapManyToModel(changeActions.map((ca) => {
-          return {id: ca.payload.doc.id, ...ca.payload.doc.data()};
+          return { id: ca.payload.doc.id, ...ca.payload.doc.data() };
         }));
       });
     }
 
     return map((doc: any) => {
-      return this.mapToModel({id: doc.payload.id, ...doc.payload.data()});
-
+      return this.mapToModel({ id: doc.payload.id, ...doc.payload.data() });
     });
   }
 
@@ -75,11 +72,11 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel, I ext
         .collection(this.getCollectionName())
         .add(instance.deflate())
         .then((doc: SerializedAbstractModel) => {
-            resolve(new (this.getModelClass())({
-              id: doc.id,
-              ...instance
-            }));
-          }
+          resolve(new (this.getModelClass())({
+            id: doc.id,
+            ...instance
+          }));
+        }
         );
     });
   }
@@ -107,7 +104,7 @@ export abstract class AbstractFirestoreOrmService<M extends AbstractModel, I ext
           querySnapshot.forEach((doc: any) => {
             items.push(
               this.mapToModel(
-                {id: doc.id, ...doc.data()}
+                { id: doc.id, ...doc.data() }
               )
             );
           });

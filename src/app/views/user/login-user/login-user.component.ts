@@ -17,19 +17,19 @@ import { NotifyService } from '../../../common/services/notify.service';
 })
 export class LoginUserComponent implements OnInit {
 
-  loginForm: FormGroup;
-  loading = false;
-  submitted = false;
-  hide = true;
+  public loginForm: FormGroup;
+  public loading = false;
+  public submitted = false;
+  public hide = true;
 
-  @ViewChild('namefocus', { static: true }) nameInput: MatInput;
+  @ViewChild('namefocus', { static: true }) public nameInput: MatInput;
 
   constructor(private formBuilder: FormBuilder,
               private beeKeeperService: InjectableBeekeeperService, public snackBar: MatSnackBar,
               private authService: AuthService, private router: Router) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -39,8 +39,7 @@ export class LoginUserComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-
-  onSubmit() {
+  public onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -57,5 +56,4 @@ export class LoginUserComponent implements OnInit {
       this.nameInput.focus();
     });
   }
-
 }

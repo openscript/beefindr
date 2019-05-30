@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     private notify: NotifyService
   ) {}
 
-  canActivate(
+  public canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {

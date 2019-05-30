@@ -9,7 +9,6 @@ export class CardContainerComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
-
 }

@@ -7,7 +7,7 @@ type ServiceWorkerEvent = any;
   providedIn: 'root'
 })
 export class PwaService {
-  promptEvent: ServiceWorkerEvent;
+  public promptEvent: ServiceWorkerEvent;
 
   constructor(swUpdate: SwUpdate) {
       swUpdate.available.subscribe(() =>  {
@@ -20,7 +20,7 @@ export class PwaService {
       });
   }
 
-  install(): void {
+  public install() {
     if (this.promptEvent) {
       this.promptEvent.prompt();
     }
