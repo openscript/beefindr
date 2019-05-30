@@ -1,5 +1,5 @@
-import {KeeperModel} from "../../../../../src/app/common/models/keeper";
-import {Dispatcher} from "../dispatcher.interface";
+import { KeeperModel } from '../../../../../src/app/common/models/keeper';
+import { Dispatcher } from '../dispatcher.interface';
 
 
 export class LogDispatcher implements Dispatcher {
