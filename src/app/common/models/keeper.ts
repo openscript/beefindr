@@ -4,8 +4,8 @@ import { LocationModel } from './location';
 
 export interface KeeperModel extends FinderModel, BaseEntity {
   location: LocationModel;
-  messagingID: string;
-  userUID: string;
+  messagingID?: string;
+  userUID?: string;
 }
 
 export interface Keeper extends KeeperModel {

@@ -6,20 +6,18 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
-import { BeeKeeper } from '../../../common/models/beekeeper.model';
-import { InjectableBeekeeperService } from '../../../common/services/injectable-services.service';
 import { MatInput } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
 import { NotifyService } from '../../../common/services/notify.service';
+import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
 
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
   styleUrls: ['./register-user.component.scss'],
   providers: [
-    InjectableBeekeeperService,
     AngularFirestore,
     AuthService,
     NotifyService
@@ -35,7 +33,7 @@ export class RegisterUserComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private beeKeeperService: InjectableBeekeeperService,
+    private beeKeeperService: KeeperPersistenceService,
     private authService: AuthService,
     public snackBar: MatSnackBar,
     private router: Router,
@@ -89,47 +87,38 @@ export class RegisterUserComponent implements OnInit {
       .emailSignUp(this.f.email.value, this.f.password.value)
       .then(() => {
         console.log('Login created');
-        this.beeKeeperService
-          .createItem(
-            new BeeKeeper({
-              firstname: this.f.firstname.value,
-              surname: this.f.surname.value,
-              streetname: this.f.streetname.value,
-              streetnr: this.f.streetnr.value,
-              postcode: this.f.postcode.value,
-              place: this.f.place.value,
-              country: this.f.country.value,
-              email: this.f.email.value,
-              userUid: this.authService.uid,
-              location: {
-                latitude: 11,
-                longitude: 11
-              }
-            })
-          )
-          .then(beekeeper => {
-            console.log('Beekeeper created');
-            this.snackBar.open(
-              'Danke für Ihre Registrierung bei BeeFinder!',
-              'Close',
-              {
-                duration: 20000
-              }
-            );
-            this.router.navigate(['user', 'dashboard']);
-          })
-          .catch(error => {
-            // handle error
-            this.registerForm.reset();
-            this.nameInput.focus();
-            this.snackBar.open(
-              'Registrierung hat leider nicht geklappt!',
-              'Close',
-              {
-                duration: 20000
-              }
-            );
-          });
+        this.beeKeeperService.add({
+          name: this.f.firstname.value,
+          email: this.f.email.value,
+          location: {
+            latitude: 11,
+            longitude: 11,
+            accuracy: 100
+          }
+        })
+        .then(beekeeper => {
+          console.log('Beekeeper created');
+          this.snackBar.open(
+            'Danke für Ihre Registrierung bei BeeFinder!',
+            'Close',
+            {
+              duration: 20000
+            }
+          );
+          this.router.navigate(['user', 'dashboard']);
+        })
+        .catch(error => {
+          // handle error
+          this.registerForm.reset();
+          this.nameInput.focus();
+          this.snackBar.open(
+            'Registrierung hat leider nicht geklappt!',
+            'Close',
+            {
+              duration: 20000
+            }
+          );
+        });
       })
       .catch(error => {
         // handle error

@@ -1,21 +1,23 @@
-import {AngularFireAuth} from '@angular/fire/auth';
-import {AngularFireMessaging} from '@angular/fire/messaging';
-import {BeeKeeper} from '../models/beekeeper.model';
-import {BehaviorSubject} from 'rxjs';
-import {InjectableBeekeeperService} from './injectable-services.service';
-
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireMessaging } from '@angular/fire/messaging';
+import { KeeperModel } from '../models/keeper';
+import { BehaviorSubject } from 'rxjs';
+import { KeeperPersistenceService } from './keeper-persistence.service';
+import { Injectable } from '@angular/core';
 
 /**
  * Firebase Cloud Messaging service.
  *
  * https://medium.com/@a.adendrata/push-notifications-with-angular-6-firebase-cloud-massaging-dbfb5fbc0eeb
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class MessagingService {
-
   public currentMessage = new BehaviorSubject(null);
 
-  constructor(
-    protected beekeeperService: InjectableBeekeeperService,
+  public constructor(
+    protected keeperPersistenceService: KeeperPersistenceService,
     protected angularFireAuth: AngularFireAuth,
     protected angularFireMessaging: AngularFireMessaging) {
     this.angularFireMessaging.messaging.subscribe(
@@ -29,11 +31,11 @@ export class MessagingService {
   /**
    * request permission for notification from firebase cloud messaging
    */
-  public requestPermission(forBeekeeper: BeeKeeper) {
+  public requestPermission(forBeekeeper: KeeperModel) {
     this.angularFireMessaging.requestToken.subscribe(
       (token) => {
-        forBeekeeper.setMessagingID(token);
-        this.beekeeperService.updateItem(forBeekeeper);
+        forBeekeeper.messagingID = token;
+        this.keeperPersistenceService.update(forBeekeeper);
       },
       (err) => {
         console.error('Unable to get permission to notify.', err);

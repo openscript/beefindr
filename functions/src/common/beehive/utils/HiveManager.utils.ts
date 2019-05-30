@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { Hive, HiveModel } from '../../../../../src/app/common/models/hive';
-import { BeeKeeper } from '../../../../../src/app/common/models/beekeeper.model';
+import { KeeperModel } from '../../../../../src/app/common/models/keeper';
 import { ClaimExceptionType } from '../../claim/exceptions/claim-status.enum';
 import { ClaimException } from '../../claim/exceptions/claim.exception';
 import { ConfigurationException } from '../exceptions/configuration.exception';
@@ -23,7 +23,7 @@ export class HiveManager {
    * @param forHive Hive of which to use id for hash
    * @param forKeeper Beekeeper of which to use id for hash
    */
-  private static generateClaimToken(forHive: HiveModel, forKeeper: BeeKeeper): string {
+  private static generateClaimToken(forHive: HiveModel, forKeeper: KeeperModel): string {
 
     if (!functions.config().hash || !functions.config().hash.secret_sauce) {
       throw new ConfigurationException('No Secret Sauce configured, cannot generate secure hash. ' +
@@ -32,7 +32,7 @@ export class HiveManager {
     }
 
     const secretSauce = functions.config().hash.secret_sauce;
-    return sha256.hex(secretSauce + forHive.uid + forKeeper.id);
+    return sha256.hex(secretSauce + forHive.uid + forKeeper.uid);
   }
 
   /**
@@ -43,14 +43,14 @@ export class HiveManager {
    * @param forHive Hive for which to update claim
    * @param forKeeper Keeper for which to update claim
    */
-  private static updateClaim(claim: HiveClaim, token: string, forHive: HiveModel, forKeeper: BeeKeeper): Promise<HiveClaim> {
+  private static updateClaim(claim: HiveClaim, token: string, forHive: HiveModel, forKeeper: KeeperModel): Promise<HiveClaim> {
 
     return new Promise((succ, err) => {
 
       const id = claim.id;
 
       claim.hiveUid = forHive.uid;
-      claim.keeperUid = forKeeper.id;
+      claim.keeperUid = forKeeper.uid;
       claim.token = token;
 
       const serialized = { ...claim };
@@ -100,7 +100,7 @@ export class HiveManager {
    * @param forHive Hive for which to create claim
    * @param forKeeper Keeper for which to create claim
    */
-  private static createClaim(token: string, forHive: HiveModel, forKeeper: BeeKeeper): Promise<HiveClaim> {
+  private static createClaim(token: string, forHive: HiveModel, forKeeper: KeeperModel): Promise<HiveClaim> {
 
     return new Promise((succ, err) => {
       const now = new Date();
@@ -110,7 +110,7 @@ export class HiveManager {
         updated: now,
         claimed: false,
         hiveUid: forHive.uid,
-        keeperUid: forKeeper.id,
+        keeperUid: forKeeper.uid,
         token
       } as HiveClaim;
 
@@ -152,7 +152,7 @@ export class HiveManager {
    * @param forHive Hive for which to create or update claim
    * @param forKeeper Keeper for which to create or update claim
    */
-  public static createOrUpdateClaim(forHive: HiveModel, forKeeper: BeeKeeper): Promise<HiveClaim> {
+  public static createOrUpdateClaim(forHive: HiveModel, forKeeper: KeeperModel): Promise<HiveClaim> {
     return new Promise((succ, err) => {
 
       let token = '';

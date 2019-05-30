@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
-import {BeeHive, SerializedBeeHive} from '../../src/app/common/models/beehive.model';
+import {HiveModel} from '../../src/app/common/models/hive';
 import {ClaimException} from './common/claim/exceptions/claim.exception';
 import {ClaimResponseUtil} from './common/claim/utils/claim-response.utils';
 import {HiveManager} from './common/beehive/utils/HiveManager.utils';
@@ -25,7 +25,7 @@ const cors = require('cors')({origin: ['https://beefindr.firebaseapp.com']});
  */
 export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
   const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-  return notifier.notifyClosestBeekeeper(new BeeHive(({id: snap.id, ...snap.data()} as SerializedBeeHive)));
+  return notifier.notifyClosestBeekeeper(({uid: snap.id, ...snap.data()} as HiveModel));
 });
 
 
@@ -77,7 +77,7 @@ export const declineBeehive = functions.https.onRequest(async (req, res) => {
 
     if (token) {
       try {
-        const hive: BeeHive = await HiveManager.declineHive(token);
+        const hive = await HiveManager.declineHive(token);
         const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
         notifier.notifyClosestBeekeeper(hive);
         res.status(200).send({data: {}});

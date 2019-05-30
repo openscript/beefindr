@@ -1,10 +1,11 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {AngularFireMessaging} from '@angular/fire/messaging';
-import {AuthService} from '../../../common/services/auth.service';
-import {Component, OnInit} from '@angular/core';
-import {filter, take} from 'rxjs/operators';
-import {InjectableBeekeeperService, InjectableMessagingService} from '../../../common/services/injectable-services.service';
-import {Router} from '@angular/router';
+import { AngularFireMessaging } from '@angular/fire/messaging';
+import { AuthService } from '../../../common/services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { filter, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { MessagingService } from 'src/app/common/services/messaging.service';
+import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
 
 
 interface BeeHiveMessage {
@@ -17,13 +18,12 @@ interface BeeHiveMessage {
   selector: 'app-dashboard-user',
   templateUrl: './dashboard-user.component.html',
   styleUrls: ['./dashboard-user.component.scss'],
-  providers: [AngularFireMessaging, InjectableMessagingService, InjectableBeekeeperService]
+  providers: [AngularFireMessaging]
 })
 export class DashboardUserComponent implements OnInit {
-
-  constructor(
-    private beeKeeperService: InjectableBeekeeperService,
-    private messagingService: InjectableMessagingService,
+  public constructor(
+    private beeKeeperService: KeeperPersistenceService,
+    private messagingService: MessagingService,
     private router: Router,
     public auth: AuthService,
     public snackBar: MatSnackBar,
@@ -51,7 +51,7 @@ export class DashboardUserComponent implements OnInit {
     // keepers list once. This could be improved in the future by allowing multiple messaging tokens
     // to account for the use case where the user logs in from different devices.
     this.auth.user.subscribe(user => {
-      this.beeKeeperService.listItems(ref => ref.where('userUid', '==', user.uid))
+      this.beeKeeperService.find(ref => ref.where('userUid', '==', user.uid))
         .pipe(take(1))
         .subscribe(keepers => {
           this.messagingService.requestPermission(keepers[0]);

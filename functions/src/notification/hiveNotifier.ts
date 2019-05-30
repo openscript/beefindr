@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
-import {BeeHive} from '../../../src/app/common/models/beehive.model';
-import {BeeKeeper, SerializedBeeKeeper} from '../../../src/app/common/models/beekeeper.model';
+import {HiveModel} from '../../../src/app/common/models/hive';
+import {KeeperModel} from '../../../src/app/common/models/keeper';
 import {BeekeeperUtils} from '../common/beekeeper/utils/beekeeper.utils';
 import {Dispatcher} from './dispatchers/dispatcher.interface';
 import {environment} from '../../../src/environments/environment.prod';
@@ -20,17 +20,17 @@ export class HiveNotifier {
     this.dispatchers = dispatchers;
   }
 
-  private getClosestToHive(hive: BeeHive): Promise<BeeKeeper> {
+  private getClosestToHive(hive: HiveModel): Promise<KeeperModel> {
 
-    return new Promise<BeeKeeper>((succ, err) => {
+    return new Promise<KeeperModel>((succ, err) => {
 
       admin.firestore().collection('beekeeper').get().then(
         serializedKeepers => {
 
-          const keepers: BeeKeeper[] = [];
+          const keepers: KeeperModel[] = [];
 
           for (const serializedKeeper of serializedKeepers.docs) {
-            keepers.push(new BeeKeeper({id: serializedKeeper.id, ...serializedKeeper.data()} as SerializedBeeKeeper));
+            keepers.push({uid: serializedKeeper.id, ...serializedKeeper.data()} as KeeperModel);
           }
 
           const closest = BeekeeperUtils.selectClosestToHive(keepers, hive);
@@ -55,7 +55,7 @@ export class HiveNotifier {
    * @param recipient Recipient (currently only BeeKeepers), could be replaced with a more general interface (e.g. «User», ...)
    * @param extraPayload Extra payload as dict for message
    */
-  private sendMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload: any) {
+  private sendMessage(recipient: KeeperModel, subject: string, body: string, extraPayload: any) {
     for (const dispatcher of this.dispatchers) {
       dispatcher.dispatchMessage(recipient, subject, body, extraPayload);
     }
@@ -67,9 +67,9 @@ export class HiveNotifier {
    *
    * @param hive BeeHive Beekeepers should be notified about
    */
-  public notifyClosestBeekeeper(hive: BeeHive): boolean {
+  public notifyClosestBeekeeper(hive: HiveModel): boolean {
 
-    console.log('Notifying closest beekeeper about Hive ' + hive.id);
+    console.log('Notifying closest beekeeper about Hive ' + hive.uid);
 
     this.getClosestToHive(hive).then(closestBeekeeper => {
 
@@ -82,7 +82,7 @@ export class HiveNotifier {
             'Neuen Bienenschwarm gefunden!',
             'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
             {
-              link: environment.baseUrl + '/hive/' + hive.id + '/?token=' + hiveClaim.token
+              link: environment.baseUrl + '/hive/' + hive.uid + '/?token=' + hiveClaim.token
             }
           );
         })
@@ -91,7 +91,7 @@ export class HiveNotifier {
         });
 
     }).catch(() => {
-      console.warn('No Beekeepers available for Hive ' + hive.id);
+      console.warn('No Beekeepers available for Hive ' + hive.uid);
       return false;
     });
 

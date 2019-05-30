@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
-import { HelloWorldModule } from './views/hello-world/hello-world.module';
 import { AngularFirestoreModule, AngularFirestore} from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
@@ -50,7 +49,6 @@ import { NotifyService } from './common/services/notify.service';
     AngularFirestoreModule,
     BrowserAnimationsModule,
     ComponentsModule,
-    HelloWorldModule,
     ServiceWorkerModule.register('workers.js', { enabled: environment.production }),
   ],
   providers: [

@@ -1,6 +1,6 @@
 import { BaseEntity } from '../models/base-entity';
 import { Observable } from 'rxjs';
-import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreCollection, AngularFirestore, QueryFn } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
 /**
@@ -9,9 +9,11 @@ import { map } from 'rxjs/operators';
 export abstract class BasePersistenceService<T extends BaseEntity> {
 
   protected persistence: AngularFirestoreCollection<T>;
+  protected firestore: AngularFirestore;
 
   public constructor(afs: AngularFirestore) {
-    this.persistence = afs.collection(`${this.getCollectionName()}`);
+    this.persistence = afs.collection<T>(this.getCollectionName());
+    this.firestore = afs;
   }
 
   public get(uid: string): Observable<T> {
@@ -52,6 +54,14 @@ export abstract class BasePersistenceService<T extends BaseEntity> {
 
   public delete(uid: string): Promise<void> {
     return this.persistence.doc<T>(uid).delete();
+  }
+
+  public find(queryFn: QueryFn): Observable<T[]> {
+    return this.firestore.collection<T>(this.getCollectionName(), queryFn).snapshotChanges().pipe(map(changes => {
+      return changes.map(data => {
+        return { uid: data.payload.doc.id, ...data.payload.doc.data() };
+      });
+    }));
   }
 
   protected abstract getCollectionName(): string;

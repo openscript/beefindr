@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {KeeperModel} from '../../../../../src/app/common/models/keeper';
 import {Dispatcher} from '../dispatcher.interface';
 
 
@@ -9,9 +9,9 @@ import {Dispatcher} from '../dispatcher.interface';
  */
 export class MessagingDispatcher implements Dispatcher {
 
-  public dispatchMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload?: any): void {
+  public dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any): void {
 
-    const deviceToken = recipient.getMessagingID();
+    const deviceToken = recipient.messagingID;
 
     if (deviceToken) {
       admin.messaging().sendToDevice(

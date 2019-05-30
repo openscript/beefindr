@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as nodemailer from 'nodemailer';
-import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {KeeperModel} from '../../../../../src/app/common/models/keeper';
 import {Dispatcher} from '../dispatcher.interface';
 import {MailConfigurationException} from './exceptions/mail-configuration.exception';
 
@@ -78,13 +78,13 @@ export class MailDispatcher implements Dispatcher {
     });
   }
 
-  public dispatchMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload?: any) {
+  public dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any) {
 
-    if (recipient.getEmail()) {
-      this.sendMail(recipient.getEmail(), subject, MailDispatcher.renderExtraPayload(body, extraPayload));
+    if (recipient.email) {
+      this.sendMail(recipient.email, subject, MailDispatcher.renderExtraPayload(body, extraPayload));
     } else {
       console.warn(
-        'Unable to send email notification to BeeKeeper ' + recipient.id + '. No email address stored.'
+        'Unable to send email notification to BeeKeeper ' + recipient.uid + '. No email address stored.'
       );
     }
   }
