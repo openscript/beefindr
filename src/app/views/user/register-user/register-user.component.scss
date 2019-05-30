@@ -1,31 +1,31 @@
-    mat-card-content {
-        mat-form-field {
-          width: 100%;
-        }
-        .card-header {
-            text-align: center;
-          }
-      
-        .form-field {
-          margin-bottom: 1.25em;
-        }
-      
-        button {
-          width: 100%;
-        }
-      
-        #position-display span {
-          display: inline-block;
-          width: 50%;
-        }
-      }
-      
-      mat-card-actions {
-        display: flex;
-        justify-content: space-between;
-      }
-  form {
+mat-card-content {
+  mat-form-field {
     width: 100%;
-    display: flex;
-    justify-content: center;
   }
+  .card-header {
+    text-align: center;
+  }
+
+  .form-field {
+    margin-bottom: 1.25em;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  #position-display span {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
