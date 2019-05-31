@@ -3,7 +3,6 @@ import {BeekeeperUtils} from '../common/beekeeper/utils/beekeeper.utils';
 import {Dispatcher} from './dispatchers/dispatcher.interface';
 import {environment} from '../../../src/environments/environment.prod';
 import {HiveManager} from '../common/beehive/utils/HiveManager.utils';
-import {HiveModel} from '../../../src/app/common/models/hive';
 import {PersistedHiveModel} from '../common/beehive/models/persisted-hive.model';
 import {PersistedKeeperModel} from '../common/beehive/models/persisted-keeper.model';
 
@@ -21,7 +20,7 @@ export class HiveNotifier {
     this.dispatchers = dispatchers;
   }
 
-  private getClosestToHive(hive: HiveModel): Promise<PersistedKeeperModel> {
+  private getClosestToHive(hive: PersistedHiveModel): Promise<PersistedKeeperModel> {
 
     return new Promise<PersistedKeeperModel>((succ, err) => {
 
@@ -57,9 +56,14 @@ export class HiveNotifier {
    * @param extraPayload Extra payload as dict for message
    */
   private sendMessage(recipient: PersistedKeeperModel, subject: string, body: string, extraPayload: any) {
+
+    const proms = [];
+
     for (const dispatcher of this.dispatchers) {
-      dispatcher.dispatchMessage(recipient, subject, body, extraPayload);
+      proms.push(dispatcher.dispatchMessage(recipient, subject, body, extraPayload));
     }
+
+    return Promise.all(proms);
   }
 
   /**
@@ -68,33 +72,32 @@ export class HiveNotifier {
    *
    * @param hive BeeHive Beekeepers should be notified about
    */
-  public notifyClosestBeekeeper(hive: PersistedHiveModel): boolean {
+  public async notifyClosestBeekeeper(hive: PersistedHiveModel): Promise<boolean> {
 
     console.log('Notifying closest beekeeper about Hive ' + hive.uid);
 
-    this.getClosestToHive(hive).then(closestBeekeeper => {
+    try {
+      const closestKeeper: PersistedKeeperModel = await this.getClosestToHive(hive);
 
-      HiveManager.updateClaim(hive, closestBeekeeper)
-        .then(updatedClaim => {
+      try {
+        const updatedClaim = await HiveManager.updateClaim(hive, closestKeeper);
 
-          this.sendMessage(
-            closestBeekeeper,
-            'Neuen Bienenschwarm gefunden!',
-            'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
-            {
-              link: environment.baseUrl + '/hive/' + hive.uid + '/?token=' + updatedClaim.token
-            }
-          );
-        })
-        .catch(error => {
-          console.error('Unable to create claim on hive due to the following error: ' + error);
-        });
-
-    }).catch(() => {
+        await this.sendMessage(
+          closestKeeper,
+          'Neuen Bienenschwarm gefunden!',
+          'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
+          {
+            link: environment.baseUrl + '/hive/' + hive.uid + '/?token=' + updatedClaim.token
+          }
+        );
+      } catch (error) {
+        console.error('Unable to create claim on hive due to the following error: ' + error);
+        return false;
+      }
+    } catch {
       console.warn('No Beekeepers available for Hive ' + hive.uid);
       return false;
-    });
-
+    }
     return true;
   }
 }

@@ -9,12 +9,12 @@ import {Dispatcher} from '../dispatcher.interface';
  */
 export class MessagingDispatcher implements Dispatcher {
 
-  public dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any): void {
+  public async dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any) {
 
     const deviceToken = recipient.messagingID;
 
     if (deviceToken) {
-      admin.messaging().sendToDevice(
+      await admin.messaging().sendToDevice(
         deviceToken,
         {
           notification: {
@@ -22,11 +22,10 @@ export class MessagingDispatcher implements Dispatcher {
             body,
           },
           data: extraPayload
-        }).then(() => {
-        console.log('Cloud message sent');
-      }).catch(err => {
-        console.error(err);
-      });
+        });
+      return true;
     }
+
+    return Promise.reject('No Device token for recipient ' + recipient.uid);
   }
 }
