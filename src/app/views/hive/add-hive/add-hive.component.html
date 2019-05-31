@@ -78,50 +78,7 @@
             </mat-error>
           </mat-form-field>
 
-          <div formGroupName="address">
-            <mat-form-field>
-              <input
-                matInput
-                type="text"
-                placeholder="Adresse"
-                name="street"
-                formControlName="street"
-              />
-            </mat-form-field>
-
-            <div id="zip-and-place">
-              <mat-form-field class="zip-form-field">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="PLZ"
-                  name="zip"
-                  formControlName="zip"
-                  pattern="\d{4}"
-                />
-              </mat-form-field>
-
-              <mat-form-field>
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Wohnort"
-                  name="place"
-                  formControlName="place"
-                />
-              </mat-form-field>
-            </div>
-            <mat-error
-              *ngIf="
-                hiveForm
-                  .get('address')
-                  .get('zip')
-                  .hasError('pattern')
-              "
-            >
-              Bitte gültige Postleitzahl angeben
-            </mat-error>
-          </div>
+          <app-address-form [parentForm]="hiveForm"></app-address-form>
 
           <mat-form-field>
             <input

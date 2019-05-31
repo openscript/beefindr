@@ -9,12 +9,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CardContainerComponent } from './card-container/card-container.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AddressFormComponent } from './address-form/address-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
-    CardContainerComponent
+    CardContainerComponent,
+    AddressFormComponent
   ],
   imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
@@ -28,6 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   exports: [
     CardContainerComponent,
+    AddressFormComponent,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
@@ -36,7 +44,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatToolbarModule,
-    CardContainerComponent,
     MatSnackBarModule,
     MatIconModule,
   ]

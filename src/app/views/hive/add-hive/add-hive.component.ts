@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HiveModel } from 'src/app/common/models/hive';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import { AddressFormComponent } from 'src/app/components/address-form/address-form.component';
 
 @Component({
   selector: 'app-add-hive',
@@ -17,11 +18,7 @@ export class AddHiveComponent implements OnInit {
   // Form definition
   public hiveForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    address: new FormGroup({
-      street: new FormControl(''),
-      zip: new FormControl(''),
-      place: new FormControl('')
-    }),
+    ...AddressFormComponent.DEFAULT_ADDRESS_FORM,
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
