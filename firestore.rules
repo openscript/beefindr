@@ -4,10 +4,6 @@ service cloud.firestore {
 			allow read: if resource.id != null;
 			allow write: if request.resource.data.location != null;
 		}
-		match /hive/{anyhive} {
-			allow read: if resource.id != null;
-      allow write: if request.resource.data.location.latitude != null && request.resource.data.location.longitude != null;
-		}
 		match /beekeeper/{anybeekeeper} {
 			allow read: if resource.data.email != null || resource.data.userUid != null;
 			allow write: if request.resource.data.email != null || request.resource.data.userUid != null;
