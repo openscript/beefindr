@@ -23,6 +23,7 @@ import { LoginUserComponent } from './views/user/login-user/login-user.component
 import { DashboardUserComponent } from './views/user/dashboard-user/dashboard-user.component';
 import { AuthService } from './common/services/auth.service';
 import { NotifyService } from './common/services/notify.service';
+import { KeeperPersistenceService } from './common/services/keeper-persistence.service';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { NotifyService } from './common/services/notify.service';
   providers: [
     AngularFirestore,
     HivePersistenceService,
+    KeeperPersistenceService,
     PwaService,
     AuthService,
     NotifyService

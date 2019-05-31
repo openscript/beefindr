@@ -1,4 +1,3 @@
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { KeeperModel } from '../models/keeper';
 import { BehaviorSubject } from 'rxjs';
@@ -18,7 +17,6 @@ export class MessagingService {
 
   public constructor(
     protected keeperPersistenceService: KeeperPersistenceService,
-    protected angularFireAuth: AngularFireAuth,
     protected angularFireMessaging: AngularFireMessaging) {
     this.angularFireMessaging.messaging.subscribe(
       (messaging) => {

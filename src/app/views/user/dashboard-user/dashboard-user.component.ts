@@ -18,7 +18,7 @@ interface BeeHiveMessage {
   selector: 'app-dashboard-user',
   templateUrl: './dashboard-user.component.html',
   styleUrls: ['./dashboard-user.component.scss'],
-  providers: [AngularFireMessaging]
+  providers: [AngularFireMessaging, MessagingService]
 })
 export class DashboardUserComponent implements OnInit {
   public constructor(
@@ -74,7 +74,7 @@ export class DashboardUserComponent implements OnInit {
       'Neuer Bienenschwarm!', 'Öffnen'
     );
     bar.onAction().subscribe(() => {
-      this.router.navigate([notification.data.link]);
+      void this.router.navigate([notification.data.link]);
     });
   }
 
