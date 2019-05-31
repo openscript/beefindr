@@ -5,10 +5,10 @@
     width: 4em;
     margin-right: 1em;
   }
-}
 
-#zip-and-place + mat-error {
-  margin-top: -1.2em;
+  & + mat-error {
+    margin-top: -1.2em;
+  }
 }
 
 mat-form-field {
