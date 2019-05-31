@@ -1,11 +1,11 @@
 import * as assert from 'assert';
 import {BeekeeperUtils} from '../src/common/beekeeper/utils/beekeeper.utils';
-import {KeeperModel} from '../../src/app/common/models/keeper';
+import {PersistedKeeperModel} from '../src/common/beehive/models/persisted-keeper.model';
 
 
 describe('Closest Beekeeper Function', () => {
 
-  let keepers: KeeperModel[] = [];
+  let keepers: PersistedKeeperModel[] = [];
 
   beforeEach(() => {
     keepers = [{
