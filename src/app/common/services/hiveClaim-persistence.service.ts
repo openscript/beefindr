@@ -1,12 +1,21 @@
-import { Injectable } from '@angular/core';
-import { BasePersistenceService } from './base-persistence.service';
-import { Hive } from '../models/hive';
-import { HiveClaim } from '../models/hiveClaim';
+import {Injectable} from '@angular/core';
+import {BasePersistenceService} from './base-persistence.service';
+import {Hive} from '../models/hive';
+import {HiveClaim} from '../models/hiveClaim';
+import {AngularFirestore} from '@angular/fire/firestore';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class HiveClaimPersistenceService extends BasePersistenceService<Hive> {
+
+  public constructor(
+    private store: AngularFirestore
+  ) {
+    super(store);
+  }
+
   protected getCollectionName() {
     return 'beehiveClaim';
   }

@@ -1,6 +1,6 @@
-import * as assert from "assert";
-import {BeekeeperUtils} from "../src/common/beekeeper/utils/beekeeper.utils";
-import {KeeperModel} from "../../src/app/common/models/keeper";
+import * as assert from 'assert';
+import {BeekeeperUtils} from '../src/common/beekeeper/utils/beekeeper.utils';
+import {KeeperModel} from '../../src/app/common/models/keeper';
 
 
 describe('Closest Beekeeper Function', () => {
@@ -53,7 +53,7 @@ describe('Closest Beekeeper Function', () => {
       assert.strictEqual(
         closest.name, 'Bellevue',
         'Expected Beekeeper at Bellevue to be selected as closest available Beekeeper for a ' +
-        'hive at Strandbad Mythenquai, but Beekeeper \'' + closest.name + '\ was selected instead!'
+        'hive at Strandbad Mythenquai, but Beekeeper \'' + closest.name + '\' was selected instead!'
       );
     }
   });
@@ -72,7 +72,8 @@ describe('Closest Beekeeper Function', () => {
           latitude: 47.354244,
           longitude: 8.535547,
           accuracy: 0
-        }
+        },
+        declinedByBeekeepers: ['1']
       });
 
     assert.notStrictEqual(closest, null);
@@ -80,9 +81,10 @@ describe('Closest Beekeeper Function', () => {
     if (closest) {
       assert.strictEqual(
         closest.name, 'Dolder',
-        'Expected Beekeeper at Bellevue to be selected as closest available Beekeeper for a ' +
-        'hive at Strandbad Mythenquai, but Beekeeper \'' + closest.name + '\ was selected instead!'
+        'Expected Beekeeper at Dolder to be selected as closest available Beekeeper for a ' +
+        'hive at Strandbad Mythenquai when Bellvue has declined, but Beekeeper \'' + closest.name + '\' ' +
+        'was selected instead!'
       );
     }
-  })
+  });
 });

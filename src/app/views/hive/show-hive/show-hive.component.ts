@@ -1,4 +1,3 @@
-import * as firebase from 'firebase';
 import HttpsError = firebase.functions.HttpsError;
 import {ActivatedRoute} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
@@ -6,6 +5,8 @@ import {HiveClaimPersistenceService} from '../../../common/services/hiveClaim-pe
 import {HiveClaim} from '../../../common/models/hiveClaim';
 import {HivePersistenceService} from 'src/app/common/services/hive-persistence.service';
 import {HiveModel} from 'src/app/common/models/hive';
+import firebase from '@firebase/app';
+import '@firebase/functions';
 
 
 @Component({
@@ -55,8 +56,8 @@ export class ShowHiveComponent implements OnInit {
         token: this.claim.token
       })
         .then(result => {
-          alert('Hive ' + (claim ? 'claimed' : 'declined'));
           this.claim = null;
+          alert('Hive ' + (claim ? 'claimed' : 'declined'));
         })
         .catch((error: HttpsError) => {
           console.error(error.details);

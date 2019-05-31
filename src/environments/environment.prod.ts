@@ -9,5 +9,5 @@ export const environment = {
     messagingSenderId: '1034428049462',
     appId: '1:1034428049462:web:9f37442c8643f49c'
   },
-  baseUrl: 'https://beefindr.firebaseapp.com',
+  baseUrl: 'https://beefindr-dev.firebaseapp.com',
 };

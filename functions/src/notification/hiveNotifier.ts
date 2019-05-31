@@ -1,10 +1,11 @@
 import * as admin from 'firebase-admin';
-import {HiveModel} from '../../../src/app/common/models/hive';
-import {KeeperModel} from '../../../src/app/common/models/keeper';
 import {BeekeeperUtils} from '../common/beekeeper/utils/beekeeper.utils';
 import {Dispatcher} from './dispatchers/dispatcher.interface';
 import {environment} from '../../../src/environments/environment.prod';
 import {HiveManager} from '../common/beehive/utils/HiveManager.utils';
+import {HiveModel} from '../../../src/app/common/models/hive';
+import {PersistedHiveModel} from '../common/beehive/models/persisted-hive.model';
+import {PersistedKeeperModel} from '../common/beehive/models/persisted-keeper.model';
 
 
 /**
@@ -20,17 +21,17 @@ export class HiveNotifier {
     this.dispatchers = dispatchers;
   }
 
-  private getClosestToHive(hive: HiveModel): Promise<KeeperModel> {
+  private getClosestToHive(hive: HiveModel): Promise<PersistedKeeperModel> {
 
-    return new Promise<KeeperModel>((succ, err) => {
+    return new Promise<PersistedKeeperModel>((succ, err) => {
 
       admin.firestore().collection('beekeeper').get().then(
         serializedKeepers => {
 
-          const keepers: KeeperModel[] = [];
+          const keepers: PersistedKeeperModel[] = [];
 
           for (const serializedKeeper of serializedKeepers.docs) {
-            keepers.push({uid: serializedKeeper.id, ...serializedKeeper.data()} as KeeperModel);
+            keepers.push({uid: serializedKeeper.id, ...serializedKeeper.data()} as PersistedKeeperModel);
           }
 
           const closest = BeekeeperUtils.selectClosestToHive(keepers, hive);
@@ -55,7 +56,7 @@ export class HiveNotifier {
    * @param recipient Recipient (currently only BeeKeepers), could be replaced with a more general interface (e.g. «User», ...)
    * @param extraPayload Extra payload as dict for message
    */
-  private sendMessage(recipient: KeeperModel, subject: string, body: string, extraPayload: any) {
+  private sendMessage(recipient: PersistedKeeperModel, subject: string, body: string, extraPayload: any) {
     for (const dispatcher of this.dispatchers) {
       dispatcher.dispatchMessage(recipient, subject, body, extraPayload);
     }
@@ -67,27 +68,26 @@ export class HiveNotifier {
    *
    * @param hive BeeHive Beekeepers should be notified about
    */
-  public notifyClosestBeekeeper(hive: HiveModel): boolean {
+  public notifyClosestBeekeeper(hive: PersistedHiveModel): boolean {
 
     console.log('Notifying closest beekeeper about Hive ' + hive.uid);
 
     this.getClosestToHive(hive).then(closestBeekeeper => {
 
-      HiveManager.createOrUpdateClaim(hive, closestBeekeeper)
-        .then(hiveClaim => {
+      HiveManager.updateClaim(hive, closestBeekeeper)
+        .then(updatedClaim => {
 
-          // TODO: i18n
           this.sendMessage(
             closestBeekeeper,
             'Neuen Bienenschwarm gefunden!',
             'Es wurde ein neuer Bienenschwarm in deiner Nähe gemeldet. Jetzt anschauen und beanspruchen!',
             {
-              link: environment.baseUrl + '/hive/' + hive.uid + '/?token=' + hiveClaim.token
+              link: environment.baseUrl + '/hive/' + hive.uid + '/?token=' + updatedClaim.token
             }
           );
         })
         .catch(error => {
-          console.error('Unable to create Claim due to the following error: ' + error);
+          console.error('Unable to create claim on hive due to the following error: ' + error);
         });
 
     }).catch(() => {

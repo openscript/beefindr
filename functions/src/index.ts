@@ -1,7 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
-import {HiveModel} from '../../src/app/common/models/hive';
 import {ClaimException} from './common/claim/exceptions/claim.exception';
 import {ClaimResponseUtil} from './common/claim/utils/claim-response.utils';
 import {HiveManager} from './common/beehive/utils/HiveManager.utils';
@@ -9,6 +8,7 @@ import {HiveNotifier} from './notification/hiveNotifier';
 import {LogDispatcher} from './notification/dispatchers/log/log.dispatcher';
 import {MailDispatcher} from './notification/dispatchers/email/mail.dispatcher';
 import {MessagingDispatcher} from './notification/dispatchers/firebase-cloud-messaging/messaging.dispatcher';
+import {PersistedHiveModel} from './common/beehive/models/persisted-hive.model';
 
 
 // // Start writing Firebase Functions
@@ -17,7 +17,12 @@ import {MessagingDispatcher} from './notification/dispatchers/firebase-cloud-mes
 
 admin.initializeApp();
 
-const cors = require('cors')({origin: ['https://beefindr.firebaseapp.com']});
+const cors = require('cors')({
+  origin: [
+    'https://beefindr.firebaseapp.com',
+    'https://beefindr-dev.firebaseapp.com',
+    'http://localhost:4200']
+});
 
 /**
  * Triggered by Firestore onCreate-event, when a new BeeHive instance is created.
@@ -25,7 +30,7 @@ const cors = require('cors')({origin: ['https://beefindr.firebaseapp.com']});
  */
 export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
   const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-  return notifier.notifyClosestBeekeeper(({uid: snap.id, ...snap.data()} as HiveModel));
+  return notifier.notifyClosestBeekeeper(({uid: snap.id, ...snap.data()} as PersistedHiveModel));
 });
 
 
@@ -40,13 +45,15 @@ const getToken = (req: functions.https.Request, res: express.Response) => {
   return token;
 };
 
+
 /**
- * Fulfills the claim on a beehive by a BeeKeeper.
- * A beehive-token is required to have access to the beehive.
+ * Fulfills the claim on a Hive by a Keeper.
+ * A beehive-token is required to have access to the hive.
  */
 export const claimBeehive = functions.https.onRequest(async (req, res) => {
 
   cors(req, res, async () => {
+
     const token = getToken(req, res);
 
     if (token) {
@@ -66,20 +73,22 @@ export const claimBeehive = functions.https.onRequest(async (req, res) => {
 
 
 /**
- * Waives claim for a given hive and keeper.
- * Updates the claim and notifies the next keeper in line (if available), otherwise dies silently.
- * A beehive-token is required to have access to the beehive.
+ * Waives claim for a given Hive and Keeper.
+ * Updates the claim and notifies the next Keeper in line (if available), otherwise dies silently.
+ * A beehive-token is required to have access to the Hive.
  */
 export const declineBeehive = functions.https.onRequest(async (req, res) => {
 
   cors(req, res, async () => {
+
     const token = getToken(req, res);
 
     if (token) {
       try {
-        const hive = await HiveManager.declineHive(token);
         const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-        notifier.notifyClosestBeekeeper(hive);
+        notifier.notifyClosestBeekeeper(
+          await HiveManager.declineHive(token)
+        );
         res.status(200).send({data: {}});
       } catch (e) {
         if (e instanceof ClaimException) {

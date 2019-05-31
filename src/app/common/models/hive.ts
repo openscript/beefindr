@@ -30,7 +30,7 @@ export class Hive {
     }
 
     if (!this.wasDeclinedBy(beekeeper)) {
-      this.declinedByBeekeepers.push();
+      this.declinedByBeekeepers.push(beekeeper);
     }
   }
 }
