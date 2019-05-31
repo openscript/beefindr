@@ -1,5 +1,6 @@
 {
   "projects": {
-    "beefindr": "beefindr"
+    "beefindr-dev": "beefindr-dev",
+    "default": "beefindr-dev"
   }
 }
