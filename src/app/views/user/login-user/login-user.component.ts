@@ -1,19 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { BeeKeeper } from '../../../common/models/beekeeper.model';
-import { InjectableBeekeeperService } from '../../../common/services/injectable-services.service';
 import { MatInput } from '@angular/material/input';
-import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
-import { NotifyService } from '../../../common/services/notify.service';
 
 @Component({
   selector: 'app-login-user',
   templateUrl: './login-user.component.html',
   styleUrls: ['./login-user.component.scss'],
-  providers: [InjectableBeekeeperService, AngularFirestore]
+  providers: [AngularFirestore]
 })
 export class LoginUserComponent implements OnInit {
 
@@ -24,10 +20,11 @@ export class LoginUserComponent implements OnInit {
 
   @ViewChild('namefocus', { static: true }) public nameInput: MatInput;
 
-  constructor(private formBuilder: FormBuilder,
-              private beeKeeperService: InjectableBeekeeperService, public snackBar: MatSnackBar,
-              private authService: AuthService, private router: Router) {
-  }
+  public constructor(
+    private formBuilder: FormBuilder,
+    public snackBar: MatSnackBar,
+    private authService: AuthService,
+  ) {  }
 
   public ngOnInit() {
     this.loginForm = this.formBuilder.group({

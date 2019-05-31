@@ -1,8 +1,6 @@
-import {Point} from './point.model';
+import { Location } from './location';
 
-
-describe('Point Model', () => {
-
+describe('Location', () => {
   const POINTS = [{
     name: 'Hegibachplatz to Bellevue',
     point1: [47.361773, 8.560301],
@@ -18,10 +16,10 @@ describe('Point Model', () => {
   it('should calculate distances correctly', () => {
 
     for (const point of POINTS) {
-      const point1: Point = new Point(point.point1[0], point.point1[1]);
-      const point2: Point = new Point(point.point2[0], point.point2[1]);
-      const expDistance: number = point.distance;
-      const calcDistance: number = point1.distanceTo(point2);
+      const point1 = new Location({latitude: point.point1[0], longitude: point.point1[1], accuracy: 0});
+      const point2 = new Location({latitude: point.point2[0], longitude: point.point2[1], accuracy: 0});
+      const expDistance = point.distance;
+      const calcDistance = point1.distanceTo(point2);
 
       expect(calcDistance).toBe(
         expDistance,
@@ -32,4 +30,3 @@ describe('Point Model', () => {
     }
   });
 });
-

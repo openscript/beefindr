@@ -1,5 +1,6 @@
-import {BeeHive} from '../../../../../src/app/common/models/beehive.model';
-import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {Hive, HiveModel} from '../../../../../src/app/common/models/hive';
+import {Location} from '../../../../../src/app/common/models/location';
+import {PersistedKeeperModel} from '../../beehive/models/persisted-keeper.model';
 
 
 export class BeekeeperUtils {
@@ -13,16 +14,16 @@ export class BeekeeperUtils {
    * Feel free to improve.
    *
    * @param keepers A list of BeeKeepers from which to select closest to hive
-   * @param hive BeeHive for which to find the closests available BeeKeeper
+   * @param hiveModel Hive for which to select closest keeper (if any) in a given list of keepers
    */
-  public static selectClosestToHive(keepers: BeeKeeper[], hive: BeeHive): BeeKeeper | null {
-
-    let closestKeeper: BeeKeeper | null = null;
+  public static selectClosestToHive(keepers: PersistedKeeperModel[], hiveModel: HiveModel): PersistedKeeperModel | null {
+    const hive = new Hive(hiveModel);
+    let closestKeeper: PersistedKeeperModel | null = null;
     let smallestDistance = -1;
 
-    for (const beekeeper of keepers.filter(k => !hive.wasDeclinedByKeeper(k))) {
-
-      const distance = beekeeper.getLocation().distanceTo(hive.getLocation());
+    for (const beekeeper of keepers.filter(k => k.uid && !hive.wasDeclinedBy(k.uid))) {
+      const keeperLocation = new Location(beekeeper.location);
+      const distance = keeperLocation.distanceTo(hive.location);
 
       if (smallestDistance < 0 || distance < smallestDistance) {
         closestKeeper = beekeeper;

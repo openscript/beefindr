@@ -1,30 +1,27 @@
 import {Injectable} from '@angular/core';
 import {BasePersistenceService} from './base-persistence.service';
 import {Hive} from '../models/hive';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {AngularFireStorage} from '@angular/fire/storage';
 import {HiveClaim} from '../models/hiveClaim';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class HiveClaimPersistenceService extends BasePersistenceService<Hive> {
+
   public constructor(
-    private store: AngularFirestore,
-    private storage: AngularFireStorage
+    private store: AngularFirestore
   ) {
     super(store);
   }
 
-  protected getCollectionName(): string {
+  protected getCollectionName() {
     return 'beehiveClaim';
   }
 
   public getClaimForToken(token: string): Promise<HiveClaim> {
-
     return new Promise((succ, err) => {
-
       this.persistence.ref
         .where('token', '==', token)
         .get()

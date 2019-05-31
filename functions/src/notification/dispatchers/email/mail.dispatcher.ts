@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as nodemailer from 'nodemailer';
-import {BeeKeeper} from '../../../../../src/app/common/models/beekeeper.model';
+import {KeeperModel} from '../../../../../src/app/common/models/keeper';
 import {Dispatcher} from '../dispatcher.interface';
 import {MailConfigurationException} from './exceptions/mail-configuration.exception';
 
@@ -21,17 +21,22 @@ export class MailDispatcher implements Dispatcher {
    * Retrieves email service details from config
    */
   private static getTransportInfo(): { service: string, auth: { user: string, pass: string } } {
-    const emailService: string = functions.config().email.service;
-    const emailAddress: string = functions.config().email.address;
-    const emailPassword: string = functions.config().email.password;
 
-    if (emailService === null || emailAddress === null || emailPassword === null) {
+    if (
+      !functions.config().email ||
+      !functions.config().email.service ||
+      !functions.config().email.address ||
+      !functions.config().email.password) {
       throw new MailConfigurationException(
         'No sender email address configured. Please make sure that you provide ' +
         'the app with a service name (e.g. hotmail), a login and a password using the CLI: ' +
         'firebase functions:config:set email.service="servicename" email.address="myemail" email.password="mypassword".'
       );
     }
+
+    const emailService: string = functions.config().email.service;
+    const emailAddress: string = functions.config().email.address;
+    const emailPassword: string = functions.config().email.password;
 
     return {
       service: emailService,
@@ -78,13 +83,13 @@ export class MailDispatcher implements Dispatcher {
     });
   }
 
-  public dispatchMessage(recipient: BeeKeeper, subject: string, body: string, extraPayload?: any) {
+  public dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any) {
 
-    if (recipient.getEmail()) {
-      this.sendMail(recipient.getEmail(), subject, MailDispatcher.renderExtraPayload(body, extraPayload));
+    if (recipient.email) {
+      this.sendMail(recipient.email, subject, MailDispatcher.renderExtraPayload(body, extraPayload));
     } else {
       console.warn(
-        'Unable to send email notification to BeeKeeper ' + recipient.id + '. No email address stored.'
+        'Unable to send email notification to BeeKeeper ' + recipient.uid + '. No email address stored.'
       );
     }
   }
