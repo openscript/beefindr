@@ -9,6 +9,7 @@
               Angaben zum Bienenschwarm
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <h3 class="mat-h3">Photo</h3>
           <img
             id="preview"
             *ngIf="selectedPhoto"
@@ -33,29 +34,8 @@
           >
             Photo aufnehmen
           </button>
-          <div
-            *ngIf="currentPosition != null"
-            class="form-field"
-            id="position-display"
-          >
-            <div>
-              <span>Breitengrad:</span> {{ currentPosition.coords.latitude }}°
-            </div>
-            <div>
-              <span>Längengrad:</span> {{ currentPosition.coords.longitude }}°
-            </div>
-            <div>
-              <span>Genauigkeit:</span> {{ currentPosition.coords.accuracy }}m
-            </div>
-          </div>
-          <button
-            type="button"
-            mat-button
-            color="primary"
-            (click)="onGetGeoLocation()"
-          >
-            Standort erfassen
-          </button>
+          <h3 class="mat-h3">Standort</h3>
+          <app-geolocation-picker (newLocation)="onNewLocation($event)"></app-geolocation-picker>
         </mat-expansion-panel>
         <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
