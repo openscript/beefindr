@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HivePersistenceService } from 'src/app/common/services/hive-persistence.service';
 import { Router } from '@angular/router';
@@ -6,22 +6,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HiveModel } from 'src/app/common/models/hive';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import { AddressFormComponent } from 'src/app/components/address-form/address-form.component';
+import { LocationModel } from 'src/app/common/models/location';
 
 @Component({
   selector: 'app-add-hive',
   templateUrl: './add-hive.component.html',
   styleUrls: ['./add-hive.component.scss']
 })
-export class AddHiveComponent implements OnInit {
+export class AddHiveComponent {
 
   // Form definition
   public hiveForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    address: new FormGroup({
-      street: new FormControl(''),
-      zip: new FormControl(''),
-      place: new FormControl('')
-    }),
+    ...AddressFormComponent.DEFAULT_ADDRESS_FORM,
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
@@ -30,21 +28,14 @@ export class AddHiveComponent implements OnInit {
   public loading = false;
   public selectedPhoto: File;
   public uploadProgress: Observable<number>;
-  public currentPosition: Position = null;
+  private location: LocationModel = null;
 
-  /**
-   * @param hivePersistence is used to save the data from the form.
-   */
   public constructor(
     private domSanitizer: DomSanitizer,
     private hivePersistence: HivePersistenceService,
     private router: Router,
     private snackBar: MatSnackBar
   ) { }
-
-  public ngOnInit() {
-    this.onGetGeoLocation();
-  }
 
   public onSelectPhoto(uploadField: HTMLInputElement) {
     if (uploadField.files.length > 0 && uploadField.files[0]) {
@@ -60,18 +51,8 @@ export class AddHiveComponent implements OnInit {
     uploadField.click();
   }
 
-  public onGetGeoLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.currentPosition = position;
-      });
-    } else {
-      console.error('Browser doesn\'t support geolcation tracking.');
-    }
-  }
-
   public onSubmit() {
-    if (this.hiveForm.valid && this.currentPosition) {
+    if (this.hiveForm.valid && this.location) {
       this.submitted = true;
       this.loading = true;
 
@@ -87,13 +68,12 @@ export class AddHiveComponent implements OnInit {
     }
   }
 
+  public onNewLocation(location: LocationModel) {
+    this.location = location;
+  }
+
   private saveHive(photo?: string) {
-    const location = {
-      accuracy: this.currentPosition.coords.accuracy,
-      latitude: this.currentPosition.coords.latitude,
-      longitude: this.currentPosition.coords.longitude
-    };
-    const newHive: HiveModel = { finder: {...this.hiveForm.value}, location };
+    const newHive: HiveModel = { finder: {...this.hiveForm.value}, location: {...this.location} };
     if (photo) {
       newHive.photo = photo;
     }

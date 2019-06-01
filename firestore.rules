@@ -1,0 +1,16 @@
+service cloud.firestore {
+	match /databases/{database}/documents {
+		match /beehive/{anybeehive} {
+			allow read: if resource.id != null;
+			allow write: if request.resource.data.location != null;
+		}
+		match /beekeeper/{anybeekeeper} {
+			allow read: if resource.data.email != null || resource.data.userUID != null;
+			allow write: if request.auth.uid != null && request.auth.uid == request.resource.data.userUID;
+		}
+    match /beehiveClaim/{anybeehiveClaim} {
+			allow read: if resource.data.hiveUid != null || resource.data.token != null;
+			allow write: if request.resource.data.hiveUid != null;
+		}
+	}
+}

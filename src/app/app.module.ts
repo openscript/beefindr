@@ -34,7 +34,7 @@ import { KeeperPersistenceService } from './common/services/keeper-persistence.s
     ShowHiveComponent,
     RegisterUserComponent,
     LoginUserComponent,
-    DashboardUserComponent
+    DashboardUserComponent,
   ],
   imports: [
     BrowserModule,

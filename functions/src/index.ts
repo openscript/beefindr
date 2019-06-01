@@ -33,7 +33,6 @@ export const handleNewBeehive = functions.firestore.document('beehive/{uid}').on
   return await notifier.notifyClosestBeekeeper(({uid: snap.id, ...snap.data()} as PersistedHiveModel));
 });
 
-
 const getToken = (req: functions.https.Request, res: express.Response) => {
 
   const token = req.query.token;

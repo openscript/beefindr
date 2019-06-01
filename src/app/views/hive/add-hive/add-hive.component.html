@@ -9,6 +9,7 @@
               Angaben zum Bienenschwarm
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <h3 class="mat-h3">Photo</h3>
           <img
             id="preview"
             *ngIf="selectedPhoto"
@@ -33,29 +34,8 @@
           >
             Photo aufnehmen
           </button>
-          <div
-            *ngIf="currentPosition != null"
-            class="form-field"
-            id="position-display"
-          >
-            <div>
-              <span>Breitengrad:</span> {{ currentPosition.coords.latitude }}°
-            </div>
-            <div>
-              <span>Längengrad:</span> {{ currentPosition.coords.longitude }}°
-            </div>
-            <div>
-              <span>Genauigkeit:</span> {{ currentPosition.coords.accuracy }}m
-            </div>
-          </div>
-          <button
-            type="button"
-            mat-button
-            color="primary"
-            (click)="onGetGeoLocation()"
-          >
-            Standort erfassen
-          </button>
+          <h3 class="mat-h3">Standort</h3>
+          <app-geolocation-picker (newLocation)="onNewLocation($event)"></app-geolocation-picker>
         </mat-expansion-panel>
         <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
@@ -73,55 +53,12 @@
               formControlName="name"
               required
             />
-            <mat-error *ngIf="hiveForm.get('email').hasError('required')">
-              Bitte Name angeben
+            <mat-error *ngIf="hiveForm.get('name').hasError('required')">
+              Bitte Namen angeben
             </mat-error>
           </mat-form-field>
 
-          <div formGroupName="address">
-            <mat-form-field>
-              <input
-                matInput
-                type="text"
-                placeholder="Adresse"
-                name="street"
-                formControlName="street"
-              />
-            </mat-form-field>
-
-            <div id="zip-and-place">
-              <mat-form-field class="zip-form-field">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="PLZ"
-                  name="zip"
-                  formControlName="zip"
-                  pattern="\d{4}"
-                />
-              </mat-form-field>
-
-              <mat-form-field>
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Wohnort"
-                  name="place"
-                  formControlName="place"
-                />
-              </mat-form-field>
-            </div>
-            <mat-error
-              *ngIf="
-                hiveForm
-                  .get('address')
-                  .get('zip')
-                  .hasError('pattern')
-              "
-            >
-              Bitte gültige Postleitzahl angeben
-            </mat-error>
-          </div>
+          <app-address-form [parentForm]="hiveForm"></app-address-form>
 
           <mat-form-field>
             <input

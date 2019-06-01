@@ -1,17 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {
-  FormBuilder,
   FormGroup,
   Validators,
   FormControl
 } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
 import { NotifyService } from '../../../common/services/notify.service';
-import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
+import { AddressFormComponent } from 'src/app/components/address-form/address-form.component';
+import { KeeperModel } from 'src/app/common/models/keeper';
+import { LocationModel } from 'src/app/common/models/location';
 
 @Component({
   selector: 'app-register-user',
@@ -23,114 +23,53 @@ import { KeeperPersistenceService } from 'src/app/common/services/keeper-persist
     NotifyService
   ]
 })
-export class RegisterUserComponent implements OnInit {
-  public registerForm: FormGroup;
-  public loading = false;
+export class RegisterUserComponent {
+
+  // Form definition
+  public keeperForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    ...AddressFormComponent.DEFAULT_ADDRESS_FORM,
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+  });
+
+  // Component state
   public submitted = false;
+  public loading = false;
+  public registerForm: FormGroup;
   public hide = true;
+  private location: LocationModel = null;
 
-  @ViewChild('namefocus', { static: true }) public nameInput: MatInput;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private beeKeeperService: KeeperPersistenceService,
+  public constructor(
     private authService: AuthService,
     public snackBar: MatSnackBar,
     private router: Router,
-    private notifyService: NotifyService
-  ) {}
-
-  public ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      firstname: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
-      streetname: [
-        '',
-        [Validators.required, Validators.pattern('^[ a-zA-ZäöüÄÖÜé.-]+$')]
-      ],
-      streetnr: [
-        '',
-        [Validators.required, Validators.pattern('^[ a-zA-Z0-9]+$')]
-      ],
-      postcode: [
-        '',
-        [Validators.required, Validators.pattern('^[ a-zA-Z0-9]+$')]
-      ],
-      place: [
-        '',
-        [Validators.required, Validators.pattern('^[ a-zA-Z0-9äöüÄÖÜé.-]+$')]
-      ],
-      country: [
-        '',
-        [Validators.required, Validators.pattern('^[ a-zA-ZäöüÄÖÜé.-]+$')]
-      ]
-    });
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.registerForm.controls;
-  }
+  ) { }
 
   public onSubmit() {
-    this.submitted = true;
+    if (this.keeperForm.valid && this.location) {
+      this.submitted = true;
+      this.loading = true;
 
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
-      return;
-    }
+      const { password, ...keeper } = this.keeperForm.value;
+      const newKeeper: KeeperModel = { ...keeper, location: this.location };
 
-    this.loading = true;
-    this.authService
-      .emailSignUp(this.f.email.value, this.f.password.value)
-      .then(() => {
-        console.log('Login created');
-        this.beeKeeperService.add({
-          name: this.f.firstname.value,
-          email: this.f.email.value,
-          location: {
-            latitude: 11,
-            longitude: 11,
-            accuracy: 100
-          }
-        })
-        .then(beekeeper => {
-          console.log('Beekeeper created');
-          this.snackBar.open(
-            'Danke für Ihre Registrierung bei BeeFinder!',
-            'Close',
-            {
-              duration: 20000
-            }
-          );
-          this.router.navigate(['user', 'dashboard']);
-        })
-        .catch(error => {
-          // handle error
-          this.registerForm.reset();
-          this.nameInput.focus();
-          this.snackBar.open(
-            'Registrierung hat leider nicht geklappt!',
-            'Close',
-            {
-              duration: 20000
-            }
-          );
-        });
-      })
-      .catch(error => {
-        // handle error
-        this.registerForm.reset();
-        this.nameInput.focus();
-        this.snackBar.open(
-          'Registrierung hat leider nicht geklappt!',
-          'Close',
-          {
-            duration: 20000
-          }
-        );
+      this.authService.emailSignUpKeeper(
+        newKeeper,
+        this.keeperForm.get('password').value
+      ).then((actualKeeper) => {
+        this.snackBar.open(`Willkommen bei BeeFinder! Danke ${actualKeeper.name} für die Registrierung`, '', { duration: 4000 });
+        this.router.navigate(['user', 'dashboard']);
+      }).catch(() => {
+        this.snackBar.open('Leider ist bei der Registrierung etwas schief gegangen.', '', { duration: 4000 });
+        this.keeperForm.reset();
+        this.loading = false;
+        this.submitted = false;
       });
+    }
+  }
+
+  public onNewLocation(location: LocationModel) {
+    this.location = location;
   }
 }

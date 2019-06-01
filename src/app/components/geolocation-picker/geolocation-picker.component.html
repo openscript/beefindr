@@ -1,0 +1,13 @@
+<mat-progress-spinner
+  *ngIf="loading"
+  diameter="26"
+  mode="indeterminate"
+></mat-progress-spinner>
+<mat-error *ngIf="errorMessage">
+  {{errorMessage}}
+</mat-error>
+<div *ngIf="currentPosition != null" id="position-display">
+  <div><span>Breitengrad:</span> {{ currentPosition.coords.latitude }}°</div>
+  <div><span>Längengrad:</span> {{ currentPosition.coords.longitude }}°</div>
+  <div><span>Genauigkeit:</span> {{ currentPosition.coords.accuracy }}m</div>
+</div>
