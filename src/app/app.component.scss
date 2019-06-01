@@ -7,6 +7,10 @@ a {
   color: #ffffff;
 }
 
+.spacer {
+  flex-grow: 1;
+}
+
 main {
   padding: 1em;
   display: flex;
