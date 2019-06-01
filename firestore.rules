@@ -5,12 +5,8 @@ service cloud.firestore {
 			allow write: if request.resource.data.location != null;
 		}
 		match /beekeeper/{anybeekeeper} {
-			allow read: if resource.data.email != null || resource.data.userUid != null;
-			allow write: if request.resource.data.email != null || request.resource.data.userUid != null;
-		}
-		match /users/{anyuser} {
-			allow read: if resource.data.email != null || resource.data.uid != null;
-			allow write: if request.resource.data.email != null || request.resource.data.uid != null;
+			allow read: if resource.data.email != null || resource.data.userUID != null;
+			allow write: if request.auth.uid != null && request.auth.uid == request.resource.data.userUID;
 		}
     match /beehiveClaim/{anybeehiveClaim} {
 			allow read: if resource.data.hiveUid != null || resource.data.token != null;

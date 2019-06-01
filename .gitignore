@@ -235,3 +235,6 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/macos,linux,angular,windows,intellij,firebase,sublimetext,visualstudiocode
 
 cc-test-reporter
+
+# Ignore firebase emulator debug log
+*-debug.log
