@@ -22,7 +22,7 @@ interface BeeHiveMessage {
 })
 export class DashboardUserComponent implements OnInit {
   public constructor(
-    private beeKeeperService: KeeperPersistenceService,
+    private keeperPersistence: KeeperPersistenceService,
     private messagingService: MessagingService,
     private router: Router,
     public auth: AuthService,
@@ -51,7 +51,7 @@ export class DashboardUserComponent implements OnInit {
     // keepers list once. This could be improved in the future by allowing multiple messaging tokens
     // to account for the use case where the user logs in from different devices.
     this.auth.user.subscribe(user => {
-      this.beeKeeperService.find(ref => ref.where('userUid', '==', user.uid))
+      this.keeperPersistence.find(ref => ref.where('userUID', '==', user.uid))
         .pipe(take(1))
         .subscribe(keepers => {
           this.messagingService.requestPermission(keepers[0]);

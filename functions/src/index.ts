@@ -28,11 +28,10 @@ const cors = require('cors')({
  * Triggered by Firestore onCreate-event, when a new BeeHive instance is created.
  * Creates a new HiveNotifier and notifies the BeeKeeper closest to the beehive.
  */
-export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snap, _) => {
+export const handleNewBeehive = functions.firestore.document('beehive/{uid}').onCreate((snapshot, _) => {
   const notifier: HiveNotifier = new HiveNotifier([new LogDispatcher(), new MailDispatcher(), new MessagingDispatcher()]);
-  return notifier.notifyClosestBeekeeper(({uid: snap.id, ...snap.data()} as PersistedHiveModel));
+  return notifier.notifyClosestBeekeeper(({uid: snapshot.id, ...snapshot.data()} as PersistedHiveModel));
 });
-
 
 const getToken = (req: functions.https.Request, res: express.Response) => {
 
