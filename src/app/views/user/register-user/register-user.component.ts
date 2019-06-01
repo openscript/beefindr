@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
 import { NotifyService } from '../../../common/services/notify.service';
-import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
 import { AddressFormComponent } from 'src/app/components/address-form/address-form.component';
 import { KeeperModel } from 'src/app/common/models/keeper';
 import { LocationModel } from 'src/app/common/models/location';
@@ -42,7 +41,6 @@ export class RegisterUserComponent {
   private location: LocationModel = null;
 
   public constructor(
-    private keeperPersistence: KeeperPersistenceService,
     private authService: AuthService,
     public snackBar: MatSnackBar,
     private router: Router,
@@ -53,16 +51,15 @@ export class RegisterUserComponent {
       this.submitted = true;
       this.loading = true;
 
-      this.authService.emailSignUp(
-        this.keeperForm.get('email').value,
+      const { password, ...keeper } = this.keeperForm.value;
+      const newKeeper: KeeperModel = { ...keeper, location: this.location };
+
+      this.authService.emailSignUpKeeper(
+        newKeeper,
         this.keeperForm.get('password').value
-      ).then(() => {
-        const { password, ...keeper } = this.keeperForm.value;
-        const newKeeper: KeeperModel = { ...keeper, location: this.location };
-        this.keeperPersistence.add(newKeeper).then(() => {
-          this.snackBar.open('Willkommen bei BeeFinder! Danke für die Registrierung.', '', { duration: 4000 });
-          this.router.navigate(['user', 'dashboard']);
-        });
+      ).then((actualKeeper) => {
+        this.snackBar.open(`Willkommen bei BeeFinder! Danke ${actualKeeper.name} für die Registrierung`, '', { duration: 4000 });
+        this.router.navigate(['user', 'dashboard']);
       }).catch(() => {
         this.snackBar.open('Leider ist bei der Registrierung etwas schief gegangen.', '', { duration: 4000 });
         this.keeperForm.reset();
