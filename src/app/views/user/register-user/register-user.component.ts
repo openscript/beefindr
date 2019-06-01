@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {
-  FormBuilder,
   FormGroup,
   Validators,
   FormControl
 } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
@@ -25,7 +23,7 @@ import { KeeperModel } from 'src/app/common/models/keeper';
     NotifyService
   ]
 })
-export class RegisterUserComponent implements OnInit {
+export class RegisterUserComponent implements OnInit, OnDestroy {
 
   // Form definition
   public keeperForm = new FormGroup({
@@ -40,6 +38,8 @@ export class RegisterUserComponent implements OnInit {
   public loading = false;
   public registerForm: FormGroup;
   public hide = true;
+  public currentPosition: Position = null;
+  private geoLocationID: number;
 
   public constructor(
     private keeperPersistence: KeeperPersistenceService,
@@ -49,6 +49,11 @@ export class RegisterUserComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
+    this.toggleGeoLocation();
+  }
+
+  public ngOnDestroy() {
+    this.toggleGeoLocation();
   }
 
   public onSubmit() {
@@ -60,8 +65,13 @@ export class RegisterUserComponent implements OnInit {
         this.keeperForm.get('email').value,
         this.keeperForm.get('password').value
       ).then(() => {
+        const location = {
+          accuracy: this.currentPosition.coords.accuracy,
+          latitude: this.currentPosition.coords.latitude,
+          longitude: this.currentPosition.coords.longitude
+        };
         const { password, ...keeper } = this.keeperForm.value;
-        const newKeeper: KeeperModel = { ...keeper, location: { latitude: 11, longitude: 11, accuracy: 100 } };
+        const newKeeper: KeeperModel = { ...keeper, location };
         this.keeperPersistence.add(newKeeper).then(() => {
           this.snackBar.open('Willkommen bei BeeFinder! Danke für die Registrierung.', '', { duration: 4000 });
           this.router.navigate(['user', 'dashboard']);
@@ -72,6 +82,18 @@ export class RegisterUserComponent implements OnInit {
         this.loading = false;
         this.submitted = false;
       });
+    }
+  }
+
+  private toggleGeoLocation() {
+    if (navigator.geolocation) {
+      if (!this.geoLocationID) {
+        this.geoLocationID = navigator.geolocation.watchPosition((position) => {
+          this.currentPosition = position;
+        });
+      } else {
+        navigator.geolocation.clearWatch(this.geoLocationID);
+      }
     }
   }
 }

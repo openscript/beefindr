@@ -29,9 +29,6 @@ export class AddHiveComponent implements OnInit {
   public uploadProgress: Observable<number>;
   public currentPosition: Position = null;
 
-  /**
-   * @param hivePersistence is used to save the data from the form.
-   */
   public constructor(
     private domSanitizer: DomSanitizer,
     private hivePersistence: HivePersistenceService,
