@@ -1,6 +1,7 @@
-import {Hive, HiveModel} from '../../../../../src/app/common/models/hive';
+import {Hive} from '../../../../../src/app/common/models/hive';
 import {Location} from '../../../../../src/app/common/models/location';
 import {PersistedKeeperModel} from '../../beehive/models/persisted-keeper.model';
+import {PersistedHiveModel} from '../../beehive/models/persisted-hive.model';
 
 
 export class BeekeeperUtils {
@@ -16,7 +17,7 @@ export class BeekeeperUtils {
    * @param keepers A list of BeeKeepers from which to select closest to hive
    * @param hiveModel Hive for which to select closest keeper (if any) in a given list of keepers
    */
-  public static selectClosestToHive(keepers: PersistedKeeperModel[], hiveModel: HiveModel): PersistedKeeperModel | null {
+  public static selectClosestToHive(keepers: PersistedKeeperModel[], hiveModel: PersistedHiveModel): PersistedKeeperModel | null {
     const hive = new Hive(hiveModel);
     let closestKeeper: PersistedKeeperModel | null = null;
     let smallestDistance = -1;

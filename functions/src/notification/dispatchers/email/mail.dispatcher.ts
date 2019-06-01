@@ -58,7 +58,7 @@ export class MailDispatcher implements Dispatcher {
     return rendered;
   }
 
-  private sendMail(to: string, subject: string, text: string) {
+  private async sendMail(to: string, subject: string, text: string) {
 
     let transportInfo;
 
@@ -71,24 +71,20 @@ export class MailDispatcher implements Dispatcher {
 
     const transport = nodemailer.createTransport(transportInfo);
 
-    transport.sendMail({
+    return transport.sendMail({
       from: transportInfo.auth.user,
       to,
       subject,
       text,
-    }).then(() => {
-      console.log('Email with subject ' + subject + ' successfully sent to ' + to);
-    }).catch((err) => {
-      console.error(err);
     });
   }
 
-  public dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any) {
+  public async dispatchMessage(recipient: KeeperModel, subject: string, body: string, extraPayload?: any) {
 
     if (recipient.email) {
-      this.sendMail(recipient.email, subject, MailDispatcher.renderExtraPayload(body, extraPayload));
+        return this.sendMail(recipient.email, subject, MailDispatcher.renderExtraPayload(body, extraPayload));
     } else {
-      console.warn(
+      return Promise.reject(
         'Unable to send email notification to BeeKeeper ' + recipient.uid + '. No email address stored.'
       );
     }

@@ -7,8 +7,8 @@ import {ConfigurationException} from '../exceptions/configuration.exception';
 import {Hive, HiveModel} from '../../../../../src/app/common/models/hive';
 import {HiveClaim} from '../models/hiveClaim.model';
 import {PersistedHiveModel} from '../models/persisted-hive.model';
-import {sha256} from 'js-sha256';
 import {PersistedKeeperModel} from '../models/persisted-keeper.model';
+import {sha256} from 'js-sha256';
 
 
 /**
@@ -66,6 +66,8 @@ export class HiveManager {
         keeperUid: forKeeper.uid
       } as HiveClaim;
     }
+
+    claim.keeperUid = forKeeper.uid;
 
     return claim;
   }
@@ -196,7 +198,7 @@ export class HiveManager {
       hive.decline(claim.keeperUid);
       hiveModel.declinedByBeekeepers = hive.declinedByBeekeepers;
 
-      void admin.firestore().collection('beehive').doc(claim.hiveUid).update({
+      await admin.firestore().collection('beehive').doc(claim.hiveUid).update({
         ...hive
       });
 
