@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {
   FormGroup,
@@ -12,6 +12,7 @@ import { NotifyService } from '../../../common/services/notify.service';
 import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
 import { AddressFormComponent } from 'src/app/components/address-form/address-form.component';
 import { KeeperModel } from 'src/app/common/models/keeper';
+import { LocationModel } from 'src/app/common/models/location';
 
 @Component({
   selector: 'app-register-user',
@@ -23,7 +24,7 @@ import { KeeperModel } from 'src/app/common/models/keeper';
     NotifyService
   ]
 })
-export class RegisterUserComponent implements OnInit, OnDestroy {
+export class RegisterUserComponent {
 
   // Form definition
   public keeperForm = new FormGroup({
@@ -38,8 +39,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
   public loading = false;
   public registerForm: FormGroup;
   public hide = true;
-  public currentPosition: Position = null;
-  private geoLocationID: number;
+  private location: LocationModel = null;
 
   public constructor(
     private keeperPersistence: KeeperPersistenceService,
@@ -48,16 +48,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     private router: Router,
   ) { }
 
-  public ngOnInit() {
-    this.toggleGeoLocation();
-  }
-
-  public ngOnDestroy() {
-    this.toggleGeoLocation();
-  }
-
   public onSubmit() {
-    if (this.keeperForm.valid) {
+    if (this.keeperForm.valid && this.location) {
       this.submitted = true;
       this.loading = true;
 
@@ -65,13 +57,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         this.keeperForm.get('email').value,
         this.keeperForm.get('password').value
       ).then(() => {
-        const location = {
-          accuracy: this.currentPosition.coords.accuracy,
-          latitude: this.currentPosition.coords.latitude,
-          longitude: this.currentPosition.coords.longitude
-        };
         const { password, ...keeper } = this.keeperForm.value;
-        const newKeeper: KeeperModel = { ...keeper, location };
+        const newKeeper: KeeperModel = { ...keeper, location: this.location };
         this.keeperPersistence.add(newKeeper).then(() => {
           this.snackBar.open('Willkommen bei BeeFinder! Danke für die Registrierung.', '', { duration: 4000 });
           this.router.navigate(['user', 'dashboard']);
@@ -85,15 +72,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     }
   }
 
-  private toggleGeoLocation() {
-    if (navigator.geolocation) {
-      if (!this.geoLocationID) {
-        this.geoLocationID = navigator.geolocation.watchPosition((position) => {
-          this.currentPosition = position;
-        });
-      } else {
-        navigator.geolocation.clearWatch(this.geoLocationID);
-      }
-    }
+  public onNewLocation(location: LocationModel) {
+    this.location = location;
   }
 }

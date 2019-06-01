@@ -12,11 +12,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddressFormComponent } from './address-form/address-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { GeolocationPickerComponent } from './geolocation-picker/geolocation-picker.component';
 
 @NgModule({
   declarations: [
     CardContainerComponent,
-    AddressFormComponent
+    AddressFormComponent,
+    GeolocationPickerComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,7 @@ import { BrowserModule } from '@angular/platform-browser';
   exports: [
     CardContainerComponent,
     AddressFormComponent,
+    GeolocationPickerComponent,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
