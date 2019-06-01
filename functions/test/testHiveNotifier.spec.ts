@@ -36,6 +36,7 @@ describe('Closest Beekeeper Function', () => {
       keepers,
       // Hive in Standbad Mythenquai 47.354244, 8.535547
       {
+        uid: '10',
         finder: {
           name: 'Hans Wurst',
           email: 'hans.wurst@example.com'
@@ -64,6 +65,7 @@ describe('Closest Beekeeper Function', () => {
       keepers,
       // Hive in Standbad Mythenquai 47.354244, 8.535547
       {
+        uid: '11',
         finder: {
           name: 'Hans Wurst',
           email: 'hans.wurst@example.com'
