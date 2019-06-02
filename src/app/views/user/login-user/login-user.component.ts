@@ -32,9 +32,13 @@ export class LoginUserComponent {
   public onSubmit() {
     if (this.loginForm.valid) {
       this.submitted = true;
+      this.loading = true;
 
-      this.authService.emailLogin(this.loginForm.get('email').value, this.loginForm.get('password').value).catch((error) => {
+      this.authService.emailLogin(this.loginForm.get('email').value, this.loginForm.get('password').value).catch(() => {
         this.snackBar.open('Anmelden fehlgeschlagen', '', { duration: 4000 });
+        this.submitted = false;
+      }).finally(() => {
+        this.loading = false;
       });
     }
   }
