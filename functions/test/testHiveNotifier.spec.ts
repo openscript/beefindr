@@ -39,6 +39,7 @@ describe('Closest Beekeeper Function', () => {
         uid: '10',
         finder: {
           name: 'Hans Wurst',
+          phone: '0719999999',
           email: 'hans.wurst@example.com'
         },
         location: {
@@ -68,6 +69,7 @@ describe('Closest Beekeeper Function', () => {
         uid: '11',
         finder: {
           name: 'Hans Wurst',
+          phone: '0719999999',
           email: 'hans.wurst@example.com'
         },
         location: {
