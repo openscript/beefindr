@@ -3,6 +3,6 @@ import { Address } from './address';
 export interface FinderModel {
   name: string;
   address?: Address;
-  phone: string;
+  phone?: string;
   email: string;
 }
