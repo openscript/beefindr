@@ -10,7 +10,7 @@ import { User } from 'firebase';
   providedIn: 'root'
 })
 export class AuthService {
-  public user: Observable<User | null>;
+  public user: Observable<User>;
 
   public constructor(
     private keeperPersistence: KeeperPersistenceService,

@@ -22,7 +22,7 @@ interface BeeHiveMessage {
   providers: [AngularFireMessaging, MessagingService]
 })
 export class DashboardUserComponent implements OnInit {
-  public user: Observable<User | null>;
+  public username?: string;
 
   public constructor(
     private keeperPersistence: KeeperPersistenceService,
@@ -33,7 +33,9 @@ export class DashboardUserComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    this.user = this.auth.user;
+    this.auth.user.pipe(filter(user => !!user)).subscribe((user) => {
+      this.username = user.displayName;
+    });
     this.setUpMessaging();
   }
 

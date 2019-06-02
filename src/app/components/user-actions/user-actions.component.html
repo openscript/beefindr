@@ -1,0 +1,7 @@
+<a [routerLink]="['user', 'login']" *ngIf="!username">
+  <button mat-button>Anmelden</button>
+</a>
+<span class="mat-caption" *ngIf="username">Hallo {{username}}!</span>
+<a [routerLink]="['user', 'login']" *ngIf="username">
+  <button mat-button (click)="onLogout()">Abmelden</button>
+</a>
