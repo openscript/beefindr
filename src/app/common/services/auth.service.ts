@@ -4,13 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { KeeperPersistenceService } from './persistence/keeper-persistence.service';
 import { KeeperModel } from '../models/keeper';
-
-interface User {
-  uid: string;
-  email?: string | null;
-  photoURL?: string;
-  displayName?: string;
-}
+import { User } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
