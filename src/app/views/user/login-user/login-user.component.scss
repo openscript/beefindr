@@ -1,28 +1,16 @@
 mat-card-content {
   mat-form-field {
     width: 100%;
+    margin-bottom: 1em;
   }
   .card-header {
     text-align: center;
-  }
-
-  .form-field {
-    margin-bottom: 1.25em;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  #position-display span {
-    display: inline-block;
-    width: 50%;
   }
 }
 
 mat-card-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 form {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatInput } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
@@ -11,9 +11,15 @@ import { AuthService } from '../../../common/services/auth.service';
   styleUrls: ['./login-user.component.scss'],
   providers: [AngularFirestore]
 })
-export class LoginUserComponent implements OnInit {
+export class LoginUserComponent {
 
-  public loginForm: FormGroup;
+  // Form definition
+  public loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
+  });
+
+  // Component state
   public loading = false;
   public submitted = false;
   public hide = true;
@@ -21,36 +27,20 @@ export class LoginUserComponent implements OnInit {
   @ViewChild('namefocus', { static: true }) public nameInput: MatInput;
 
   public constructor(
-    private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     private authService: AuthService,
   ) {  }
-
-  public ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
-  }
 
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
   public onSubmit() {
-    this.submitted = true;
+    if (this.loginForm.valid) {
+      this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
+      this.authService.emailLogin(this.loginForm.get('email').value, this.loginForm.get('password').value).catch((error) => {
+        this.snackBar.open('Anmelden fehlgeschlagen', '', { duration: 4000 });
+      });
     }
-
-    this.authService.emailLogin(this.f.email.value, this.f.password.value).then(() => {
-      this.loginForm.reset();
-      this.nameInput.focus();
-    }).catch(error => {
-      // handle error
-      this.loginForm.reset();
-      this.nameInput.focus();
-    });
   }
 }
