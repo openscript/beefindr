@@ -13,9 +13,11 @@ export class DashboardActivate implements CanActivate {
   ) { }
 
   public canActivate() {
-    if (this.auth.isLoggedIn()) {
-      this.router.navigate(['user', 'dashboard']);
-    }
+    this.auth.user.subscribe((user) => {
+      if (user) {
+        this.router.navigate(['user', 'dashboard']);
+      }
+    });
     return true;
   }
 }
