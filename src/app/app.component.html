@@ -1,9 +1,10 @@
 <mat-toolbar color='primary'>
   <a routerLink=''>BeeFinder</a>
   <span class='spacer'></span>
-  <a [routerLink]="['user', 'login']">
-    <button mat-button>Anmelden</button>
-  </a>
+  <app-user-actions 
+    [username]="username"
+    (logout)="logout()"
+  ></app-user-actions>
 </mat-toolbar>
 <main>
   <router-outlet></router-outlet>

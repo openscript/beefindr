@@ -1,3 +1,9 @@
-<p>
-  <button mat-raised-button (click)="logout()" style="float: right;">Logout</button>
-</p>
+<app-card-container>
+  <div class="card-header">
+    <img src="assets/brand.png" />
+  </div>
+  <mat-card-content>
+    <h2 class="mat-h2">Hallo {{username}}!</h2>
+    <a [routerLink]="['hive', 'add']"><button mat-stroked-button color='primary'>Bienenschwarm melden</button></a>
+  </mat-card-content>
+</app-card-container>

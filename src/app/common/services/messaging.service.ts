@@ -1,7 +1,7 @@
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { KeeperModel } from '../models/keeper';
 import { BehaviorSubject } from 'rxjs';
-import { KeeperPersistenceService } from './keeper-persistence.service';
+import { KeeperPersistenceService } from './persistence/keeper-persistence.service';
 import { Injectable } from '@angular/core';
 
 /**

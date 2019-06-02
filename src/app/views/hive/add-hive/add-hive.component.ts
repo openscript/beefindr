@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HivePersistenceService } from 'src/app/common/services/hive-persistence.service';
+import { HivePersistenceService } from 'src/app/common/services/persistence/hive-persistence.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HiveModel } from 'src/app/common/models/hive';
