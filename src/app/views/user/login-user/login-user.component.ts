@@ -29,9 +29,6 @@ export class LoginUserComponent {
     private authService: AuthService,
   ) {  }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
-
   public onSubmit() {
     if (this.loginForm.valid) {
       this.submitted = true;
