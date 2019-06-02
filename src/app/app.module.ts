@@ -16,14 +16,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { PwaService} from './common/services/pwa.service';
 import { AddHiveComponent } from './views/hive/add-hive/add-hive.component';
 import { RegisterUserComponent } from './views/user/register-user/register-user.component';
-import { HivePersistenceService } from './common/services/hive-persistence.service';
+import { HivePersistenceService } from './common/services/persistence/hive-persistence.service';
 import { ShowHiveComponent } from './views/hive/show-hive/show-hive.component';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { LoginUserComponent } from './views/user/login-user/login-user.component';
 import { DashboardUserComponent } from './views/user/dashboard-user/dashboard-user.component';
 import { AuthService } from './common/services/auth.service';
 import { NotifyService } from './common/services/notify.service';
-import { KeeperPersistenceService } from './common/services/keeper-persistence.service';
+import { KeeperPersistenceService } from './common/services/persistence/keeper-persistence.service';
 
 @NgModule({
   declarations: [

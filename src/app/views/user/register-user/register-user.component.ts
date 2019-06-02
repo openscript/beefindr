@@ -1,14 +1,8 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import {
-  FormGroup,
-  Validators,
-  FormControl
-} from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../common/services/auth.service';
-import { NotifyService } from '../../../common/services/notify.service';
 import { AddressFormComponent } from 'src/app/components/address-form/address-form.component';
 import { KeeperModel } from 'src/app/common/models/keeper';
 import { LocationModel } from 'src/app/common/models/location';
@@ -16,12 +10,7 @@ import { LocationModel } from 'src/app/common/models/location';
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
-  styleUrls: ['./register-user.component.scss'],
-  providers: [
-    AngularFirestore,
-    AuthService,
-    NotifyService
-  ]
+  styleUrls: ['./register-user.component.scss']
 })
 export class RegisterUserComponent {
 
@@ -36,7 +25,6 @@ export class RegisterUserComponent {
   // Component state
   public submitted = false;
   public loading = false;
-  public registerForm: FormGroup;
   public hide = true;
   private location: LocationModel = null;
 

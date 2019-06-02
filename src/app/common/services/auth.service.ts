@@ -2,21 +2,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { KeeperPersistenceService } from './keeper-persistence.service';
+import { KeeperPersistenceService } from './persistence/keeper-persistence.service';
 import { KeeperModel } from '../models/keeper';
-
-interface User {
-  uid: string;
-  email?: string | null;
-  photoURL?: string;
-  displayName?: string;
-}
+import { User } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  public user: Observable<User | null>;
+  public user: Observable<User>;
 
   public constructor(
     private keeperPersistence: KeeperPersistenceService,
@@ -42,6 +36,10 @@ export class AuthService {
     return this.angularFireAuth.auth.signInWithEmailAndPassword(email, password).then(() => {
       this.router.navigate(['user', 'dashboard']);
     });
+  }
+
+  public isLoggedIn() {
+    return !!this.angularFireAuth.auth.currentUser;
   }
 
   public signOut() {

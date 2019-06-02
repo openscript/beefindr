@@ -5,8 +5,9 @@ import { Component, OnInit } from '@angular/core';
 import { filter, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MessagingService } from 'src/app/common/services/messaging.service';
-import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
-
+import { KeeperPersistenceService } from 'src/app/common/services/persistence/keeper-persistence.service';
+import { User } from 'firebase';
+import { Observable } from 'rxjs';
 
 interface BeeHiveMessage {
   data: {
@@ -21,13 +22,21 @@ interface BeeHiveMessage {
   providers: [AngularFireMessaging, MessagingService]
 })
 export class DashboardUserComponent implements OnInit {
+  public username?: string;
+
   public constructor(
     private keeperPersistence: KeeperPersistenceService,
     private messagingService: MessagingService,
     private router: Router,
-    public auth: AuthService,
-    public snackBar: MatSnackBar,
-  ) {
+    private auth: AuthService,
+    private snackBar: MatSnackBar,
+  ) { }
+
+  public ngOnInit() {
+    this.auth.user.pipe(filter(user => !!user)).subscribe((user) => {
+      this.username = user.displayName;
+    });
+    this.setUpMessaging();
   }
 
   /**
@@ -76,13 +85,5 @@ export class DashboardUserComponent implements OnInit {
     bar.onAction().subscribe(() => {
       void this.router.navigate([notification.data.link]);
     });
-  }
-
-  public logout() {
-    this.auth.signOut();
-  }
-
-  public ngOnInit() {
-    this.setUpMessaging();
   }
 }
