@@ -20,6 +20,7 @@ export class AddHiveComponent {
   public hiveForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     ...AddressFormComponent.DEFAULT_ADDRESS_FORM,
+    phone: new FormControl(''),
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
