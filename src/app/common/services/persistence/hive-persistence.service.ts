@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BasePersistenceService } from './base-persistence.service';
-import { HiveModel } from '../models/hive';
+import { HiveModel } from '../../models/hive';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 

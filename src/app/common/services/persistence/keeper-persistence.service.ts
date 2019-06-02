@@ -1,7 +1,7 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BasePersistenceService } from './base-persistence.service';
 import { Injectable } from '@angular/core';
-import { KeeperModel } from '../models/keeper';
+import { KeeperModel } from '../../models/keeper';
 
 
 @Injectable({

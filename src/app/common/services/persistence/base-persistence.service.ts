@@ -1,4 +1,4 @@
-import { BaseEntity } from '../models/base-entity';
+import { BaseEntity } from '../../models/base-entity';
 import { Observable } from 'rxjs';
 import { AngularFirestoreCollection, AngularFirestore, QueryFn } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';

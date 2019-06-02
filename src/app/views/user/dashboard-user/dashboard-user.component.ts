@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { filter, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MessagingService } from 'src/app/common/services/messaging.service';
-import { KeeperPersistenceService } from 'src/app/common/services/keeper-persistence.service';
+import { KeeperPersistenceService } from 'src/app/common/services/persistence/keeper-persistence.service';
 
 
 interface BeeHiveMessage {
