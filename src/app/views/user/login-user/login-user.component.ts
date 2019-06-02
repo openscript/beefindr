@@ -24,8 +24,6 @@ export class LoginUserComponent {
   public submitted = false;
   public hide = true;
 
-  @ViewChild('namefocus', { static: true }) public nameInput: MatInput;
-
   public constructor(
     public snackBar: MatSnackBar,
     private authService: AuthService,
