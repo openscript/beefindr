@@ -13,17 +13,24 @@ import { AddressFormComponent } from './address-form/address-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { GeolocationPickerComponent } from './geolocation-picker/geolocation-picker.component';
+import { UserActionsComponent } from './user-actions/user-actions.component';
+import { RouterModule } from '@angular/router';
+import { appRoutes } from 'src/routes';
 
 @NgModule({
   declarations: [
     CardContainerComponent,
     AddressFormComponent,
-    GeolocationPickerComponent
+    GeolocationPickerComponent,
+    UserActionsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(
+      appRoutes
+    ),
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
@@ -39,6 +46,7 @@ import { GeolocationPickerComponent } from './geolocation-picker/geolocation-pic
     CardContainerComponent,
     AddressFormComponent,
     GeolocationPickerComponent,
+    UserActionsComponent,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,

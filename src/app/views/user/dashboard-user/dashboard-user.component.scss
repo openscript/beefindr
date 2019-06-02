@@ -1,0 +1,16 @@
+.card-header {
+  text-align: center;
+}
+
+mat-card-content {
+  padding: 1rem 0 0 0;
+
+  a, button {
+    display: block;
+    width: 100%;
+  }
+
+  a:not(:last-child) {
+    margin: 0 0 0.5rem 0;
+  }
+}
