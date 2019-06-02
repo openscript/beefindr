@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PwaService } from 'src/app/common/services/pwa.service';
-import {VersionUtil} from './utils/version.util';
+import { VersionUtil } from './utils/version.util';
 
 
 @Component({
