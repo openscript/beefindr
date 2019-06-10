@@ -10,8 +10,7 @@ BeeFinder (primary name; sometimes BeeFindr if BeeFinder is not available) conne
 ## Overview
 * Continuous integration and delivery with TravisCI <br> https://travis-ci.org/openscript/beefindr
 * Backend with Firebase <br> https://console.firebase.google.com/project/beefindr
-* Hosting with Firebase <br> https://beefindr.firebaseapp.com/
-  * Hello World proof of concept: https://beefindr.firebaseapp.com/hello-world
+* Hosting with Firebase <br> https://beefindr-dev.firebaseapp.com/
 * Code quality with CodeClimate <br> https://codeclimate.com/github/openscript/beefindr
 * Test Coverage with CodeClimate <br> https://codeclimate.com/github/openscript/beefindr
 
